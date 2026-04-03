@@ -10,14 +10,14 @@ Add game juice — entity animations, hit reactions, procedural sound effects, b
 - US-23 — Floating spark collection
 
 ### Done-when (observable)
-- [ ] Water Pistol defender has a visible idle animation loop (continuous bobbing tween) when placed on the grid [US-19]
-- [ ] Jack-in-the-Box defender has a visible idle animation loop (spring wiggle or lid bounce tween) when placed on the grid [US-19]
-- [ ] Block Tower defender has a visible idle animation loop (subtle sway tween) when placed on the grid [US-19]
-- [ ] Water Pistol plays a recoil animation (brief position/scale kick and return tween) each time it fires a projectile [US-19]
-- [ ] Jack-in-the-Box plays a produce animation (lid bounce or body pulse tween) each time generator income ticks [US-19]
-- [ ] Dust Bunny enemy has a visible movement animation (bouncing vertical offset or squash-stretch) as it advances [US-19]
-- [ ] Cleaning Robot enemy has a visible movement animation (rocking or vibrating motion) as it advances [US-19]
-- [ ] All animations use Phaser tweens or timer-based transforms — no external sprite sheet or image files exist in the project [US-19]
+- [x] Water Pistol defender has a visible idle animation loop (continuous bobbing tween) when placed on the grid [US-19]
+- [x] Jack-in-the-Box defender has a visible idle animation loop (spring wiggle or lid bounce tween) when placed on the grid [US-19]
+- [x] Block Tower defender has a visible idle animation loop (subtle sway tween) when placed on the grid [US-19]
+- [x] Water Pistol plays a recoil animation (brief position/scale kick and return tween) each time it fires a projectile [US-19]
+- [x] Jack-in-the-Box plays a produce animation (lid bounce or body pulse tween) each time generator income ticks [US-19]
+- [x] Dust Bunny enemy has a visible movement animation (bouncing vertical offset or squash-stretch) as it advances [US-19]
+- [x] Cleaning Robot enemy has a visible movement animation (rocking or vibrating motion) as it advances [US-19]
+- [x] All animations use Phaser tweens or timer-based transforms — no external sprite sheet or image files exist in the project [US-19]
 - [ ] Enemy entities flash white (tint change to 0xffffff) for 100-200ms when taking projectile damage [US-20]
 - [ ] Dust Bunny death triggers a particle burst (dust-colored particles expanding outward) at the enemy's position before entity removal [US-20]
 - [ ] Cleaning Robot death triggers a particle burst (spark/bolt-colored particles) at the enemy's position before entity removal [US-20]
