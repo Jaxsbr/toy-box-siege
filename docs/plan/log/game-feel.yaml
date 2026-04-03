@@ -1,4 +1,10 @@
 # Phase log — game-feel
 # Each entry: { task, story, description, result, notes, tokens }
 
-entries: []
+entries:
+  - task: 1
+    story: US-15
+    description: "Investigation — catalog config key/name references before theme rename"
+    result: pass
+    notes: "Config keys (generator/shooter/wall/basic/tough) used in gameplay logic — keep keys, change name fields only. Test at Defenders.test.ts:39 checks name 'Wall' — needs update. 72 tests pass."
+    tokens: ~5k
