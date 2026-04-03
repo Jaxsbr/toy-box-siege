@@ -13,7 +13,7 @@
 # See MANUAL.md § State ownership for the full ownership table.
 
 config:
-  verify: "echo \"no verify command configured\""
+  verify: "npm test"
   max_tasks_per_phase: 200
   quality_check_suppressions: []
   build_loop_version:
@@ -39,7 +39,7 @@ state:
   pr_number: 2
 
   # --- Retrospective (owner: retro) ---
-  retro_complete: false
+  retro_complete: true
 
   # --- Tracking (owner: iterator) ---
   completed_stories: [US-07, US-08, US-09, US-10, US-11]
