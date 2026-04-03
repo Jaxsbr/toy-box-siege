@@ -56,3 +56,9 @@ entries:
     result: pass
     notes: "Wave 1: 2 Dust Bunnies. Wave 2: 4 mixed. Wave 3: 6 enemies, 3 Cleaning Robots, 4 lanes. setupDelay=25, interWaveDelay=18. 88 total tests pass. ✓ US-16 complete"
     tokens: ~3k
+  - task: 10
+    story: US-17
+    description: "Investigation — GameScene HUD and waveState integration points"
+    result: pass
+    notes: "HUD waveText exists (Wave N/M). No announcement system yet. GameScene.update() doesn't read waveState. Need: announcement overlay during announcing state, final wave distinct text, progress dots/bar."
+    tokens: ~2k
