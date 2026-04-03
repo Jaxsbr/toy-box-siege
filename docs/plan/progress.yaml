@@ -28,8 +28,8 @@ state:
   status: running
 
   # --- Task orchestration (owner: iterator) ---
-  task_number: 9
-  next_task: "[US-23] Implement floating spark collection — SparkEntity, spawn/drift/click-to-collect, collection animation, remove passive income timer, configurable constants, visual distinction from projectiles."
+  task_number: 10
+  next_task: "[phase] Verify scene transition cleanup — ensure all active tweens, particle emitters, and spark tokens are cleaned up on GameScene end. Update AGENTS.md."
   last_result: pass
   consecutive_fails: 0
 

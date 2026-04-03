@@ -68,3 +68,9 @@ entries:
     result: pass
     notes: "GameScene: bookshelf+dresser silhouettes (depth -10), 4 random toy details, 15 dust motes with drift tweens. TitleScene+GameOverScene: floor boards, rug, furniture, scattered toys. No pointer input on atmosphere. 88 tests pass. ✓ US-22 complete"
     tokens: ~5k
+  - task: 12
+    story: US-23
+    description: "Implement floating spark collection + wire SFX collect"
+    result: pass
+    notes: "Spark tokens: blue diamond glow, spawn at random x above grid, drift down at 30px/s. Click to collect (adds 25 sparks, playSfxCollect, particle burst). Uncollected removed at grid bottom. Replaced PASSIVE_INCOME timer. Constants: SPARK_SPAWN_INTERVAL=8000, SPARK_VALUE=25, SPARK_FALL_SPEED=30. Generator income unchanged. 88 tests pass. ✓ US-21, US-23 complete"
+    tokens: ~5k
