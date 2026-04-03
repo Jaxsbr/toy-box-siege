@@ -38,3 +38,9 @@ entries:
     result: pass
     notes: "WaveManager needs: setupDelay (>=20), interWaveDelay (>=15), waveState (setup→announcing→spawning→waiting→complete). 7 existing tests need updating for new delay behavior. LEVEL_1 rebalance to 3 waves is separate concern."
     tokens: ~2k
+  - task: 7
+    story: US-16
+    description: "Investigation — confirm WaveManager refactor plan"
+    result: pass
+    notes: "Add optional setupDelay/interWaveDelay/announceDuration to LevelConfig. State machine internal to update(). Existing tests pass setupDelay:0/interWaveDelay:0 to preserve behavior. New tests verify state transitions. GameScene reads waveState for US-17."
+    tokens: ~1k

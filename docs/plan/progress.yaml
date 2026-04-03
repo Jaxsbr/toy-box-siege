@@ -28,8 +28,8 @@ state:
   status: running
 
   # --- Task orchestration (owner: iterator) ---
-  task_number: 5
-  next_task: "[US-16] Investigate: plan WaveManager state machine refactor (setup/announcing/spawning/waiting/complete), identify test changes"
+  task_number: 6
+  next_task: "[US-16] Refactor WaveManager with state machine (setup/announcing/spawning/waiting/complete), setupDelay/interWaveDelay params, update + add tests"
   last_result: pass
   consecutive_fails: 0
 
