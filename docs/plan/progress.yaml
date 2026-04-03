@@ -29,7 +29,7 @@ state:
 
   # --- Task orchestration (owner: iterator) ---
   task_number: 5
-  next_task: null
+  next_task: "[US-20] Implement hit flash, death particles, defender destruction, placement bounce-in, projectile impact burst, and camera shake. Modify EnemyEntity, DefenderEntity, GameScene."
   last_result: pass
   consecutive_fails: 0
 

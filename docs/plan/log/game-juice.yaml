@@ -38,3 +38,9 @@ entries:
     result: pass
     notes: "Dust Bunny: squash-stretch (scaleY 0.8/scaleX 1.2) + y -4 bounce 400ms. Cleaning Robot: angle 4° rock 600ms. 88 tests pass. ✓ US-19 complete"
     tokens: ~3k
+  - task: 7
+    story: US-20
+    description: "Investigation — queue hit reactions and death effects implementation"
+    result: pass
+    notes: "US-20 needs: enemy hit flash (white tint), death particles per type, defender destruction effect, placement bounce-in, projectile impact burst, camera shake on final wave. All rendering-only changes in entities + GameScene."
+    tokens: ~1k
