@@ -28,8 +28,8 @@ state:
   status: running
 
   # --- Task orchestration (owner: iterator) ---
-  task_number: 4
-  next_task: "[US-15] Implement Toy Box Siege developer art — distinct shapes for defenders/enemies, bedroom carpet grid, wood-toned HUD"
+  task_number: 5
+  next_task: null
   last_result: pass
   consecutive_fails: 0
 
