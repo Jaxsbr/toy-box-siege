@@ -32,3 +32,9 @@ entries:
     result: pass
     notes: "Sun economy, wave structure/timing, progression unlocks, seed slots, Crazy Dave roles and triggers. ✓ US-04 complete"
     tokens: ~12k
+  - task: 6
+    story: US-05
+    description: "Create docs/reference/art-and-audio.md — PvZ1 visual and audio style reference"
+    result: pass
+    notes: "Visual style (palette, characters, animation, UI) + audio (mood, 8 key tracks, 12 SFX categories). ✓ US-05 complete"
+    tokens: ~10k
