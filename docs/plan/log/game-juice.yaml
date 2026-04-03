@@ -32,3 +32,9 @@ entries:
     result: pass
     notes: "Water Pistol playRecoil: scaleX 0.85 / scaleY 1.1, 80ms. Jack-in-the-Box playProduce: scale 1.15, 150ms Back.easeOut. Called from GameScene on fire/income tick. 88 tests pass."
     tokens: ~3k
+  - task: 6
+    story: US-19
+    description: "Implement enemy movement animations — Dust Bunny bounce, Cleaning Robot rock"
+    result: pass
+    notes: "Dust Bunny: squash-stretch (scaleY 0.8/scaleX 1.2) + y -4 bounce 400ms. Cleaning Robot: angle 4° rock 600ms. 88 tests pass. ✓ US-19 complete"
+    tokens: ~3k

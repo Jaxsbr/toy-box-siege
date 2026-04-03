@@ -28,8 +28,8 @@ state:
   status: running
 
   # --- Task orchestration (owner: iterator) ---
-  task_number: 4
-  next_task: "[US-19] Implement enemy movement animations — Dust Bunny bouncing squash-stretch, Cleaning Robot rocking vibration. Add tweens in EnemyEntity constructor per key."
+  task_number: 5
+  next_task: null
   last_result: pass
   consecutive_fails: 0
 
