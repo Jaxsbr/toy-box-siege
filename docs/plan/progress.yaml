@@ -29,7 +29,7 @@ state:
 
   # --- Task orchestration (owner: iterator) ---
   task_number: 12
-  next_task: null
+  next_task: "[phase] Update AGENTS.md to reflect Toy Box Siege theme, TitleScene, WaveManager wave-state, entity rendering"
   last_result: pass
   consecutive_fails: 0
 
