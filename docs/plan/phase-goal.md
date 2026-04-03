@@ -33,7 +33,7 @@ Transform the game from a functional prototype with colored shapes into "Toy Box
 - [x] Transitions between TitleScene -> GameScene and GameScene -> GameOverScene use Phaser camera fade (or equivalent visual effect), not bare `scene.start()` [US-18]
 - [x] GameOverScene displays themed text ("Fort Defended!" on win, "The Mess Wins!" on loss) and a "Play Again" button with transition [US-18]
 - [x] Restarting via "Play Again" resets all game state — a second playthrough behaves identically to the first (no stale defenders, enemies, or timers) [US-18]
-- [ ] AGENTS.md reflects Toy Box Siege theme, new TitleScene, WaveManager wave-state system, and updated entity rendering descriptions [phase]
+- [x] AGENTS.md reflects Toy Box Siege theme, new TitleScene, WaveManager wave-state system, and updated entity rendering descriptions [phase]
 
 ### Golden principles (phase-relevant)
 - **Game logic separated from Phaser rendering** — wave state logic (setup delay, inter-wave delay, state machine) lives in WaveManager (pure TS, testable), visual announcements and progress bar live in GameScene

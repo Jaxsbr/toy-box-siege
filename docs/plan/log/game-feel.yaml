@@ -80,3 +80,31 @@ entries:
     result: pass
     notes: "TitleScene: 'Toy Box Siege' + Play button. Camera fades on all transitions. GameOverScene: 'Fort Defended!'/'The Mess Wins!' + Play Again. Clean restart. 88 tests + build pass. ✓ US-18 complete"
     tokens: ~5k
+  - task: 14
+    story: phase
+    description: "Update AGENTS.md + phase completion gate"
+    result: pass
+    notes: "AGENTS.md updated: Toy Box Siege theme, TitleScene, WaveManager state machine, entity per-key shapes. All 25 done-when criteria verified. 88 tests pass, build clean. Phase complete."
+    tokens: ~3k
+  - task: phase-complete
+    story: all
+    description: "Phase completion — all done-when criteria met"
+    result: pass
+    notes: |
+      Evidence:
+      - defenders.ts: "Water Pistol", "Jack-in-the-Box", "Block Tower" names
+      - enemies.ts: "Dust Bunny", "Cleaning Robot" names
+      - DefenderEntity: drawWaterPistol, drawJackInTheBox, drawBlockTower (distinct shapes)
+      - EnemyEntity: drawDustBunny, drawCleaningRobot (distinct shapes)
+      - Grid: 0xc4a882/0xb0956e brown/tan carpet
+      - HUD: "Sparks" label
+      - WaveManager: 5-state machine, setupDelay=25, interWaveDelay=18
+      - LEVEL_1: 3 waves (2 basic, 4 mixed, 6 with 3 tough)
+      - Progress dots + themed announcements (final: "A HUGE mess is coming!")
+      - TitleScene: "Toy Box Siege" + Play, registered first in game config
+      - Camera fades on all transitions
+      - GameOverScene: "Fort Defended!"/"The Mess Wins!" + Play Again
+      - Clean restart via Play Again
+      - AGENTS.md: updated for all game-feel changes
+      - 10 test files, 88 tests pass, npm run build clean
+    tokens: ~3k
