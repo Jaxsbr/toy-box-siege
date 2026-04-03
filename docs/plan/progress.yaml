@@ -29,7 +29,7 @@ state:
 
   # --- Task orchestration (owner: iterator) ---
   task_number: 1
-  next_task: null
+  next_task: "[US-19] Investigate: review entity animation integration points — where tweens attach, how combat reactions trigger, current Container/Graphics structure"
   last_result: pass
   consecutive_fails: 0
 

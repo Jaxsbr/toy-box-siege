@@ -2,3 +2,9 @@
 # Each entry: { task, story, description, result, notes, tokens }
 
 entries:
+  - task: 1
+    story: US-19
+    description: "Investigation — codebase structure, entity animation integration points, phase planning"
+    result: pass
+    notes: "DefenderEntity/EnemyEntity are Containers with static Graphics. Tweens attach to Container y/scale/angle. Combat reactions triggered from GameScene.update. No external sprites. 88 tests pass. Queued investigation task for detailed plan."
+    tokens: ~8k
