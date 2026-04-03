@@ -23,7 +23,7 @@ import { DefenderEntity } from '../entities/DefenderEntity';
 import { EnemyEntity } from '../entities/EnemyEntity';
 import { ProjectileEntity } from '../entities/ProjectileEntity';
 
-const STARTING_BALANCE = 150;
+const STARTING_BALANCE = 500;
 const PASSIVE_INCOME_INTERVAL = 8000; // ms
 const PASSIVE_INCOME_AMOUNT = 25;
 const GENERATOR_INCOME_INTERVAL = 5000; // ms
