@@ -26,3 +26,9 @@ entries:
     result: pass
     notes: "Water Pistol recoil: scale kick on fire (GameScene ~L491). Jack-in-the-Box produce: body pulse on income (tickGeneratorIncome ~L103). Both need public methods on DefenderEntity."
     tokens: ~1k
+  - task: 5
+    story: US-19
+    description: "Implement defender combat reactions — recoil + produce pulse"
+    result: pass
+    notes: "Water Pistol playRecoil: scaleX 0.85 / scaleY 1.1, 80ms. Jack-in-the-Box playProduce: scale 1.15, 150ms Back.easeOut. Called from GameScene on fire/income tick. 88 tests pass."
+    tokens: ~3k
