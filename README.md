@@ -4,4 +4,4 @@ A Plants vs Zombies clone with alternative mechanics.
 
 <!-- build-loop -->
 ---
-*Built with [build-loop](docs/plan/) — init v12*
+*Built with [build-loop](docs/plan/) — init v12 | builds v12*

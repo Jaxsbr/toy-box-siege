@@ -1,0 +1,24 @@
+# Zombo — Product Requirements
+
+## Vision
+
+A Plants vs Zombies-inspired tower defense game with alternative mechanics, built as a gift for Jaco's kids. The game starts from familiar PvZ foundations but diverges into its own identity with unique levels, units, and gameplay twists.
+
+## Target audience
+
+Kids (primary), family co-play. Must be clean, fun, and accessible — no microtransactions, no dark patterns.
+
+## Feature overview
+
+- Lane-based tower defense on a grid
+- Defender units (plants/equivalents) with varied costs, abilities, and strategies
+- Enemy units (zombies/equivalents) with varied health, speed, and special abilities
+- Multiple world types with unique mechanics
+- Progression system with unlocks
+- Entertaining guide character (Crazy Dave equivalent)
+
+## Implementation Phases
+
+| Phase | Status | Stories | Spec |
+|---|---|---|---|
+| game-research | Draft | US-01, US-02, US-03, US-04, US-05, US-06 | [phases/game-research.md](phases/game-research.md) |
