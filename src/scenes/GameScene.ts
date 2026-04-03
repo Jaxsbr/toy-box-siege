@@ -131,7 +131,7 @@ export class GameScene extends Phaser.Scene {
   }
 
   private updateHUDText(): void {
-    this.balanceText.setText(`Energy: ${this.economy.getBalance()}`);
+    this.balanceText.setText(`Sparks: ${this.economy.getBalance()}`);
     this.waveText.setText(
       `Wave ${this.waveManager.currentWaveNumber}/${this.waveManager.totalWaves}`,
     );

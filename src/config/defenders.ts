@@ -10,7 +10,7 @@ export interface DefenderType {
 
 export const DEFENDER_TYPES: Record<string, DefenderType> = {
   generator: {
-    name: 'Generator',
+    name: 'Jack-in-the-Box',
     cost: 50,
     health: 100,
     damage: 0,
@@ -19,7 +19,7 @@ export const DEFENDER_TYPES: Record<string, DefenderType> = {
     generatesIncome: 25,
   },
   shooter: {
-    name: 'Shooter',
+    name: 'Water Pistol',
     cost: 100,
     health: 80,
     damage: 25,
@@ -28,7 +28,7 @@ export const DEFENDER_TYPES: Record<string, DefenderType> = {
     generatesIncome: 0,
   },
   wall: {
-    name: 'Wall',
+    name: 'Block Tower',
     cost: 50,
     health: 400,
     damage: 0,
