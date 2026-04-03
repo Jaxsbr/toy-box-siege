@@ -13,8 +13,8 @@ Research and document PvZ1's game design — plants, zombies, levels, core syste
 ### Done-when (observable)
 - [x] `docs/reference/plants.md` exists and contains a table with columns: Name, Cost (sun), Recharge, Damage/Effect, Range, Unlock-level — minimum 30 plant entries covering all PvZ1 plants [US-01]
 - [x] Each plant entry includes a 1-2 sentence behaviour description (e.g., "Fires peas in a straight line at regular intervals") [US-01]
-- [ ] `docs/reference/zombies.md` exists and contains a table with columns: Name, Health, Speed, Special-ability, First-appears — minimum 20 zombie entries covering all PvZ1 zombie types [US-02]
-- [ ] Each zombie entry includes a 1-2 sentence behaviour description and known counters [US-02]
+- [x] `docs/reference/zombies.md` exists and contains a table with columns: Name, Health, Speed, Special-ability, First-appears — minimum 20 zombie entries covering all PvZ1 zombie types [US-02]
+- [x] Each zombie entry includes a 1-2 sentence behaviour description and known counters [US-02]
 - [ ] `docs/reference/levels.md` exists and documents all PvZ1 level types with columns: World, Level-range, Grid-layout (rows x cols), Day/Night, Special-mechanic — covering at minimum: Day, Night, Pool, Fog, Roof [US-03]
 - [ ] Each level type entry includes a description of unique mechanics (e.g., "Night levels: no passive sun production, mushrooms are free to plant") [US-03]
 - [ ] `docs/reference/systems.md` exists and documents: sun economy (generation rates, starting sun, sun drop values), wave/round structure (wave count per level, zombie spawn timing, flag waves), and progression unlocks (what unlocks after which level) [US-04]
