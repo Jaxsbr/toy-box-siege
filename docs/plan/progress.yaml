@@ -29,7 +29,7 @@ state:
 
   # --- Task orchestration (owner: iterator) ---
   task_number: 5
-  next_task: null
+  next_task: "[US-05] Create docs/reference/art-and-audio.md — PvZ1 visual style and audio direction reference for AI image-generation briefing"
   last_result: pass
   consecutive_fails: 0
 
