@@ -29,7 +29,7 @@ state:
 
   # --- Task orchestration (owner: iterator) ---
   task_number: 8
-  next_task: null
+  next_task: "[US-17] Investigate: review GameScene HUD code and WaveManager waveState integration points for wave progress + announcements"
   last_result: pass
   consecutive_fails: 0
 
