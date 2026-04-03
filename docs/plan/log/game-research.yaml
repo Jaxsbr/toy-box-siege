@@ -1,4 +1,10 @@
 # Phase log — game-research
 # Each entry: { task, story, description, result, notes, tokens }
 
-entries: []
+entries:
+  - task: 1
+    story: US-01
+    description: "Investigation — queued plant catalogue task"
+    result: pass
+    notes: "First task of phase. Queued creation of docs/reference/plants.md."
+    tokens: ~1k
