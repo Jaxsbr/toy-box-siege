@@ -185,37 +185,37 @@ export class GameScene extends Phaser.Scene {
     bg.fillRoundedRect(0, 0, width, height, 6);
     container.add(bg);
 
-    // Sprite preview — centered, larger
-    const previewContainer = this.add.container(width / 2, 24);
+    // Name — centered at top
+    const nameText = this.add.text(width / 2, 3, type.name, {
+      fontSize: '10px',
+      color: '#e2e8f0',
+      fontFamily: 'monospace',
+    });
+    nameText.setOrigin(0.5, 0);
+    if (nameText.width > width - 8) {
+      nameText.setScale((width - 8) / nameText.width);
+    }
+    container.add(nameText);
+
+    // Bottom row: sprite (left) + cost (right), side by side
+    const bottomY = 36;
+
+    const previewContainer = this.add.container(width / 3, bottomY);
     const previewGfx = this.add.graphics();
     const drawFn = DRAW_DEFENDER[key];
     if (drawFn) {
       drawFn(previewGfx);
     }
     previewContainer.add(previewGfx);
-    previewContainer.setScale(0.55);
+    previewContainer.setScale(0.5);
     container.add(previewContainer);
 
-    // Name — centered, clipped to card width
-    const nameText = this.add.text(width / 2, 2, type.name, {
-      fontSize: '10px',
-      color: '#e2e8f0',
-      fontFamily: 'monospace',
-    });
-    nameText.setOrigin(0.5, 0);
-    // Clip names that would overflow the card
-    if (nameText.width > width - 8) {
-      nameText.setScale((width - 8) / nameText.width);
-    }
-    container.add(nameText);
-
-    // Cost — centered at bottom
-    const costText = this.add.text(width / 2, height - 14, `${type.cost}`, {
-      fontSize: '12px',
+    const costText = this.add.text(width * 2 / 3, bottomY, `${type.cost}`, {
+      fontSize: '14px',
       color: '#ffc107',
       fontFamily: 'monospace',
     });
-    costText.setOrigin(0.5, 0);
+    costText.setOrigin(0.5, 0.5);
     container.add(costText);
 
     const zone = this.add.zone(0, 0, width, height).setOrigin(0).setInteractive({ useHandCursor: true });
@@ -398,12 +398,16 @@ export class GameScene extends Phaser.Scene {
       const barWidth = 115;
       const barHeight = 6;
 
-      // Background
-      this.countdownBar.fillStyle(0x3e2723, 1);
+      // Track background (visible full width)
+      this.countdownBar.fillStyle(0x1a1a1a, 0.6);
       this.countdownBar.fillRoundedRect(barX, barY, barWidth, barHeight, 2);
-      // Fill
-      this.countdownBar.fillStyle(0xffc107, 0.8);
-      this.countdownBar.fillRoundedRect(barX, barY, barWidth * progress, barHeight, 2);
+      this.countdownBar.lineStyle(1, 0x8d6e63, 0.5);
+      this.countdownBar.strokeRoundedRect(barX, barY, barWidth, barHeight, 2);
+      // Fill (progress)
+      if (progress > 0.01) {
+        this.countdownBar.fillStyle(0xffc107, 0.8);
+        this.countdownBar.fillRoundedRect(barX, barY, barWidth * progress, barHeight, 2);
+      }
 
       const label = state === 'setup' ? 'Get ready...' : 'Next wave...';
       this.countdownLabel.setText(label);
