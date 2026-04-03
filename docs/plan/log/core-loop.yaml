@@ -44,3 +44,9 @@ entries:
     result: pass
     notes: "US-09 complete. Next: combat system with shooter attacks, projectile damage, wall blocking."
     tokens: ~1k
+  - task: 8
+    story: US-10
+    description: "Implement combat system — shooter attacks, projectile damage, wall blocking"
+    result: pass
+    notes: "Shooter/projectile/wall combat. applyDamage, isDead, wallBlocks. 15 new tests, 56 total. ✓ US-10 complete"
+    tokens: ~6k
