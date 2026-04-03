@@ -8,3 +8,9 @@ entries:
     result: pass
     notes: "Config keys (generator/shooter/wall/basic/tough) used in gameplay logic — keep keys, change name fields only. Test at Defenders.test.ts:39 checks name 'Wall' — needs update. 72 tests pass."
     tokens: ~5k
+  - task: 2
+    story: US-15
+    description: "Rename config display names to Toy Box Siege theme, HUD Energy→Sparks, fix test name assertions"
+    result: pass
+    notes: "Defender names: Generator→Jack-in-the-Box, Shooter→Water Pistol, Wall→Block Tower. Enemy names: Basic→Dust Bunny, Tough→Cleaning Robot. HUD: Energy→Sparks. Config keys unchanged. 72 tests pass."
+    tokens: ~3k
