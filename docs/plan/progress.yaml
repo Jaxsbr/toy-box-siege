@@ -29,7 +29,7 @@ state:
 
   # --- Task orchestration (owner: iterator) ---
   task_number: 1
-  next_task: null
+  next_task: "[US-15] Investigate: catalog all references to defender/enemy config keys and names before theme renaming"
   last_result: pass
   consecutive_fails: 0
 
