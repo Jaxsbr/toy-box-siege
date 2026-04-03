@@ -12,7 +12,7 @@ export interface ShooterEntity extends CombatEntity {
 }
 
 export interface EnemyCombatEntity extends CombatEntity {
-  damage: number; // damage per second to walls
+  damage: number; // damage per second to defenders
 }
 
 export interface ProjectileState {

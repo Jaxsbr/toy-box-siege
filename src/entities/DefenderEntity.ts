@@ -103,7 +103,7 @@ function drawBlockTower(g: Phaser.GameObjects.Graphics): void {
   g.strokeRect(-8, -16, 16, 12);
 }
 
-const DRAW_DEFENDER: Record<string, (g: Phaser.GameObjects.Graphics) => void> = {
+export const DRAW_DEFENDER: Record<string, (g: Phaser.GameObjects.Graphics) => void> = {
   shooter: drawWaterPistol,
   generator: drawJackInTheBox,
   wall: drawBlockTower,

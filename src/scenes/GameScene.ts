@@ -19,7 +19,7 @@ import {
   isDead,
   wallBlocks,
 } from '../systems/Combat';
-import { DefenderEntity } from '../entities/DefenderEntity';
+import { DefenderEntity, DRAW_DEFENDER } from '../entities/DefenderEntity';
 import { EnemyEntity } from '../entities/EnemyEntity';
 import { ProjectileEntity } from '../entities/ProjectileEntity';
 
@@ -182,29 +182,30 @@ export class GameScene extends Phaser.Scene {
     bg.fillRoundedRect(0, 0, width, height, 6);
     container.add(bg);
 
-    const nameText = this.add.text(8, 6, type.name, {
+    // Sprite preview — same shape as the placed entity, scaled down
+    const previewContainer = this.add.container(28, height / 2);
+    const previewGfx = this.add.graphics();
+    const drawFn = DRAW_DEFENDER[key];
+    if (drawFn) {
+      drawFn(previewGfx);
+    }
+    previewContainer.add(previewGfx);
+    previewContainer.setScale(0.45);
+    container.add(previewContainer);
+
+    const nameText = this.add.text(56, 8, type.name, {
       fontSize: '11px',
       color: '#e2e8f0',
       fontFamily: 'monospace',
     });
     container.add(nameText);
 
-    const costText = this.add.text(8, 24, `Cost: ${type.cost}`, {
-      fontSize: '11px',
-      color: '#94a3b8',
+    const costText = this.add.text(56, 26, `${type.cost}`, {
+      fontSize: '13px',
+      color: '#ffc107',
       fontFamily: 'monospace',
     });
     container.add(costText);
-
-    const previewColors: Record<string, number> = {
-      generator: 0xffc107,
-      shooter: 0x2196f3,
-      wall: 0xf44336,
-    };
-    const preview = this.add.graphics();
-    preview.fillStyle(previewColors[key] ?? 0xffffff, 1);
-    preview.fillRect(width - 28, 8, 20, 20);
-    container.add(preview);
 
     const zone = this.add.zone(0, 0, width, height).setOrigin(0).setInteractive({ useHandCursor: true });
     container.add(zone);
@@ -395,10 +396,10 @@ export class GameScene extends Phaser.Scene {
     for (const enemy of this.enemies) {
       if (isDead(enemy)) continue;
 
-      // Check wall blocking
+      // Check defender blocking — enemies attack any defender they reach
       let blocked = false;
       for (const def of this.defenders) {
-        if (def.defenderKey === 'wall' && !isDead(def)) {
+        if (!isDead(def)) {
           if (wallBlocks(def, enemy, dt)) {
             blocked = true;
             def.drawHealthBar();
