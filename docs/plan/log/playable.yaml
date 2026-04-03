@@ -44,3 +44,9 @@ entries:
     result: pass
     notes: "levels.ts done. Need to wire: WaveManager with LEVEL_1, enemy spawning, combat loop, GameFlow transitions, passive + generator income, restart."
     tokens: ~1k
+  - task: 8
+    story: US-14
+    description: "Wire full game loop in GameScene — spawning, combat, income, win/lose"
+    result: pass
+    notes: "GameScene.update: WaveManager spawns, enemy movement, wall blocking, shooter firing, projectile hits, dead removal, GameFlow transitions. Passive + generator income via timers. Build + 72 tests pass. ✓ US-14 complete"
+    tokens: ~8k

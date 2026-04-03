@@ -28,8 +28,8 @@ state:
   status: running
 
   # --- Task orchestration (owner: iterator) ---
-  task_number: 6
-  next_task: "[US-14] Wire full game loop in GameScene — spawning, combat, game flow, income, restart"
+  task_number: 8
+  next_task: null
   last_result: pass
   consecutive_fails: 0
 
