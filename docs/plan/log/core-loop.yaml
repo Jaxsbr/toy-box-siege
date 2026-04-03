@@ -90,3 +90,9 @@ entries:
       - 9 test files covering all modules; npm test: 67 pass
       - AGENTS.md: updated with src/ layout, commands, testing, architecture
     tokens: ~2k
+  - task: 12
+    story: review
+    description: "Create PR #2 and schedule review"
+    result: pass
+    notes: "PR created: https://github.com/Jaxsbr/zombo/pull/2"
+    tokens: ~3k
