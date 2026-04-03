@@ -14,6 +14,6 @@ export const gameConfig: Phaser.Types.Core.GameConfig = {
   type: Phaser.AUTO,
   width: GAME_WIDTH,
   height: GAME_HEIGHT,
-  backgroundColor: '#2d572c',
+  backgroundColor: '#5d4037',
   scene: [GameScene, GameOverScene],
 };

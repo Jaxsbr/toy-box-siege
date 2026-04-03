@@ -2,14 +2,68 @@ import Phaser from 'phaser';
 import { EnemyType } from '../config/enemies';
 import { CELL_SIZE, HUD_HEIGHT } from '../config/game';
 
-const ENEMY_COLORS: Record<string, number> = {
-  basic: 0xef4444,
-  tough: 0xa855f7,
-};
-
 const HEALTH_BAR_HEIGHT = 4;
 const HEALTH_BAR_OFFSET = 4;
-const CIRCLE_RADIUS = 22;
+const OUTLINE = 2;
+
+function drawDustBunny(g: Phaser.GameObjects.Graphics): void {
+  // Fluffy body — overlapping circles in warm pink/gray
+  g.fillStyle(0xf48fb1, 1);
+  g.fillCircle(-6, 4, 12);
+  g.fillCircle(6, 4, 12);
+  g.fillCircle(0, -4, 14);
+  g.fillCircle(-10, -6, 8);
+  g.fillCircle(10, -6, 8);
+  // Outline around main mass
+  g.lineStyle(OUTLINE, 0x000000, 1);
+  g.strokeCircle(-6, 4, 12);
+  g.strokeCircle(6, 4, 12);
+  g.strokeCircle(0, -4, 14);
+  // Eyes — big white circles with black pupils
+  g.fillStyle(0xffffff, 1);
+  g.fillCircle(-6, -6, 5);
+  g.fillCircle(6, -6, 5);
+  g.fillStyle(0x000000, 1);
+  g.fillCircle(-5, -5, 2.5);
+  g.fillCircle(7, -5, 2.5);
+}
+
+function drawCleaningRobot(g: Phaser.GameObjects.Graphics): void {
+  // Body — metallic purple rectangle
+  g.fillStyle(0x7e57c2, 1);
+  g.fillRect(-14, -6, 28, 22);
+  g.lineStyle(OUTLINE, 0x000000, 1);
+  g.strokeRect(-14, -6, 28, 22);
+  // Head/dome — lighter purple
+  g.fillStyle(0xb39ddb, 1);
+  g.fillRect(-10, -18, 20, 12);
+  g.lineStyle(OUTLINE, 0x000000, 1);
+  g.strokeRect(-10, -18, 20, 12);
+  // Antenna
+  g.lineStyle(2, 0x9e9e9e, 1);
+  g.lineBetween(0, -18, 0, -24);
+  g.fillStyle(0xff5722, 1);
+  g.fillCircle(0, -26, 3);
+  // Eyes — glowing green
+  g.fillStyle(0x76ff03, 1);
+  g.fillCircle(-4, -13, 3);
+  g.fillCircle(4, -13, 3);
+  g.fillStyle(0x000000, 1);
+  g.fillCircle(-4, -13, 1.5);
+  g.fillCircle(4, -13, 1.5);
+  // Wheels — small circles at bottom
+  g.fillStyle(0x424242, 1);
+  g.fillCircle(-10, 18, 4);
+  g.fillCircle(10, 18, 4);
+  g.lineStyle(OUTLINE, 0x000000, 1);
+  g.strokeCircle(-10, 18, 4);
+  g.strokeCircle(10, 18, 4);
+}
+
+const DRAW_ENEMY: Record<string, (g: Phaser.GameObjects.Graphics) => void> = {
+  basic: drawDustBunny,
+  tough: drawCleaningRobot,
+};
 
 export class EnemyEntity extends Phaser.GameObjects.Container {
   readonly enemyType: EnemyType;
@@ -40,11 +94,16 @@ export class EnemyEntity extends Phaser.GameObjects.Container {
     this.maxHealth = type.health;
     this.damage = type.damage;
 
-    const color = ENEMY_COLORS[key] ?? 0xffffff;
-    const circle = scene.add.graphics();
-    circle.fillStyle(color, 1);
-    circle.fillCircle(0, 0, CIRCLE_RADIUS);
-    this.add(circle);
+    const shape = scene.add.graphics();
+    const drawFn = DRAW_ENEMY[key];
+    if (drawFn) {
+      drawFn(shape);
+    } else {
+      // Fallback: plain circle
+      shape.fillStyle(0xffffff, 1);
+      shape.fillCircle(0, 0, 22);
+    }
+    this.add(shape);
 
     this.healthBar = scene.add.graphics();
     this.add(this.healthBar);

@@ -100,17 +100,17 @@ export class GameScene extends Phaser.Scene {
         const x = col * CELL_SIZE;
         const y = HUD_HEIGHT + row * CELL_SIZE;
 
-        const shade = (row + col) % 2 === 0 ? 0x3a7d32 : 0x2d6b27;
+        const shade = (row + col) % 2 === 0 ? 0xc4a882 : 0xb0956e;
         graphics.fillStyle(shade, 1);
         graphics.fillRect(x, y, CELL_SIZE, CELL_SIZE);
 
-        graphics.lineStyle(1, 0x1a5c14, 0.3);
+        graphics.lineStyle(1, 0x8b7355, 0.3);
         graphics.strokeRect(x, y, CELL_SIZE, CELL_SIZE);
       }
     }
 
     // HUD background
-    graphics.fillStyle(0x1a1a2e, 1);
+    graphics.fillStyle(0x3e2723, 1);
     graphics.fillRect(0, 0, GRID_COLS * CELL_SIZE, HUD_HEIGHT);
   }
 
@@ -185,9 +185,9 @@ export class GameScene extends Phaser.Scene {
     container.add(costText);
 
     const previewColors: Record<string, number> = {
-      generator: 0x22c55e,
-      shooter: 0x3b82f6,
-      wall: 0x9ca3af,
+      generator: 0xffc107,
+      shooter: 0x2196f3,
+      wall: 0xf44336,
     };
     const preview = this.add.graphics();
     preview.fillStyle(previewColors[key] ?? 0xffffff, 1);
