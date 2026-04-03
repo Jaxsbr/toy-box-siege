@@ -162,6 +162,16 @@ export class DefenderEntity extends Phaser.GameObjects.Container {
 
     scene.add.existing(this);
 
+    // Placement bounce-in animation
+    this.setScale(0.3);
+    scene.tweens.add({
+      targets: this,
+      scaleX: 1,
+      scaleY: 1,
+      duration: 300,
+      ease: 'Back.easeOut',
+    });
+
     // Per-key idle animation
     this.startIdleAnimation(scene);
   }

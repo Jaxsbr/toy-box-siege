@@ -424,11 +424,62 @@ export class GameScene extends Phaser.Scene {
     if (state === 'announcing' && this.lastWaveState !== 'announcing') {
       this.announcementText.setText(this.getWaveAnnouncement());
       this.announcementText.setVisible(true);
+      // Camera shake on final wave
+      if (this.waveManager.currentWaveNumber === this.waveManager.totalWaves) {
+        this.cameras.main.shake(400, 0.003);
+      }
     } else if (state !== 'announcing' && this.lastWaveState === 'announcing') {
       this.announcementText.setVisible(false);
     }
 
     this.lastWaveState = state;
+  }
+
+  private spawnDeathParticles(x: number, y: number, color: number): void {
+    const count = 8;
+    for (let i = 0; i < count; i++) {
+      const angle = (i / count) * Math.PI * 2;
+      const particle = this.add.circle(x, y, 3, color, 1);
+      particle.setDepth(50);
+      this.tweens.add({
+        targets: particle,
+        x: x + Math.cos(angle) * 40,
+        y: y + Math.sin(angle) * 40,
+        alpha: 0,
+        scale: 0.3,
+        duration: 400,
+        ease: 'Quad.easeOut',
+        onComplete: () => particle.destroy(),
+      });
+    }
+  }
+
+  private spawnDestructionEffect(x: number, y: number): void {
+    const ghost = this.add.circle(x, y, 16, 0x888888, 0.6);
+    ghost.setDepth(50);
+    this.tweens.add({
+      targets: ghost,
+      alpha: 0,
+      scaleX: 0.2,
+      scaleY: 0.2,
+      duration: 350,
+      ease: 'Quad.easeIn',
+      onComplete: () => ghost.destroy(),
+    });
+  }
+
+  private spawnImpactBurst(x: number, y: number): void {
+    const burst = this.add.circle(x, y, 4, 0xffffff, 0.8);
+    burst.setDepth(50);
+    this.tweens.add({
+      targets: burst,
+      scaleX: 3,
+      scaleY: 3,
+      alpha: 0,
+      duration: 200,
+      ease: 'Quad.easeOut',
+      onComplete: () => burst.destroy(),
+    });
   }
 
   update(_time: number, delta: number): void {
@@ -514,25 +565,32 @@ export class GameScene extends Phaser.Scene {
         if (checkProjectileHit(projState, enemy)) {
           applyDamage(enemy, proj.damage);
           enemy.drawHealthBar();
+          enemy.playHitFlash();
+          this.spawnImpactBurst(proj.x, proj.y);
           proj.destroy();
           break;
         }
       }
     }
 
-    // Remove dead enemies
+    // Remove dead enemies (with death particles)
     for (let i = this.enemies.length - 1; i >= 0; i--) {
       if (isDead(this.enemies[i])) {
-        this.enemies[i].destroy();
+        const e = this.enemies[i];
+        const deathColor = e.enemyKey === 'basic' ? 0xf48fb1 : 0xb388ff;
+        this.spawnDeathParticles(e.x, e.y, deathColor);
+        e.destroy();
         this.enemies.splice(i, 1);
       }
     }
 
-    // Remove dead defenders
+    // Remove dead defenders (with destruction effect)
     for (let i = this.defenders.length - 1; i >= 0; i--) {
       if (isDead(this.defenders[i])) {
-        this.placement.remove({ row: this.defenders[i].gridRow, col: this.defenders[i].gridCol });
-        this.defenders[i].destroy();
+        const d = this.defenders[i];
+        this.spawnDestructionEffect(d.x, d.y);
+        this.placement.remove({ row: d.gridRow, col: d.gridCol });
+        d.destroy();
         this.defenders.splice(i, 1);
       }
     }
