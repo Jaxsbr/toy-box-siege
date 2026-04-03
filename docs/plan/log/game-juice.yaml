@@ -74,3 +74,22 @@ entries:
     result: pass
     notes: "Spark tokens: blue diamond glow, spawn at random x above grid, drift down at 30px/s. Click to collect (adds 25 sparks, playSfxCollect, particle burst). Uncollected removed at grid bottom. Replaced PASSIVE_INCOME timer. Constants: SPARK_SPAWN_INTERVAL=8000, SPARK_VALUE=25, SPARK_FALL_SPEED=30. Generator income unchanged. 88 tests pass. ✓ US-21, US-23 complete"
     tokens: ~5k
+  - task: 13
+    story: phase
+    description: "AGENTS.md update + phase completion gate"
+    result: pass
+    notes: "AGENTS.md updated: SFX module, entity animations, spark collection, atmosphere. Scene cleanup verified (Phaser lifecycle handles it). All 41 done-when criteria met. 88 tests pass. Phase complete."
+    tokens: ~3k
+  - task: phase-complete
+    story: all
+    description: "Phase completion — all done-when criteria met"
+    result: pass
+    notes: |
+      Evidence:
+      - US-19: DefenderEntity idle tweens (bob/wiggle/sway), combat reactions (recoil/pulse), EnemyEntity movement animations (bounce/rock). All Phaser tweens, no sprites.
+      - US-20: enemy hit flash (white overlay 150ms), death particles (8 circles, pink/purple per type), defender destruction (fade+scale), placement bounce-in (0.3→1 Back.easeOut), projectile impact burst (expanding white circle), camera shake on final wave (400ms 0.003)
+      - US-21: src/systems/SFX.ts exists, Web Audio API, lazy AudioContext. place/fire/hit/death/collect/announce wired. Mute toggle in HUD. 88 tests pass.
+      - US-22: furniture silhouettes (bookshelf+dresser), 4 toy details, 15 dust motes, themed TitleScene/GameOverScene backgrounds. All depth -10, no pointer input.
+      - US-23: spark tokens (blue diamond, 8s spawn, 25 value, 30px/s fall). Click to collect with SFX and particle burst. Passive income timer replaced. Generator income unchanged.
+      - Phase criteria: scene cleanup via Phaser lifecycle, AGENTS.md updated, 88 tests pass.
+    tokens: ~3k

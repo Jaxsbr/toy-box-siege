@@ -48,9 +48,9 @@ Add game juice — entity animations, hit reactions, procedural sound effects, b
 - [x] Spark spawn rate and value are defined as named constants or a config object (not magic numbers inline) [US-23]
 - [x] Generator income (Jack-in-the-Box `generatesIncome` ticks) remains automatic and functions identically to pre-phase behavior [US-23]
 - [x] Spark tokens are visually distinct from projectiles (different color palette, shape, or glow effect — not yellow circles) [US-23]
-- [ ] All active tweens, particle emitters, and spark tokens are cleaned up on scene transition — no orphaned animations or objects persist after GameScene ends [phase]
-- [ ] AGENTS.md reflects new SFX module, entity animation system, spark collection mechanic, and bedroom atmosphere rendering [phase]
-- [ ] All existing tests pass after all changes (`npm test` exits 0) [phase]
+- [x] All active tweens, particle emitters, and spark tokens are cleaned up on scene transition — no orphaned animations or objects persist after GameScene ends [phase]
+- [x] AGENTS.md reflects new SFX module, entity animation system, spark collection mechanic, and bedroom atmosphere rendering [phase]
+- [x] All existing tests pass after all changes (`npm test` exits 0) [phase]
 
 ### Golden principles (phase-relevant)
 - **Game logic separated from Phaser rendering** — SFX module is pure TS (Web Audio API, no Phaser), animation triggers live in entity/scene code but don't pollute system logic modules

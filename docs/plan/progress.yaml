@@ -24,12 +24,12 @@ config:
 state:
   # --- Lifecycle (owner: iterator) ---
   phase: game-juice
-  phase_complete: false
+  phase_complete: true
   status: running
 
   # --- Task orchestration (owner: iterator) ---
-  task_number: 10
-  next_task: "[phase] Verify scene transition cleanup — ensure all active tweens, particle emitters, and spark tokens are cleaned up on GameScene end. Update AGENTS.md."
+  task_number: 11
+  next_task: null
   last_result: pass
   consecutive_fails: 0
 
