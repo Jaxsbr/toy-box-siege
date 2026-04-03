@@ -108,3 +108,9 @@ entries:
       - AGENTS.md: updated for all game-feel changes
       - 10 test files, 88 tests pass, npm run build clean
     tokens: ~3k
+  - task: 15
+    story: review
+    description: "Create PR #4 and schedule review"
+    result: pass
+    notes: "PR created: https://github.com/Jaxsbr/zombo/pull/4"
+    tokens: ~2k
