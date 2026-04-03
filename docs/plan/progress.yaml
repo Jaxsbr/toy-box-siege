@@ -28,8 +28,8 @@ state:
   status: running
 
   # --- Task orchestration (owner: iterator) ---
-  task_number: 4
-  next_task: null
+  task_number: 5
+  next_task: "[US-09] Implement enemy types, wave config, and movement system with tests"
   last_result: pass
   consecutive_fails: 0
 

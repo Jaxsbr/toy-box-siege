@@ -26,3 +26,9 @@ entries:
     result: pass
     notes: "Economy with spend/income/reset. 3 defenders (generator, shooter, wall). Placement with occupancy tracking. 20 new tests, 26 total. ✓ US-08 complete"
     tokens: ~6k
+  - task: 5
+    story: US-09
+    description: "Investigation — queued enemy types, wave config, and movement"
+    result: pass
+    notes: "US-08 complete. Next: enemy type config, wave manager, movement logic."
+    tokens: ~1k
