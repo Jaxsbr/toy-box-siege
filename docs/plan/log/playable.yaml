@@ -26,3 +26,9 @@ entries:
     result: pass
     notes: "GameScene rewritten: Economy/Grid/Placement/WaveManager/GameFlow init. HUD shows balance + wave. 3 defender cards with select-then-place. 67 tests pass. ✓ US-13 complete"
     tokens: ~6k
+  - task: 5
+    story: US-14
+    description: "Investigation — queued levels.ts with 5-wave config + unit test"
+    result: pass
+    notes: "US-13 complete. Next: levels.ts with 5 waves of escalating difficulty, plus test verifying waves.length >= 5."
+    tokens: ~1k
