@@ -9,13 +9,13 @@ Transform the game from a functional prototype with colored shapes into "Toy Box
 - US-18 — Scene flow and transitions
 
 ### Done-when (observable)
-- [ ] `src/config/defenders.ts` exports defender types with Toy Box Siege names: "Water Pistol", "Jack-in-the-Box", "Block Tower" [US-15]
-- [ ] `src/config/enemies.ts` exports enemy types with Toy Box Siege names: "Dust Bunny", "Cleaning Robot" [US-15]
-- [ ] DefenderEntity contains distinct rendering code paths per defender key — each key draws a different shape composition (not just a color variation of the same fillRect) [US-15]
-- [ ] EnemyEntity contains distinct rendering code paths per enemy key — each key draws a different shape composition (not just a color variation of the same fillCircle) [US-15]
-- [ ] Grid `drawGrid()` uses bedroom carpet palette — fillStyle hex values are in the brown/tan range, not green [US-15]
-- [ ] HUD displays "Sparks" label instead of "Energy" [US-15]
-- [ ] All existing tests pass after theme renaming (`npm test` exits 0) [US-15]
+- [x] `src/config/defenders.ts` exports defender types with Toy Box Siege names: "Water Pistol", "Jack-in-the-Box", "Block Tower" [US-15]
+- [x] `src/config/enemies.ts` exports enemy types with Toy Box Siege names: "Dust Bunny", "Cleaning Robot" [US-15]
+- [x] DefenderEntity contains distinct rendering code paths per defender key — each key draws a different shape composition (not just a color variation of the same fillRect) [US-15]
+- [x] EnemyEntity contains distinct rendering code paths per enemy key — each key draws a different shape composition (not just a color variation of the same fillCircle) [US-15]
+- [x] Grid `drawGrid()` uses bedroom carpet palette — fillStyle hex values are in the brown/tan range, not green [US-15]
+- [x] HUD displays "Sparks" label instead of "Energy" [US-15]
+- [x] All existing tests pass after theme renaming (`npm test` exits 0) [US-15]
 - [ ] WaveManager accepts a `setupDelay` config parameter (seconds before first wave) with default >= 20 [US-16]
 - [ ] WaveManager accepts an `interWaveDelay` config parameter (seconds between waves) with default >= 15 [US-16]
 - [ ] WaveManager.update() returns no spawns during setup and inter-wave delay periods [US-16]
