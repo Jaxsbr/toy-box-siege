@@ -120,3 +120,9 @@ entries:
     result: pass
     notes: "0 critical, 1 concern (ARCHITECTURE.md stale: missing TitleScene, old entity descriptions, 'planned' language for shipped changes), 0 nit. Posted as COMMENT."
     tokens: ~5k
+  - task: 17
+    story: review
+    description: "handle-pr-review pr=4 — handle review comments"
+    result: pass
+    notes: "Fixed 1 concern (ARCHITECTURE.md: added TitleScene, corrected entity descriptions, updated design decisions, converted planned→shipped section). Thread resolved. Posted summary. Review complete."
+    tokens: ~5k
