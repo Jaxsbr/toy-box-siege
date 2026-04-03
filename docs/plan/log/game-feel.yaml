@@ -32,3 +32,9 @@ entries:
     result: pass
     notes: "Defenders: Water Pistol (L-shape), Jack-in-the-Box (box+spring+head), Block Tower (stacked blocks). Enemies: Dust Bunny (fluffy blob+eyes), Cleaning Robot (boxy+antenna). Grid: brown/tan carpet. HUD: dark walnut. 72 tests pass. ✓ US-15 complete"
     tokens: ~5k
+  - task: 6
+    story: US-16
+    description: "Investigation — plan WaveManager state machine, queue refactor"
+    result: pass
+    notes: "WaveManager needs: setupDelay (>=20), interWaveDelay (>=15), waveState (setup→announcing→spawning→waiting→complete). 7 existing tests need updating for new delay behavior. LEVEL_1 rebalance to 3 waves is separate concern."
+    tokens: ~2k
