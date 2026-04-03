@@ -8,3 +8,9 @@ entries:
     result: pass
     notes: "No src/entities/ exists. Need DefenderEntity, EnemyEntity, ProjectileEntity as Phaser containers with colored shapes + health bars."
     tokens: ~5k
+  - task: 2
+    story: US-12
+    description: "Implement DefenderEntity, EnemyEntity, ProjectileEntity game objects"
+    result: pass
+    notes: "3 Phaser container classes with colored shapes + health bars. Build compiles, 67 tests pass. ✓ US-12 complete"
+    tokens: ~4k
