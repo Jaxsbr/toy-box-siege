@@ -28,8 +28,8 @@ state:
   status: running
 
   # --- Task orchestration (owner: iterator) ---
-  task_number: 9
-  next_task: "[US-29] Add armored+jumper enemy configs, extend EnemyType with jumpsRemaining, create jump logic function, add draw functions for armored bunny (helmet degradation) and sock puppet, wire jump into GameScene, create test/EnemyTypes.test.ts"
+  task_number: 10
+  next_task: null
   last_result: pass
   consecutive_fails: 0
 
