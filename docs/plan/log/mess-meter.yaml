@@ -68,3 +68,9 @@ entries:
     result: pass
     notes: "US-26 needs: new cleanup WaveManager state, debris interactivity during cleanup, countdown bar, combat pause. Complex — needs careful state machine planning."
     tokens: ~1k
+  - task: 12
+    story: US-26
+    description: "Investigation — cleanup mini-game design, state machine plan"
+    result: pass
+    notes: "Plan: cleanup is a GameScene state (not WaveManager). Flow: WaveManager 'waiting' + all enemies dead → cleanup flag → pause WaveManager/combat → 5s timer → skipToAnnouncing. Split into 3 tasks: state mgmt, debris interactivity, UI polish. Queued state management task."
+    tokens: ~5k
