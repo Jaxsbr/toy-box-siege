@@ -32,3 +32,9 @@ entries:
     result: pass
     notes: "Projectile hit: L759 after applyDamage. Enemy death: L772 dead enemy loop. Defender destruction: L784 dead defender loop. HUD bar below wave text. Debris: semi-transparent shapes (alpha<=0.4), depth below entities, no setInteractive during combat. Queued implementation."
     tokens: ~3k
+  - task: 6
+    story: US-24
+    description: "Wire Mess into GameScene — addMess at combat events, HUD bar, debris shapes"
+    result: pass
+    notes: "Mess.addMess wired at projectile hit (SMALL=10), enemy death (MEDIUM=30), defender destruction (LARGE=80). HUD mess bar with warm color gradient. Debris: 4 random cute types (puddle, parts, dust puff, toy fragment) at alpha 0.3, depth -5, no pointer input. 98 tests pass. ✓ US-24 complete"
+    tokens: ~8k
