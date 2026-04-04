@@ -44,3 +44,9 @@ entries:
     result: pass
     notes: "US-25 needs: 7 waves in levels.ts, currentRound/isRoundBoundary on WaveManager, progress dots with round gaps. Queued investigation."
     tokens: ~1k
+  - task: 8
+    story: US-25
+    description: "Investigation — WaveManager round structure, test patterns, level config"
+    result: pass
+    notes: "WaveManager has currentWave (0-indexed) and currentWaveNumber (1-indexed). Need currentRound (1/2/0) and isRoundBoundary getters. levels.ts: 3→7 waves. Tests: 35 existing, need round tests. Queued implementation."
+    tokens: ~5k
