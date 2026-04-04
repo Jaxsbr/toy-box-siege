@@ -28,8 +28,8 @@ state:
   status: running
 
   # --- Task orchestration (owner: iterator) ---
-  task_number: 13
-  next_task: null
+  task_number: 14
+  next_task: "[US-31] Implement defender unlock map (L1=[shooter,generator,wall], L2→+bomb, L3→+mine), localStorage persistence (zombo_unlocks), loadout selection UI (when >4 unlocked), GameScene HUD filtered by loadout, create test/LoadoutSelection.test.ts"
   last_result: pass
   consecutive_fails: 0
 

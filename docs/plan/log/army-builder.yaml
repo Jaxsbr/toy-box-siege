@@ -74,3 +74,9 @@ entries:
     result: pass
     notes: "5 levels (L1 basic→L5 all types). LevelSelectScene with toy-box entries. LevelProgress module: loadProgress, saveProgress, completeLevel (pure TS). Scene flow: Title→LevelSelect→Game→GameOver→LevelSelect. GameScene accepts levelConfig+levelIndex via data. Updated Levels.test.ts (L1=basic only). 112 tests pass. ✓ US-30 complete"
     tokens: ~15k
+  - task: 13
+    story: US-31
+    description: "Investigation — queue US-31 defender unlock + loadout implementation"
+    result: pass
+    notes: "US-28-30 complete. Last story: US-31 — defender unlock map, localStorage zombo_unlocks, loadout selection when >4 unlocked, GameScene HUD filtered. Queued full implementation (skipping separate investigate step since codebase is well-understood from US-30)."
+    tokens: ~1k
