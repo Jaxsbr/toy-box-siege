@@ -117,6 +117,7 @@ export class EnemyEntity extends Phaser.GameObjects.Container {
     this.add(this.flashOverlay);
 
     scene.add.existing(this);
+    this.setDepth(5); // above debris (1), below UI (100)
 
     // Per-key movement animation
     this.startMovementAnimation(scene);

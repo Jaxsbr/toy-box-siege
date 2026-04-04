@@ -622,12 +622,16 @@ export class GameScene extends Phaser.Scene {
     this.countdownLabel.setVisible(true);
   }
 
-  private spawnDebris(gridRow: number, gridCol: number): void {
-    const cx = gridCol * CELL_SIZE + CELL_SIZE / 2 + (Math.random() - 0.5) * 20;
-    const cy = HUD_HEIGHT + gridRow * CELL_SIZE + CELL_SIZE / 2 + (Math.random() - 0.5) * 20;
+  private spawnDebris(_gridRow: number, _gridCol: number): void {
+    // Spread debris across the full grid for a natural scattered look
+    // Bias toward the event row but allow any column
+    const row = Math.random() < 0.5 ? _gridRow : Math.floor(Math.random() * GRID_ROWS);
+    const col = Math.floor(Math.random() * GRID_COLS);
+    const cx = col * CELL_SIZE + Math.random() * (CELL_SIZE - 16) + 8;
+    const cy = HUD_HEIGHT + row * CELL_SIZE + Math.random() * (CELL_SIZE - 16) + 8;
 
     const gfx = this.add.graphics();
-    gfx.setDepth(2); // above grid tiles, below entities and UI
+    gfx.setDepth(1); // above grid tiles (0), below entities (5)
     gfx.setAlpha(0.3);
 
     // Random debris type — cute toy mess
@@ -809,6 +813,10 @@ export class GameScene extends Phaser.Scene {
   private enterCleanup(): void {
     this.isCleanupActive = true;
     this.cleanupTimer = CLEANUP_DURATION;
+
+    // Cancel any selected defender to prevent accidental placement after cleanup
+    this.selectedDefenderKey = null;
+    this.updatePanelHighlight();
 
     // Show "TIDY UP!" announcement
     this.announcementText.setText('TIDY UP!');

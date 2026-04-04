@@ -161,6 +161,7 @@ export class DefenderEntity extends Phaser.GameObjects.Container {
     // Hidden at full health — drawHealthBar only renders when damaged
 
     scene.add.existing(this);
+    this.setDepth(5); // above debris (1), below UI (100)
 
     // Placement bounce-in animation
     this.setScale(0.3);

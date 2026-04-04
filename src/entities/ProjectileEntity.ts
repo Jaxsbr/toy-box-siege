@@ -32,6 +32,7 @@ export class ProjectileEntity extends Phaser.GameObjects.Container {
     this.add(circle);
 
     scene.add.existing(this);
+    this.setDepth(5); // above debris (1), below UI (100)
   }
 
   updatePosition(): void {
