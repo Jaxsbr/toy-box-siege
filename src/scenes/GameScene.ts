@@ -444,19 +444,32 @@ export class GameScene extends Phaser.Scene {
     const totalWaves = this.waveManager.totalWaves;
     const dotSize = 8;
     const gap = 6;
-    const totalWidth = totalWaves * dotSize + (totalWaves - 1) * gap;
+    const roundGap = 14; // wider gap between round groups
+    // Round boundaries: after dot 3 (index 2) and after dot 6 (index 5)
+    const roundBreaks = [3, 6];
+
+    // Calculate total width with round gaps
+    let totalWidth = totalWaves * dotSize;
+    for (let i = 1; i < totalWaves; i++) {
+      totalWidth += roundBreaks.includes(i) ? roundGap : gap;
+    }
     const startX = (GRID_COLS * CELL_SIZE) - totalWidth - 10;
     const y = 56;
 
+    let offsetX = 0;
     for (let i = 0; i < totalWaves; i++) {
+      if (i > 0) {
+        offsetX += roundBreaks.includes(i) ? roundGap : gap;
+      }
       const dot = this.add.graphics();
-      dot.x = startX + i * (dotSize + gap);
+      dot.x = startX + offsetX;
       dot.y = y;
       dot.fillStyle(0x5d4037, 1);
       dot.fillCircle(dotSize / 2, dotSize / 2, dotSize / 2);
       dot.lineStyle(1, 0x8d6e63, 1);
       dot.strokeCircle(dotSize / 2, dotSize / 2, dotSize / 2);
       this.progressDots.push(dot);
+      offsetX += dotSize;
     }
   }
 
