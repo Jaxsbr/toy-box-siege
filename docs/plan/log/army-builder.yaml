@@ -68,3 +68,9 @@ entries:
     result: pass
     notes: "LEVEL_1 needs fix (basic only, not tough). GameScene hardcodes LEVEL_1 L78 — pass via data. game.ts L19 needs LevelSelectScene. TitleScene L79 → LevelSelectScene. GameOverScene L66 → LevelSelectScene + pass level result. Need LevelProgress module for localStorage. Queued full implementation."
     tokens: ~5k
+  - task: 12
+    story: US-30
+    description: "Implement multi-level structure — L1-L5 configs, LevelSelectScene, scene flow, localStorage, tests"
+    result: pass
+    notes: "5 levels (L1 basic→L5 all types). LevelSelectScene with toy-box entries. LevelProgress module: loadProgress, saveProgress, completeLevel (pure TS). Scene flow: Title→LevelSelect→Game→GameOver→LevelSelect. GameScene accepts levelConfig+levelIndex via data. Updated Levels.test.ts (L1=basic only). 112 tests pass. ✓ US-30 complete"
+    tokens: ~15k

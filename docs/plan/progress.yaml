@@ -28,8 +28,8 @@ state:
   status: running
 
   # --- Task orchestration (owner: iterator) ---
-  task_number: 12
-  next_task: "[US-30] Create LEVEL_1-LEVEL_5 configs (fix L1=basic only), create LevelProgress module with localStorage persistence, create LevelSelectScene, update scene flow (Title→LevelSelect→Game→GameOver→LevelSelect), register scene, create test/LevelProgress.test.ts"
+  task_number: 13
+  next_task: null
   last_result: pass
   consecutive_fails: 0
 
