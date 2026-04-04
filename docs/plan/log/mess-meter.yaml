@@ -38,3 +38,9 @@ entries:
     result: pass
     notes: "Mess.addMess wired at projectile hit (SMALL=10), enemy death (MEDIUM=30), defender destruction (LARGE=80). HUD mess bar with warm color gradient. Debris: 4 random cute types (puddle, parts, dust puff, toy fragment) at alpha 0.3, depth -5, no pointer input. 98 tests pass. ✓ US-24 complete"
     tokens: ~8k
+  - task: 7
+    story: US-25
+    description: "Investigation — queued round structure analysis"
+    result: pass
+    notes: "US-25 needs: 7 waves in levels.ts, currentRound/isRoundBoundary on WaveManager, progress dots with round gaps. Queued investigation."
+    tokens: ~1k
