@@ -22,10 +22,21 @@ import {
 import { DefenderEntity, DRAW_DEFENDER } from '../entities/DefenderEntity';
 import { EnemyEntity } from '../entities/EnemyEntity';
 import { ProjectileEntity } from '../entities/ProjectileEntity';
+import {
+  playSfxPlace,
+  playSfxFire,
+  playSfxHit,
+  playSfxDeath,
+  playSfxAnnounce,
+  playSfxCollect,
+  setSfxMuted,
+  isSfxMuted,
+} from '../systems/SFX';
 
 const STARTING_BALANCE = 500;
-const PASSIVE_INCOME_INTERVAL = 8000; // ms
-const PASSIVE_INCOME_AMOUNT = 25;
+const SPARK_SPAWN_INTERVAL = 8000; // ms between spark spawns
+const SPARK_VALUE = 25; // sparks balance added per collection
+const SPARK_FALL_SPEED = 30; // pixels per second
 const GENERATOR_INCOME_INTERVAL = 5000; // ms
 const FADE_DURATION = 600;
 
@@ -49,6 +60,7 @@ export class GameScene extends Phaser.Scene {
   private enemies: EnemyEntity[] = [];
   private projectiles: ProjectileEntity[] = [];
   private cellZones: Phaser.GameObjects.Zone[] = [];
+  private sparks: Phaser.GameObjects.Container[] = [];
   private transitioning = false;
 
   constructor() {
@@ -73,10 +85,12 @@ export class GameScene extends Phaser.Scene {
     this.enemies = [];
     this.projectiles = [];
     this.cellZones = [];
+    this.sparks = [];
     this.progressDots = [];
     this.lastWaveState = 'setup';
 
     this.drawGrid();
+    this.createAtmosphere();
     this.createHUD();
     this.createDefenderPanel();
     this.createGridClickZones();
@@ -84,10 +98,10 @@ export class GameScene extends Phaser.Scene {
     this.createProgressDots();
     this.createCountdownBar();
 
-    // Passive sky-drop income
+    // Spark spawner (replaces passive income timer)
     this.time.addEvent({
-      delay: PASSIVE_INCOME_INTERVAL,
-      callback: () => this.economy.addIncome(PASSIVE_INCOME_AMOUNT),
+      delay: SPARK_SPAWN_INTERVAL,
+      callback: () => this.spawnSpark(),
       loop: true,
     });
 
@@ -103,6 +117,7 @@ export class GameScene extends Phaser.Scene {
     for (const def of this.defenders) {
       if (def.defenderType.generatesIncome > 0 && !isDead(def)) {
         this.economy.addIncome(def.defenderType.generatesIncome);
+        def.playProduce();
       }
     }
   }
@@ -129,6 +144,89 @@ export class GameScene extends Phaser.Scene {
     graphics.fillRect(0, 0, GRID_COLS * CELL_SIZE, HUD_HEIGHT);
   }
 
+  private createAtmosphere(): void {
+    const ATMO_DEPTH = -10; // behind all gameplay entities
+
+    // Furniture silhouettes along top edge of play area
+    const fg = this.add.graphics();
+    fg.setDepth(ATMO_DEPTH);
+    // Bookshelf silhouette
+    fg.fillStyle(0x3e2723, 0.6);
+    fg.fillRect(20, HUD_HEIGHT + 2, 60, 35);
+    fg.fillRect(25, HUD_HEIGHT - 8, 50, 12);
+    fg.fillRect(30, HUD_HEIGHT - 16, 40, 10);
+    // Dresser silhouette
+    fg.fillRect(GRID_COLS * CELL_SIZE - 120, HUD_HEIGHT + 2, 80, 30);
+    fg.fillRect(GRID_COLS * CELL_SIZE - 115, HUD_HEIGHT - 5, 70, 10);
+    // Drawer lines
+    fg.lineStyle(1, 0x2e1b0e, 0.4);
+    fg.lineBetween(GRID_COLS * CELL_SIZE - 115, HUD_HEIGHT + 14, GRID_COLS * CELL_SIZE - 45, HUD_HEIGHT + 14);
+    fg.lineBetween(GRID_COLS * CELL_SIZE - 115, HUD_HEIGHT + 24, GRID_COLS * CELL_SIZE - 45, HUD_HEIGHT + 24);
+
+    // Decorative toy details on random grid cells (3-5 pieces)
+    const toyPositions: { row: number; col: number }[] = [];
+    while (toyPositions.length < 4) {
+      const r = Math.floor(Math.random() * GRID_ROWS);
+      const c = Math.floor(Math.random() * GRID_COLS);
+      if (!toyPositions.some(p => p.row === r && p.col === c)) {
+        toyPositions.push({ row: r, col: c });
+      }
+    }
+    const tg = this.add.graphics();
+    tg.setDepth(ATMO_DEPTH);
+    const toyDrawers = [
+      // Crayon
+      (cx: number, cy: number) => {
+        tg.fillStyle(0xe53935, 0.3);
+        tg.fillRect(cx - 8, cy + 12, 16, 4);
+        tg.fillStyle(0xffcdd2, 0.3);
+        tg.fillTriangle(cx + 8, cy + 14, cx + 12, cy + 12, cx + 12, cy + 16);
+      },
+      // Marble
+      (cx: number, cy: number) => {
+        tg.fillStyle(0x42a5f5, 0.25);
+        tg.fillCircle(cx + 10, cy - 8, 5);
+      },
+      // Building brick
+      (cx: number, cy: number) => {
+        tg.fillStyle(0x66bb6a, 0.3);
+        tg.fillRect(cx - 14, cy + 8, 10, 6);
+      },
+      // Small star
+      (cx: number, cy: number) => {
+        tg.fillStyle(0xffeb3b, 0.25);
+        tg.fillCircle(cx - 10, cy - 10, 3);
+      },
+    ];
+    toyPositions.forEach((pos, i) => {
+      const cx = pos.col * CELL_SIZE + CELL_SIZE / 2;
+      const cy = HUD_HEIGHT + pos.row * CELL_SIZE + CELL_SIZE / 2;
+      toyDrawers[i](cx, cy);
+    });
+
+    // Floating dust mote particles (15 semi-transparent dots drifting)
+    for (let i = 0; i < 15; i++) {
+      const mote = this.add.circle(
+        Math.random() * GRID_COLS * CELL_SIZE,
+        HUD_HEIGHT + Math.random() * GRID_ROWS * CELL_SIZE,
+        Math.random() * 1.5 + 1,
+        0xffffff,
+        Math.random() * 0.15 + 0.05,
+      );
+      mote.setDepth(ATMO_DEPTH);
+      // Slow drift across play area
+      this.tweens.add({
+        targets: mote,
+        x: mote.x + (Math.random() - 0.5) * 200,
+        y: mote.y + (Math.random() - 0.5) * 100,
+        duration: 8000 + Math.random() * 6000,
+        ease: 'Sine.easeInOut',
+        yoyo: true,
+        repeat: -1,
+      });
+    }
+  }
+
   private createHUD(): void {
     this.balanceText = this.add.text(10, 8, '', {
       fontSize: '16px',
@@ -140,6 +238,22 @@ export class GameScene extends Phaser.Scene {
       fontSize: '14px',
       color: '#94a3b8',
       fontFamily: 'monospace',
+    });
+
+    // Mute toggle
+    const muteBtn = this.add.text(GRID_COLS * CELL_SIZE - 10, 8, isSfxMuted() ? 'MUTE' : 'SFX', {
+      fontSize: '12px',
+      color: '#94a3b8',
+      fontFamily: 'monospace',
+      backgroundColor: '#1e293b',
+      padding: { x: 6, y: 3 },
+    });
+    muteBtn.setOrigin(1, 0);
+    muteBtn.setInteractive({ useHandCursor: true });
+    muteBtn.on('pointerdown', () => {
+      setSfxMuted(!isSfxMuted());
+      muteBtn.setText(isSfxMuted() ? 'MUTE' : 'SFX');
+      muteBtn.setColor(isSfxMuted() ? '#ef4444' : '#94a3b8');
     });
 
     this.updateHUDText();
@@ -293,6 +407,7 @@ export class GameScene extends Phaser.Scene {
     const result = this.placement.place({ row, col }, type);
 
     if (result.ok) {
+      playSfxPlace();
       const entity = new DefenderEntity(this, row, col, this.selectedDefenderKey, type);
       this.defenders.push(entity);
       this.updateHUDText();
@@ -423,11 +538,141 @@ export class GameScene extends Phaser.Scene {
     if (state === 'announcing' && this.lastWaveState !== 'announcing') {
       this.announcementText.setText(this.getWaveAnnouncement());
       this.announcementText.setVisible(true);
+      playSfxAnnounce();
+      // Camera shake on final wave
+      if (this.waveManager.currentWaveNumber === this.waveManager.totalWaves) {
+        this.cameras.main.shake(400, 0.003);
+      }
     } else if (state !== 'announcing' && this.lastWaveState === 'announcing') {
       this.announcementText.setVisible(false);
     }
 
     this.lastWaveState = state;
+  }
+
+  private spawnSpark(): void {
+    const x = Math.random() * (GRID_COLS * CELL_SIZE - 40) + 20;
+    const y = HUD_HEIGHT - 10; // just above the grid
+
+    const spark = this.add.container(x, y);
+    spark.setDepth(10);
+
+    // Draw spark shape — diamond/star glow (distinct from yellow circle projectiles)
+    const gfx = this.add.graphics();
+    // Outer glow
+    gfx.fillStyle(0x81d4fa, 0.4);
+    gfx.fillCircle(0, 0, 12);
+    // Inner diamond
+    gfx.fillStyle(0x4fc3f7, 0.9);
+    gfx.beginPath();
+    gfx.moveTo(0, -8);
+    gfx.lineTo(6, 0);
+    gfx.lineTo(0, 8);
+    gfx.lineTo(-6, 0);
+    gfx.closePath();
+    gfx.fillPath();
+    // Center bright spot
+    gfx.fillStyle(0xffffff, 0.8);
+    gfx.fillCircle(0, 0, 3);
+    spark.add(gfx);
+
+    // Clickable zone
+    const zone = this.add.zone(0, 0, 24, 24).setInteractive({ useHandCursor: true });
+    spark.add(zone);
+
+    zone.on('pointerdown', () => {
+      this.collectSpark(spark);
+    });
+
+    this.sparks.push(spark);
+  }
+
+  private collectSpark(spark: Phaser.GameObjects.Container): void {
+    this.economy.addIncome(SPARK_VALUE);
+    playSfxCollect();
+    this.updateHUDText();
+
+    // Collection animation — burst outward and fade
+    const x = spark.x;
+    const y = spark.y;
+    spark.destroy();
+    this.sparks = this.sparks.filter(s => s !== spark);
+
+    // Particle burst effect
+    for (let i = 0; i < 6; i++) {
+      const angle = (i / 6) * Math.PI * 2;
+      const dot = this.add.circle(x, y, 2, 0x4fc3f7, 0.8);
+      dot.setDepth(50);
+      this.tweens.add({
+        targets: dot,
+        x: x + Math.cos(angle) * 25,
+        y: y + Math.sin(angle) * 25,
+        alpha: 0,
+        duration: 250,
+        ease: 'Quad.easeOut',
+        onComplete: () => dot.destroy(),
+      });
+    }
+  }
+
+  private updateSparks(dt: number): void {
+    const gridBottom = HUD_HEIGHT + GRID_ROWS * CELL_SIZE;
+    for (let i = this.sparks.length - 1; i >= 0; i--) {
+      const spark = this.sparks[i];
+      spark.y += SPARK_FALL_SPEED * dt;
+      // Remove uncollected sparks past grid bottom
+      if (spark.y > gridBottom) {
+        spark.destroy();
+        this.sparks.splice(i, 1);
+      }
+    }
+  }
+
+  private spawnDeathParticles(x: number, y: number, color: number): void {
+    const count = 8;
+    for (let i = 0; i < count; i++) {
+      const angle = (i / count) * Math.PI * 2;
+      const particle = this.add.circle(x, y, 3, color, 1);
+      particle.setDepth(50);
+      this.tweens.add({
+        targets: particle,
+        x: x + Math.cos(angle) * 40,
+        y: y + Math.sin(angle) * 40,
+        alpha: 0,
+        scale: 0.3,
+        duration: 400,
+        ease: 'Quad.easeOut',
+        onComplete: () => particle.destroy(),
+      });
+    }
+  }
+
+  private spawnDestructionEffect(x: number, y: number): void {
+    const ghost = this.add.circle(x, y, 16, 0x888888, 0.6);
+    ghost.setDepth(50);
+    this.tweens.add({
+      targets: ghost,
+      alpha: 0,
+      scaleX: 0.2,
+      scaleY: 0.2,
+      duration: 350,
+      ease: 'Quad.easeIn',
+      onComplete: () => ghost.destroy(),
+    });
+  }
+
+  private spawnImpactBurst(x: number, y: number): void {
+    const burst = this.add.circle(x, y, 4, 0xffffff, 0.8);
+    burst.setDepth(50);
+    this.tweens.add({
+      targets: burst,
+      scaleX: 3,
+      scaleY: 3,
+      alpha: 0,
+      duration: 200,
+      ease: 'Quad.easeOut',
+      onComplete: () => burst.destroy(),
+    });
   }
 
   update(_time: number, delta: number): void {
@@ -488,6 +733,8 @@ export class GameScene extends Phaser.Scene {
       def.setData('fireCooldown', shooter.fireCooldown);
 
       if (proj) {
+        def.playRecoil();
+        playSfxFire();
         const projEntity = new ProjectileEntity(this, proj.lane, proj.x, proj.damage, proj.speed);
         this.projectiles.push(projEntity);
       }
@@ -512,25 +759,34 @@ export class GameScene extends Phaser.Scene {
         if (checkProjectileHit(projState, enemy)) {
           applyDamage(enemy, proj.damage);
           enemy.drawHealthBar();
+          enemy.playHitFlash();
+          playSfxHit();
+          this.spawnImpactBurst(proj.x, proj.y);
           proj.destroy();
           break;
         }
       }
     }
 
-    // Remove dead enemies
+    // Remove dead enemies (with death particles)
     for (let i = this.enemies.length - 1; i >= 0; i--) {
       if (isDead(this.enemies[i])) {
-        this.enemies[i].destroy();
+        const e = this.enemies[i];
+        const deathColor = e.enemyKey === 'basic' ? 0xf48fb1 : 0xb388ff;
+        this.spawnDeathParticles(e.x, e.y, deathColor);
+        playSfxDeath(e.enemyKey);
+        e.destroy();
         this.enemies.splice(i, 1);
       }
     }
 
-    // Remove dead defenders
+    // Remove dead defenders (with destruction effect)
     for (let i = this.defenders.length - 1; i >= 0; i--) {
       if (isDead(this.defenders[i])) {
-        this.placement.remove({ row: this.defenders[i].gridRow, col: this.defenders[i].gridCol });
-        this.defenders[i].destroy();
+        const d = this.defenders[i];
+        this.spawnDestructionEffect(d.x, d.y);
+        this.placement.remove({ row: d.gridRow, col: d.gridCol });
+        d.destroy();
         this.defenders.splice(i, 1);
       }
     }
@@ -559,6 +815,7 @@ export class GameScene extends Phaser.Scene {
       return;
     }
 
+    this.updateSparks(dt);
     this.updateHUDText();
     this.updatePanelHighlight();
     this.updateAnnouncement();

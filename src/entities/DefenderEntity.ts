@@ -161,6 +161,83 @@ export class DefenderEntity extends Phaser.GameObjects.Container {
     // Hidden at full health — drawHealthBar only renders when damaged
 
     scene.add.existing(this);
+
+    // Placement bounce-in animation
+    this.setScale(0.3);
+    scene.tweens.add({
+      targets: this,
+      scaleX: 1,
+      scaleY: 1,
+      duration: 300,
+      ease: 'Back.easeOut',
+    });
+
+    // Per-key idle animation
+    this.startIdleAnimation(scene);
+  }
+
+  private startIdleAnimation(scene: Phaser.Scene): void {
+    switch (this.defenderKey) {
+      case 'shooter':
+        // Water Pistol — continuous gentle bob
+        scene.tweens.add({
+          targets: this,
+          y: this.y - 3,
+          duration: 1500,
+          ease: 'Sine.easeInOut',
+          yoyo: true,
+          repeat: -1,
+        });
+        break;
+      case 'generator':
+        // Jack-in-the-Box — spring wiggle (rotation oscillation)
+        scene.tweens.add({
+          targets: this,
+          angle: 3,
+          duration: 800,
+          ease: 'Sine.easeInOut',
+          yoyo: true,
+          repeat: -1,
+        });
+        break;
+      case 'wall':
+        // Block Tower — subtle sway
+        scene.tweens.add({
+          targets: this,
+          angle: 1.5,
+          duration: 2000,
+          ease: 'Sine.easeInOut',
+          yoyo: true,
+          repeat: -1,
+        });
+        break;
+    }
+  }
+
+  /** Water Pistol recoil — brief scale kick on fire */
+  playRecoil(): void {
+    if (this.defenderKey !== 'shooter') return;
+    this.scene.tweens.add({
+      targets: this,
+      scaleX: 0.85,
+      scaleY: 1.1,
+      duration: 80,
+      ease: 'Quad.easeOut',
+      yoyo: true,
+    });
+  }
+
+  /** Jack-in-the-Box produce — body pulse on income tick */
+  playProduce(): void {
+    if (this.defenderKey !== 'generator') return;
+    this.scene.tweens.add({
+      targets: this,
+      scaleX: 1.15,
+      scaleY: 1.15,
+      duration: 150,
+      ease: 'Back.easeOut',
+      yoyo: true,
+    });
   }
 
   drawHealthBar(): void {

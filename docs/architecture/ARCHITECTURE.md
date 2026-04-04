@@ -79,3 +79,33 @@ GameFlow win/lose → fade → GameOverScene → fade → GameScene (restart)
 ```
 
 All scene transitions use Phaser camera fades. WaveManager drives wave pacing via a 5-state machine (setup → announcing → spawning → waiting → complete).
+
+## Game juice layer (shipped in `game-juice` phase)
+
+### SFX module
+
+`src/systems/SFX.ts` — Procedural sound generation using Web Audio API (OscillatorNode, GainNode, noise buffers). Pure TypeScript, no Phaser dependency. Lazy AudioContext creation for Node test compatibility. Exports named trigger functions (place, fire, hit, death, collect, announce) and a mute toggle.
+
+### Entity animations
+
+All entity types have tween-based animations:
+- **Defenders:** idle loops (Water Pistol bobs, Jack-in-the-Box wiggles, Block Tower sways), combat reactions (shooter recoil on fire, generator pulse on income tick), placement bounce-in (scale 0.3 → 1.0 with overshoot)
+- **Enemies:** movement animations (Dust Bunny bounce/squash-stretch, Cleaning Robot rock), hit flash (white overlay 150ms on damage)
+- **Effects:** death particles (per-type color burst — pink for Dust Bunny, purple for Cleaning Robot), defender destruction (fade + scale-down), projectile impact burst (expanding white circle), camera shake on final wave announcement
+
+### Atmosphere
+
+Bedroom environment elements rendered at depth -10 (behind all gameplay):
+- Furniture silhouettes along top of play area (bookshelf, dresser)
+- Decorative toy details on random grid cells at level start (crayon, marble, brick, star)
+- Floating dust motes (15 semi-transparent dots with drift tweens)
+- Themed backgrounds on TitleScene and GameOverScene (floor boards, rug, furniture, scattered toys)
+
+### Spark economy
+
+Passive income replaced by interactive spark collection (implemented inline in GameScene, not a separate entity file):
+- Blue diamond-shaped spark tokens spawn above grid every 8s, drift down at 30px/s
+- Player clicks to collect — value (25 sparks) added to Economy with SFX and particle burst
+- Uncollected sparks removed at grid bottom
+- Generator (Jack-in-the-Box) automatic income unchanged
+- Spawn rate/value defined as named constants (SPARK_SPAWN_INTERVAL, SPARK_VALUE, SPARK_FALL_SPEED)

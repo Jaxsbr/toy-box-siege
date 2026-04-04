@@ -1,0 +1,107 @@
+# Phase log — game-juice
+# Each entry: { task, story, description, result, notes, tokens }
+
+entries:
+  - task: 1
+    story: US-19
+    description: "Investigation — codebase structure, entity animation integration points, phase planning"
+    result: pass
+    notes: "DefenderEntity/EnemyEntity are Containers with static Graphics. Tweens attach to Container y/scale/angle. Combat reactions triggered from GameScene.update. No external sprites. 88 tests pass. Queued investigation task for detailed plan."
+    tokens: ~8k
+  - task: 2
+    story: US-19
+    description: "Investigation — detailed animation plan, integration points identified"
+    result: pass
+    notes: "Tweens on Container y/angle/scale. Defender idle: bob/wiggle/sway per key. Enemy: bounce/rock per key. Combat reactions: public methods on DefenderEntity called from GameScene (fire line ~491, generator line ~103). Queued defender idle implementation."
+    tokens: ~5k
+  - task: 3
+    story: US-19
+    description: "Implement defender idle animations — bob, wiggle, sway per key"
+    result: pass
+    notes: "Water Pistol: y -3 bob 1500ms. Jack-in-the-Box: angle 3° wiggle 800ms. Block Tower: angle 1.5° sway 2000ms. All Sine.easeInOut yoyo infinite. 88 tests pass."
+    tokens: ~3k
+  - task: 4
+    story: US-19
+    description: "Investigation — queue combat reaction animations for defenders"
+    result: pass
+    notes: "Water Pistol recoil: scale kick on fire (GameScene ~L491). Jack-in-the-Box produce: body pulse on income (tickGeneratorIncome ~L103). Both need public methods on DefenderEntity."
+    tokens: ~1k
+  - task: 5
+    story: US-19
+    description: "Implement defender combat reactions — recoil + produce pulse"
+    result: pass
+    notes: "Water Pistol playRecoil: scaleX 0.85 / scaleY 1.1, 80ms. Jack-in-the-Box playProduce: scale 1.15, 150ms Back.easeOut. Called from GameScene on fire/income tick. 88 tests pass."
+    tokens: ~3k
+  - task: 6
+    story: US-19
+    description: "Implement enemy movement animations — Dust Bunny bounce, Cleaning Robot rock"
+    result: pass
+    notes: "Dust Bunny: squash-stretch (scaleY 0.8/scaleX 1.2) + y -4 bounce 400ms. Cleaning Robot: angle 4° rock 600ms. 88 tests pass. ✓ US-19 complete"
+    tokens: ~3k
+  - task: 7
+    story: US-20
+    description: "Investigation — queue hit reactions and death effects implementation"
+    result: pass
+    notes: "US-20 needs: enemy hit flash (white tint), death particles per type, defender destruction effect, placement bounce-in, projectile impact burst, camera shake on final wave. All rendering-only changes in entities + GameScene."
+    tokens: ~1k
+  - task: 8
+    story: US-20
+    description: "Implement hit reactions and death effects — all 7 criteria"
+    result: pass
+    notes: "Enemy hit flash: white overlay 150ms. Death particles: 8 circles expanding outward (pink for Dust Bunny, purple for Robot). Defender destruction: fade+scale-down 350ms. Placement bounce-in: scale 0.3→1 Back.easeOut 300ms. Projectile impact: expanding white circle 200ms. Camera shake: 400ms 0.003 intensity on final wave. 88 tests pass. ✓ US-20 complete"
+    tokens: ~5k
+  - task: 9
+    story: US-21
+    description: "Create SFX.ts — procedural sound module with Web Audio API"
+    result: pass
+    notes: "Pure TS, lazy AudioContext, 6 trigger functions (place/fire/hit/death/collect/announce), mute toggle. No Phaser dependency. 88 tests pass."
+    tokens: ~3k
+  - task: 10
+    story: US-21
+    description: "Wire SFX into GameScene + HUD mute toggle"
+    result: pass
+    notes: "All code paths wired: place, fire, hit, death, announce. Mute toggle in HUD top-right. Collect SFX deferred to US-23 (spark mechanic). 88 tests pass."
+    tokens: ~3k
+  - task: 11
+    story: US-22
+    description: "Implement bedroom atmosphere — furniture, toys, dust motes, themed backgrounds"
+    result: pass
+    notes: "GameScene: bookshelf+dresser silhouettes (depth -10), 4 random toy details, 15 dust motes with drift tweens. TitleScene+GameOverScene: floor boards, rug, furniture, scattered toys. No pointer input on atmosphere. 88 tests pass. ✓ US-22 complete"
+    tokens: ~5k
+  - task: 12
+    story: US-23
+    description: "Implement floating spark collection + wire SFX collect"
+    result: pass
+    notes: "Spark tokens: blue diamond glow, spawn at random x above grid, drift down at 30px/s. Click to collect (adds 25 sparks, playSfxCollect, particle burst). Uncollected removed at grid bottom. Replaced PASSIVE_INCOME timer. Constants: SPARK_SPAWN_INTERVAL=8000, SPARK_VALUE=25, SPARK_FALL_SPEED=30. Generator income unchanged. 88 tests pass. ✓ US-21, US-23 complete"
+    tokens: ~5k
+  - task: 13
+    story: phase
+    description: "AGENTS.md update + phase completion gate"
+    result: pass
+    notes: "AGENTS.md updated: SFX module, entity animations, spark collection, atmosphere. Scene cleanup verified (Phaser lifecycle handles it). All 41 done-when criteria met. 88 tests pass. Phase complete."
+    tokens: ~3k
+  - task: phase-complete
+    story: all
+    description: "Phase completion — all done-when criteria met"
+    result: pass
+    notes: |
+      Evidence:
+      - US-19: DefenderEntity idle tweens (bob/wiggle/sway), combat reactions (recoil/pulse), EnemyEntity movement animations (bounce/rock). All Phaser tweens, no sprites.
+      - US-20: enemy hit flash (white overlay 150ms), death particles (8 circles, pink/purple per type), defender destruction (fade+scale), placement bounce-in (0.3→1 Back.easeOut), projectile impact burst (expanding white circle), camera shake on final wave (400ms 0.003)
+      - US-21: src/systems/SFX.ts exists, Web Audio API, lazy AudioContext. place/fire/hit/death/collect/announce wired. Mute toggle in HUD. 88 tests pass.
+      - US-22: furniture silhouettes (bookshelf+dresser), 4 toy details, 15 dust motes, themed TitleScene/GameOverScene backgrounds. All depth -10, no pointer input.
+      - US-23: spark tokens (blue diamond, 8s spawn, 25 value, 30px/s fall). Click to collect with SFX and particle burst. Passive income timer replaced. Generator income unchanged.
+      - Phase criteria: scene cleanup via Phaser lifecycle, AGENTS.md updated, 88 tests pass.
+    tokens: ~3k
+  - task: 14
+    story: review
+    description: "review-pr pr=5 — automated PR review"
+    result: pass
+    notes: "0 critical, 1 concern (ARCHITECTURE.md 'Planned for game-juice' section stale — should reflect shipped state, SparkEntity.ts predicted but not created). Posted as COMMENT."
+    tokens: ~5k
+  - task: 15
+    story: review
+    description: "handle-pr-review pr=5 — fix review comments"
+    result: pass
+    notes: "Fixed 1 concern: ARCHITECTURE.md 'Planned for game-juice' → 'Game juice layer (shipped)' with accurate descriptions. Thread resolved. Summary posted. Review complete."
+    tokens: ~3k

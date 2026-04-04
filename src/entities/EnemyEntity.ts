@@ -74,6 +74,7 @@ export class EnemyEntity extends Phaser.GameObjects.Container {
   readonly damage: number; // EnemyCombatEntity interface
   private readonly maxHealth: number;
   private readonly healthBar: Phaser.GameObjects.Graphics;
+  private readonly flashOverlay: Phaser.GameObjects.Graphics;
 
   constructor(
     scene: Phaser.Scene,
@@ -108,7 +109,58 @@ export class EnemyEntity extends Phaser.GameObjects.Container {
     this.add(this.healthBar);
     // Hidden at full health — drawHealthBar only renders when damaged
 
+    // White flash overlay for hit reactions
+    this.flashOverlay = scene.add.graphics();
+    this.flashOverlay.fillStyle(0xffffff, 0.8);
+    this.flashOverlay.fillCircle(0, 0, 20);
+    this.flashOverlay.setVisible(false);
+    this.add(this.flashOverlay);
+
     scene.add.existing(this);
+
+    // Per-key movement animation
+    this.startMovementAnimation(scene);
+  }
+
+  private startMovementAnimation(scene: Phaser.Scene): void {
+    switch (this.enemyKey) {
+      case 'basic':
+        // Dust Bunny — bouncing squash-stretch
+        scene.tweens.add({
+          targets: this,
+          scaleY: 0.8,
+          scaleX: 1.2,
+          y: this.y - 4,
+          duration: 400,
+          ease: 'Sine.easeInOut',
+          yoyo: true,
+          repeat: -1,
+        });
+        break;
+      case 'tough':
+        // Cleaning Robot — rocking side to side
+        scene.tweens.add({
+          targets: this,
+          angle: 4,
+          duration: 600,
+          ease: 'Sine.easeInOut',
+          yoyo: true,
+          repeat: -1,
+        });
+        break;
+    }
+  }
+
+  /** Flash white on projectile hit */
+  playHitFlash(): void {
+    this.flashOverlay.setVisible(true);
+    this.flashOverlay.setAlpha(0.8);
+    this.scene.tweens.add({
+      targets: this.flashOverlay,
+      alpha: 0,
+      duration: 150,
+      onComplete: () => this.flashOverlay.setVisible(false),
+    });
   }
 
   updatePosition(): void {
