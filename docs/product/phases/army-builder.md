@@ -1,6 +1,6 @@
 # Phase: army-builder
 
-Status: draft
+Status: shipped
 
 ## Design direction
 

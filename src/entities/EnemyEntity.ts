@@ -219,6 +219,31 @@ export class EnemyEntity extends Phaser.GameObjects.Container {
           repeat: -1,
         });
         break;
+      case 'armored':
+        // Armored Bunny — same bouncy squash-stretch as basic Dust Bunny
+        scene.tweens.add({
+          targets: this,
+          scaleY: 0.85,
+          scaleX: 1.15,
+          y: this.y - 3,
+          duration: 450,
+          ease: 'Sine.easeInOut',
+          yoyo: true,
+          repeat: -1,
+        });
+        break;
+      case 'jumper':
+        // Sock Puppet — bobbing up and down with slight wobble
+        scene.tweens.add({
+          targets: this,
+          y: this.y - 5,
+          angle: 3,
+          duration: 350,
+          ease: 'Sine.easeInOut',
+          yoyo: true,
+          repeat: -1,
+        });
+        break;
     }
   }
 
