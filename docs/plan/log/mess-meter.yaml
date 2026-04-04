@@ -8,3 +8,9 @@ entries:
     result: pass
     notes: "3 waves in levels.ts (need 7). WaveManager has no round concept. Combat.ts + GameScene handle hits/deaths/destruction — integration points for addMess. 88 tests pass. 10 test files. Queued detailed investigation for Mess.ts API."
     tokens: ~8k
+  - task: 2
+    story: US-24
+    description: "Investigation — Mess module design, integration points, test patterns"
+    result: pass
+    notes: "Integration points: projectile hit (L760), enemy death (L773), defender destruction (L784). Mess.ts: pure TS, addMess/getMess/getLevel/reset. Economy.ts is the template. 88 tests, 10 files. Queued Mess.ts implementation."
+    tokens: ~10k
