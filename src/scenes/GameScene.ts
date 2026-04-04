@@ -8,6 +8,7 @@ import { Economy } from '../systems/Economy';
 import { Placement } from '../systems/Placement';
 import { WaveManager, WaveState } from '../systems/WaveManager';
 import { GameFlow } from '../systems/GameFlow';
+import { Mess, MESS_SMALL, MESS_MEDIUM, MESS_LARGE } from '../systems/Mess';
 import {
   ShooterEntity as ShooterState,
   ProjectileState,
@@ -46,6 +47,7 @@ export class GameScene extends Phaser.Scene {
   private placement!: Placement;
   private waveManager!: WaveManager;
   private gameFlow!: GameFlow;
+  private mess!: Mess;
 
   private balanceText!: Phaser.GameObjects.Text;
   private waveText!: Phaser.GameObjects.Text;
@@ -61,6 +63,9 @@ export class GameScene extends Phaser.Scene {
   private projectiles: ProjectileEntity[] = [];
   private cellZones: Phaser.GameObjects.Zone[] = [];
   private sparks: Phaser.GameObjects.Container[] = [];
+  private debris: Phaser.GameObjects.Graphics[] = [];
+  private messBarBg!: Phaser.GameObjects.Graphics;
+  private messBarFill!: Phaser.GameObjects.Graphics;
   private transitioning = false;
 
   constructor() {
@@ -77,6 +82,7 @@ export class GameScene extends Phaser.Scene {
     this.placement = new Placement(this.grid, this.economy);
     this.waveManager = new WaveManager(LEVEL_1);
     this.gameFlow = new GameFlow();
+    this.mess = new Mess();
 
     // Reset state
     this.selectedDefenderKey = null;
@@ -86,6 +92,7 @@ export class GameScene extends Phaser.Scene {
     this.projectiles = [];
     this.cellZones = [];
     this.sparks = [];
+    this.debris = [];
     this.progressDots = [];
     this.lastWaveState = 'setup';
 
@@ -97,6 +104,7 @@ export class GameScene extends Phaser.Scene {
     this.createAnnouncementText();
     this.createProgressDots();
     this.createCountdownBar();
+    this.createMessBar();
 
     // Spark spawner (replaces passive income timer)
     this.time.addEvent({
@@ -532,6 +540,74 @@ export class GameScene extends Phaser.Scene {
     }
   }
 
+  private createMessBar(): void {
+    this.messBarBg = this.add.graphics();
+    this.messBarFill = this.add.graphics();
+  }
+
+  private updateMessBar(): void {
+    this.messBarBg.clear();
+    this.messBarFill.clear();
+
+    const barX = GRID_COLS * CELL_SIZE - 130;
+    const barY = 36;
+    const barWidth = 115;
+    const barHeight = 10;
+    const level = this.mess.getLevel();
+
+    // Track background
+    this.messBarBg.fillStyle(0x1a1a1a, 0.6);
+    this.messBarBg.fillRoundedRect(barX, barY, barWidth, barHeight, 3);
+    this.messBarBg.lineStyle(1, 0x8d6e63, 0.5);
+    this.messBarBg.strokeRoundedRect(barX, barY, barWidth, barHeight, 3);
+
+    // Fill — warm red/orange gradient effect via color interpolation
+    if (level > 0.01) {
+      const color = level > 0.7 ? 0xe53935 : level > 0.4 ? 0xff8f00 : 0xffc107;
+      this.messBarFill.fillStyle(color, 0.9);
+      this.messBarFill.fillRoundedRect(barX, barY, barWidth * level, barHeight, 3);
+    }
+
+    // Label
+    this.messBarBg.fillStyle(0xffffff, 0.6);
+  }
+
+  private spawnDebris(gridRow: number, gridCol: number): void {
+    const cx = gridCol * CELL_SIZE + CELL_SIZE / 2 + (Math.random() - 0.5) * 20;
+    const cy = HUD_HEIGHT + gridRow * CELL_SIZE + CELL_SIZE / 2 + (Math.random() - 0.5) * 20;
+
+    const gfx = this.add.graphics();
+    gfx.setDepth(-5); // below defenders/enemies but above atmosphere
+    gfx.setAlpha(0.3);
+
+    // Random debris type — cute toy mess
+    const type = Math.floor(Math.random() * 4);
+    switch (type) {
+      case 0: // water puddle
+        gfx.fillStyle(0x81d4fa, 1);
+        gfx.fillEllipse(cx, cy, 14, 8);
+        break;
+      case 1: // scattered parts
+        gfx.fillStyle(0xb0bec5, 1);
+        gfx.fillRect(cx - 5, cy - 3, 10, 6);
+        gfx.fillRect(cx - 2, cy - 6, 4, 12);
+        break;
+      case 2: // dust puff
+        gfx.fillStyle(0xbcaaa4, 1);
+        gfx.fillCircle(cx, cy, 6);
+        gfx.fillCircle(cx + 5, cy - 2, 4);
+        gfx.fillCircle(cx - 4, cy + 2, 3);
+        break;
+      case 3: // toy fragment
+        gfx.fillStyle(0xef9a9a, 1);
+        gfx.fillTriangle(cx - 6, cy + 4, cx + 6, cy + 4, cx, cy - 5);
+        break;
+    }
+
+    // No pointer input during combat — debris is purely visual
+    this.debris.push(gfx);
+  }
+
   private updateAnnouncement(): void {
     const state = this.waveManager.waveState;
 
@@ -761,6 +837,8 @@ export class GameScene extends Phaser.Scene {
           enemy.drawHealthBar();
           enemy.playHitFlash();
           playSfxHit();
+          this.mess.addMess(MESS_SMALL);
+          this.spawnDebris(enemy.lane, Math.floor(enemy.col));
           this.spawnImpactBurst(proj.x, proj.y);
           proj.destroy();
           break;
@@ -775,6 +853,8 @@ export class GameScene extends Phaser.Scene {
         const deathColor = e.enemyKey === 'basic' ? 0xf48fb1 : 0xb388ff;
         this.spawnDeathParticles(e.x, e.y, deathColor);
         playSfxDeath(e.enemyKey);
+        this.mess.addMess(MESS_MEDIUM);
+        this.spawnDebris(e.lane, Math.floor(e.col));
         e.destroy();
         this.enemies.splice(i, 1);
       }
@@ -785,6 +865,8 @@ export class GameScene extends Phaser.Scene {
       if (isDead(this.defenders[i])) {
         const d = this.defenders[i];
         this.spawnDestructionEffect(d.x, d.y);
+        this.mess.addMess(MESS_LARGE);
+        this.spawnDebris(d.gridRow, d.gridCol);
         this.placement.remove({ row: d.gridRow, col: d.gridCol });
         d.destroy();
         this.defenders.splice(i, 1);
@@ -821,6 +903,7 @@ export class GameScene extends Phaser.Scene {
     this.updateAnnouncement();
     this.updateProgressDots();
     this.updateCountdownBar();
+    this.updateMessBar();
   }
 
 }
