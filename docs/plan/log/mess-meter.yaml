@@ -128,3 +128,9 @@ entries:
     result: pass
     notes: "0 critical, 2 concerns (debris glow misalignment at (0,0) vs (cx,cy); splice(indexOf) could be -1 in confiscate callback), 1 nit (countdown bar grows instead of drains). Posted as COMMENT."
     tokens: ~5k
+  - task: 20
+    story: review
+    description: "handle-pr-review pr=6 — fix review comments"
+    result: pass
+    notes: "Fixed all 3: debris glow at stored (cx,cy), indexOf guard >= 0, countdown drain direction. Threads resolved. Summary posted. Review complete."
+    tokens: ~5k
