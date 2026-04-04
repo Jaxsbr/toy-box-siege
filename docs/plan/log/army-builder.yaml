@@ -14,3 +14,9 @@ entries:
     result: pass
     notes: "DefenderType needs singleUse+behavior fields. handleGridClick (L403) = bomb detonation point. update loop (L691) = mine trigger check. wallBlocks must skip mines. createDefenderPanel needs recharge overlay. Placement.remove exists for self-destruct. LEVEL_1 has tough enemies (needs fix for spec L1=basic only). Queued config+test foundation task."
     tokens: ~12k
+  - task: 3
+    story: US-28
+    description: "Extend DefenderType interface + bomb/mine config + SingleUse logic + 10 tests"
+    result: pass
+    notes: "DefenderType extended with behavior (5 types) and singleUse fields. Bomb: cost 150, damage 9999, recharge 50s. Mine: cost 25, damage 9999, armDelay 10s, recharge 30s. SingleUse.ts: bombDetonate (Chebyshev dist 1), mineTriggerCheck, MineState arm timer. 10 new tests, 99 total pass."
+    tokens: ~5k
