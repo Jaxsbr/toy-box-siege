@@ -51,7 +51,7 @@ Expand the unit roster with two new single-use defenders (Teddy Bomb, Marble Min
 - [x] "Go!" button is enabled only when >= 1 defender is selected; clicking it transitions to GameScene [US-31]
 - [x] GameScene HUD defender panel renders only the defenders from the active loadout, not the full defender registry [US-31]
 - [x] `test/LoadoutSelection.test.ts` exists with >= 5 test cases covering: auto-fill when <= 4 unlocked, selection cap at 4, toggle deselect, Go requires >= 1 selected, loadout array passed to GameScene [US-31]
-- [ ] AGENTS.md reflects new defender types (bomb, mine), enemy types (armored, jumper), level configs (LEVEL_1-LEVEL_5), new scene (LevelSelectScene), progression system (localStorage persistence), and loadout mechanic introduced in this phase [phase]
+- [x] AGENTS.md reflects new defender types (bomb, mine), enemy types (armored, jumper), level configs (LEVEL_1-LEVEL_5), new scene (LevelSelectScene), progression system (localStorage persistence), and loadout mechanic introduced in this phase [phase]
 
 ### Golden principles (phase-relevant)
 - Game logic separated from Phaser rendering — single-use trigger logic (arm timer, area damage calc, jump decision) lives in pure TS systems/config, testable without Phaser

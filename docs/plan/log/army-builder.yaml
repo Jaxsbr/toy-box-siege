@@ -86,3 +86,21 @@ entries:
     result: pass
     notes: "DefenderUnlocks module: unlock map L1=[shooter,generator,wall] L2→+bomb L3→+mine. localStorage zombo_unlocks. LevelSelectScene: loadout overlay when >4 unlocked, card selection (max 4), Go button. GameScene: activeLoadout filters createDefenderPanel. 117 tests pass. ✓ US-31 complete"
     tokens: ~10k
+  - task: 15
+    story: phase
+    description: "AGENTS.md update for army-builder phase"
+    result: pass
+    notes: "AGENTS.md updated: 5 defender types (added bomb/mine), 4 enemy types (added armored/jumper), LevelSelectScene, LEVEL_1-LEVEL_5, SingleUse/LevelProgress/DefenderUnlocks/EnemyMovement modules, localStorage persistence, loadout mechanic."
+    tokens: ~3k
+  - task: 16
+    story: phase
+    description: "Phase completion gate — all done-when criteria verified"
+    result: pass
+    notes: |
+      All 41 done-when criteria met. Evidence:
+      - US-28: DefenderType extended, bomb (cost 150, 3x3 area damage, burst anim, 50s recharge), mine (cost 25, arm after 10s, cell trigger, no-block, 30s recharge). 10 tests.
+      - US-29: armored (300HP = 3x basic, 0.5 speed, helmet 3-stage degradation), jumper (150HP, 0.35 speed, attemptJump, arc tween). 8 tests.
+      - US-30: LEVEL_1-LEVEL_5 configs (L1 basic → L5 all types), LevelSelectScene (toy boxes), scene flow Title→LevelSelect→Game→GameOver→LevelSelect, localStorage zombo_progress. 5 tests.
+      - US-31: unlock map L1=[shooter,generator,wall] L2→+bomb L3→+mine, localStorage zombo_unlocks, loadout UI when >4 unlocked (max 4), GameScene HUD filtered. 5 tests.
+      - Phase: AGENTS.md updated, 117 tests pass.
+    tokens: ~5k
