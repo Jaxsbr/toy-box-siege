@@ -122,3 +122,9 @@ entries:
       - US-27: triggerMumEvaluation at round boundaries (isRoundBoundary in exitCleanup). High mess > 0.7: "This room is a DISASTER!" + confiscate (poof: scale 1→1.5→0). Low mess: "Not bad!" + free defender (forceOccupy + bounce-in). 0 defenders / 0 cells edge cases. mess.reset() after. Wave 7 no cleanup/Mum.
       - Phase: scene cleanup via Phaser lifecycle. AGENTS.md updated. 106 tests pass.
     tokens: ~3k
+  - task: 19
+    story: review
+    description: "review-pr pr=6 — automated PR review"
+    result: pass
+    notes: "0 critical, 2 concerns (debris glow misalignment at (0,0) vs (cx,cy); splice(indexOf) could be -1 in confiscate callback), 1 nit (countdown bar grows instead of drains). Posted as COMMENT."
+    tokens: ~5k
