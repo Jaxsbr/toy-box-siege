@@ -39,6 +39,11 @@ export class Placement {
     this.occupied.delete(this.grid.cellKey(pos));
   }
 
+  /** Mark a cell as occupied without cost check — used for free reward placements. */
+  forceOccupy(pos: CellPosition): void {
+    this.occupied.add(this.grid.cellKey(pos));
+  }
+
   reset(): void {
     this.occupied.clear();
   }

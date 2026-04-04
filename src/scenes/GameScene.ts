@@ -8,7 +8,7 @@ import { Economy } from '../systems/Economy';
 import { Placement } from '../systems/Placement';
 import { WaveManager, WaveState } from '../systems/WaveManager';
 import { GameFlow } from '../systems/GameFlow';
-import { Mess, MESS_SMALL, MESS_MEDIUM, MESS_LARGE } from '../systems/Mess';
+import { Mess, MESS_SMALL, MESS_MEDIUM, MESS_LARGE, MESS_THRESHOLD } from '../systems/Mess';
 import {
   ShooterEntity as ShooterState,
   ProjectileState,
@@ -70,6 +70,9 @@ export class GameScene extends Phaser.Scene {
   private messBarFill!: Phaser.GameObjects.Graphics;
   private isCleanupActive = false;
   private cleanupTimer = 0;
+  private isMumActive = false;
+  private mumTimer = 0;
+  private mumSpeechBubble: Phaser.GameObjects.Container | null = null;
   private transitioning = false;
 
   constructor() {
@@ -101,6 +104,9 @@ export class GameScene extends Phaser.Scene {
     this.lastWaveState = 'setup';
     this.isCleanupActive = false;
     this.cleanupTimer = 0;
+    this.isMumActive = false;
+    this.mumTimer = 0;
+    this.mumSpeechBubble = null;
 
     this.drawGrid();
     this.createAtmosphere();
@@ -841,7 +847,150 @@ export class GameScene extends Phaser.Scene {
       d.removeAllListeners('pointerdown');
     }
 
+    // If at a round boundary, trigger Mum's evaluation before advancing
+    if (this.waveManager.isRoundBoundary) {
+      this.triggerMumEvaluation();
+      return; // Don't skip to announcing yet — Mum sequence handles it
+    }
+
     // Skip WaveManager past the inter-wave delay to announcing
+    this.waveManager.skipToAnnouncing();
+  }
+
+  private triggerMumEvaluation(): void {
+    this.isMumActive = true;
+    this.mumTimer = 3; // speech bubble duration in seconds
+
+    const centerX = (GRID_COLS * CELL_SIZE) / 2;
+    const centerY = HUD_HEIGHT + (GRID_ROWS * CELL_SIZE) / 2;
+
+    const isMessy = this.mess.getLevel() > MESS_THRESHOLD;
+    const message = isMessy ? 'This room is a\nDISASTER!' : 'Not bad!';
+
+    // Create oversized speech bubble
+    const bubble = this.add.container(centerX, centerY - 40);
+    bubble.setDepth(200);
+
+    const bg = this.add.graphics();
+    const textWidth = isMessy ? 240 : 160;
+    const textHeight = isMessy ? 80 : 50;
+    bg.fillStyle(0xffffff, 0.95);
+    bg.fillRoundedRect(-textWidth / 2, -textHeight / 2, textWidth, textHeight, 12);
+    bg.lineStyle(3, isMessy ? 0xe53935 : 0x4caf50, 1);
+    bg.strokeRoundedRect(-textWidth / 2, -textHeight / 2, textWidth, textHeight, 12);
+    // Speech bubble tail
+    bg.fillStyle(0xffffff, 0.95);
+    bg.fillTriangle(-8, textHeight / 2, 8, textHeight / 2, 0, textHeight / 2 + 15);
+    bubble.add(bg);
+
+    const text = this.add.text(0, 0, message, {
+      fontSize: isMessy ? '20px' : '22px',
+      color: isMessy ? '#e53935' : '#4caf50',
+      fontFamily: 'monospace',
+      fontStyle: 'bold',
+      align: 'center',
+    });
+    text.setOrigin(0.5);
+    bubble.add(text);
+
+    // Pop-in animation
+    bubble.setScale(0.3);
+    this.tweens.add({
+      targets: bubble,
+      scaleX: 1,
+      scaleY: 1,
+      duration: 300,
+      ease: 'Back.easeOut',
+    });
+
+    this.mumSpeechBubble = bubble;
+
+    // Perform confiscation or reward
+    if (isMessy) {
+      this.mumConfiscate();
+    } else {
+      this.mumReward();
+    }
+  }
+
+  private mumConfiscate(): void {
+    if (this.defenders.length === 0) return; // edge case: 0 defenders
+
+    const idx = Math.floor(Math.random() * this.defenders.length);
+    const d = this.defenders[idx];
+
+    // Poof animation: scale 1 → 1.5 → 0
+    this.tweens.add({
+      targets: d,
+      scaleX: 1.5,
+      scaleY: 1.5,
+      duration: 200,
+      ease: 'Quad.easeOut',
+      onComplete: () => {
+        this.tweens.add({
+          targets: d,
+          scaleX: 0,
+          scaleY: 0,
+          alpha: 0,
+          duration: 300,
+          ease: 'Quad.easeIn',
+          onComplete: () => {
+            this.placement.remove({ row: d.gridRow, col: d.gridCol });
+            d.destroy();
+            this.defenders.splice(this.defenders.indexOf(d), 1);
+          },
+        });
+      },
+    });
+  }
+
+  private mumReward(): void {
+    // Find a random empty grid cell
+    const emptyCells: { row: number; col: number }[] = [];
+    for (let row = 0; row < GRID_ROWS; row++) {
+      for (let col = 0; col < GRID_COLS; col++) {
+        if (!this.placement.isOccupied({ row, col })) {
+          emptyCells.push({ row, col });
+        }
+      }
+    }
+    if (emptyCells.length === 0) return; // edge case: 0 empty cells
+
+    const cell = emptyCells[Math.floor(Math.random() * emptyCells.length)];
+    const defKeys = Object.keys(DEFENDER_TYPES);
+    const randomKey = defKeys[Math.floor(Math.random() * defKeys.length)];
+    const type = DEFENDER_TYPES[randomKey];
+
+    // Place defender (bypass cost — it's a free reward)
+    this.placement.forceOccupy(cell);
+    const entity = new DefenderEntity(this, cell.row, cell.col, randomKey, type);
+    this.defenders.push(entity);
+    playSfxPlace();
+  }
+
+  private finishMumEvaluation(): void {
+    this.isMumActive = false;
+    this.mumTimer = 0;
+
+    // Remove speech bubble
+    if (this.mumSpeechBubble) {
+      this.tweens.add({
+        targets: this.mumSpeechBubble,
+        alpha: 0,
+        scaleX: 0.5,
+        scaleY: 0.5,
+        duration: 200,
+        onComplete: () => {
+          this.mumSpeechBubble?.destroy();
+          this.mumSpeechBubble = null;
+        },
+      });
+    }
+
+    // Reset mess after Mum's evaluation
+    this.mess.reset();
+
+    // Now advance to next wave
     this.waveManager.skipToAnnouncing();
   }
 
@@ -868,6 +1017,17 @@ export class GameScene extends Phaser.Scene {
 
   update(_time: number, delta: number): void {
     const dt = delta / 1000;
+
+    // --- Mum evaluation: pause everything, run speech bubble timer ---
+    if (this.isMumActive) {
+      this.mumTimer -= dt;
+      if (this.mumTimer <= 0) {
+        this.finishMumEvaluation();
+      }
+      this.updateHUDText();
+      this.updateMessBar();
+      return;
+    }
 
     // --- Cleanup mode: combat paused, only run cleanup timer ---
     if (this.isCleanupActive) {
