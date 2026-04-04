@@ -56,3 +56,9 @@ entries:
     result: pass
     notes: "7 waves (2→8 enemies). currentRound: 1/2/0 based on waveNumber. isRoundBoundary: true in 'waiting' after waves 3/6. 8 new round tests. Levels.test.ts updated for 7 waves. 106 total tests. Still need progress dot gaps."
     tokens: ~8k
+  - task: 10
+    story: US-25
+    description: "Add visual round gaps to progress dots in HUD"
+    result: pass
+    notes: "Dots grouped with 14px round gaps after dots 3 and 6 (vs 6px between dots within a round). 106 tests pass. ✓ US-25 complete"
+    tokens: ~3k
