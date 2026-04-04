@@ -8,3 +8,9 @@ entries:
     result: pass
     notes: "DefenderType needs singleUse+behavior fields. EnemyType needs optional armor/jump fields. Combat.wallBlocks handles blocking — jump logic goes here. Levels.ts has LEVEL_1 only (needs L1-L5). Story order: US-28→US-29→US-30→US-31. 88 tests, 10 files. Queued US-28 investigation."
     tokens: ~8k
+  - task: 2
+    story: US-28
+    description: "Investigation — DefenderType interface, Placement, Combat, GameScene integration points for single-use defenders"
+    result: pass
+    notes: "DefenderType needs singleUse+behavior fields. handleGridClick (L403) = bomb detonation point. update loop (L691) = mine trigger check. wallBlocks must skip mines. createDefenderPanel needs recharge overlay. Placement.remove exists for self-destruct. LEVEL_1 has tough enemies (needs fix for spec L1=basic only). Queued config+test foundation task."
+    tokens: ~12k
