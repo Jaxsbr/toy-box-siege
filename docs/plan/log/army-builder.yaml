@@ -80,3 +80,9 @@ entries:
     result: pass
     notes: "US-28-30 complete. Last story: US-31 — defender unlock map, localStorage zombo_unlocks, loadout selection when >4 unlocked, GameScene HUD filtered. Queued full implementation (skipping separate investigate step since codebase is well-understood from US-30)."
     tokens: ~1k
+  - task: 14
+    story: US-31
+    description: "Implement defender unlocks, loadout selection, GameScene HUD filtering, 5 tests"
+    result: pass
+    notes: "DefenderUnlocks module: unlock map L1=[shooter,generator,wall] L2→+bomb L3→+mine. localStorage zombo_unlocks. LevelSelectScene: loadout overlay when >4 unlocked, card selection (max 4), Go button. GameScene: activeLoadout filters createDefenderPanel. 117 tests pass. ✓ US-31 complete"
+    tokens: ~10k
