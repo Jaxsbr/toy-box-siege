@@ -99,3 +99,9 @@ entries:
     result: pass
     notes: "0 critical, 1 concern (ARCHITECTURE.md 'Planned for game-juice' section stale — should reflect shipped state, SparkEntity.ts predicted but not created). Posted as COMMENT."
     tokens: ~5k
+  - task: 15
+    story: review
+    description: "handle-pr-review pr=5 — fix review comments"
+    result: pass
+    notes: "Fixed 1 concern: ARCHITECTURE.md 'Planned for game-juice' → 'Game juice layer (shipped)' with accurate descriptions. Thread resolved. Summary posted. Review complete."
+    tokens: ~3k
