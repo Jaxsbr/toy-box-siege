@@ -29,7 +29,7 @@ state:
 
   # --- Task orchestration (owner: iterator) ---
   task_number: 1
-  next_task: null
+  next_task: "[US-24] Investigate: Mess module design — check existing test patterns, Combat/GameScene integration points for mess events, plan Mess.ts API and test file"
   last_result: null
   consecutive_fails: 0
 

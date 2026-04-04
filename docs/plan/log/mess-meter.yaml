@@ -1,4 +1,10 @@
 # Phase log — mess-meter
 # Each entry: { task, story, description, result, notes, tokens }
 
-entries: []
+entries:
+  - task: 1
+    story: US-24
+    description: "Investigation — codebase structure, Mess module integration points, phase planning"
+    result: pass
+    notes: "3 waves in levels.ts (need 7). WaveManager has no round concept. Combat.ts + GameScene handle hits/deaths/destruction — integration points for addMess. 88 tests pass. 10 test files. Queued detailed investigation for Mess.ts API."
+    tokens: ~8k
