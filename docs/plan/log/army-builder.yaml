@@ -38,3 +38,9 @@ entries:
     result: pass
     notes: "Bomb: detonates on placement via bombDetonate, spawnBombBurst animation, self-destructs. Mine: dormant (alpha 0.5), arms after 10s with pulse tween, triggers on cell overlap. wallBlocks skips mines. Recharge: cooldown overlay on HUD cards. Draw: teddy (red, star, x-eyes, fuse) + marbles (5 colored with shine). 99 tests pass. TypeScript compiles clean. ✓ US-28 complete"
     tokens: ~10k
+  - task: 7
+    story: US-29
+    description: "Investigation — queue US-29 enemy types investigation"
+    result: pass
+    notes: "US-28 complete. Next story: US-29 — Armored Bunny (300HP, helmet degradation) + Sock Puppet (jump over first defender). Queued investigation."
+    tokens: ~1k
