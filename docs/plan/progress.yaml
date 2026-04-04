@@ -28,8 +28,8 @@ state:
   status: running
 
   # --- Task orchestration (owner: iterator) ---
-  task_number: 6
-  next_task: "[US-28] Wire bomb detonation into handleGridClick (area damage, burst anim, self-destruct) and mine arm timer + trigger into update loop; skip wallBlocks for mine behavior; add HUD recharge timer overlay for single-use cards"
+  task_number: 7
+  next_task: null
   last_result: pass
   consecutive_fails: 0
 

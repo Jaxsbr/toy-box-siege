@@ -26,3 +26,15 @@ entries:
     result: pass
     notes: "US-28 has config+logic+tests done. Remaining: wire into GameScene (bomb detonation on placement, mine arm timer + trigger in update loop, enemy movement bypass for mines). handleGridClick L403, update loop L690, wallBlocks L697. Queued implement task."
     tokens: ~2k
+  - task: 5
+    story: US-28
+    description: "Investigation — plan bomb/mine GameScene integration"
+    result: pass
+    notes: "handleGridClick L403 for bomb detonation, update loop L691 for mine trigger, wallBlocks skip for mines. Queued implement task."
+    tokens: ~1k
+  - task: 6
+    story: US-28
+    description: "Wire bomb detonation, mine arm/trigger, recharge timers, draw functions into GameScene + DefenderEntity"
+    result: pass
+    notes: "Bomb: detonates on placement via bombDetonate, spawnBombBurst animation, self-destructs. Mine: dormant (alpha 0.5), arms after 10s with pulse tween, triggers on cell overlap. wallBlocks skips mines. Recharge: cooldown overlay on HUD cards. Draw: teddy (red, star, x-eyes, fuse) + marbles (5 colored with shine). 99 tests pass. TypeScript compiles clean. ✓ US-28 complete"
+    tokens: ~10k
