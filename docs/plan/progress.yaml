@@ -29,7 +29,7 @@ state:
 
   # --- Task orchestration (owner: iterator) ---
   task_number: 1
-  next_task: null
+  next_task: "[US-34] Investigate: current balance values, test files referencing them, and GameScene config usage before implementing balance changes"
   last_result: null
   consecutive_fails: 0
 

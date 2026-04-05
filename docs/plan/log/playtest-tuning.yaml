@@ -1,4 +1,10 @@
 # Phase log — playtest-tuning
 # Each entry: { task, story, description, result, notes, tokens }
 
-entries: []
+entries:
+  - task: 1
+    story: US-34
+    description: "Investigation — current balance values, test references, GameScene config usage"
+    result: pending
+    notes: "Starting with US-34 (simplest config-only story). Cross-cutting phase — investigate-first mandate."
+    tokens: ~2k
