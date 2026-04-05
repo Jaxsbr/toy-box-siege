@@ -1,6 +1,6 @@
 # Phase: economy-polish
 
-Status: draft
+Status: shipped
 
 ## Design direction
 
