@@ -28,8 +28,8 @@ state:
   status: running
 
   # --- Task orchestration (owner: iterator) ---
-  task_number: 8
-  next_task: "[US-35] Create HoneyTrap.ts pure logic module + test/HoneyTrap.test.ts with 6+ test cases"
+  task_number: 9
+  next_task: "[US-35] Remove bomb config/type/logic, add trapper config, update DefenderUnlocks, remove bomb tests, update LoadoutSelection tests"
   last_result: pass
   consecutive_fails: 0
 
