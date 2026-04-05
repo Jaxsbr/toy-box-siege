@@ -20,3 +20,9 @@ entries:
     result: pass
     notes: "US-39 complete. Remaining unmet: AGENTS.md Tech stack section has no Scale Manager entry. Queued AGENTS.md update."
     tokens: ~1k
+  - task: 4
+    story: phase
+    description: "Update AGENTS.md — Scale Manager strategy documented"
+    result: pass
+    notes: "Added Scale Manager entry to Tech stack section: Phaser.Scale.FIT, autoCenter:CENTER_BOTH, 1.44:1 aspect, input auto-remap. 123 tests pass, no regressions."
+    tokens: ~1k
