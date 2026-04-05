@@ -68,3 +68,9 @@ entries:
     result: pass
     notes: "Pure TS module: createHoneyPot, updateHoneyPots, getSpeedModifier. Constants: HONEY_POT_DURATION=8000, HONEY_POT_SLOW=0.5, HONEY_TOSS_INTERVAL=4000, HONEY_TOSS_RANGE=5. 8 tests covering creation, expiry, slow modifier, multiple pots, partial updates. 126 tests pass."
     tokens: ~4k
+  - task: 12
+    story: phase
+    description: "Queue AGENTS.md update for structural criterion"
+    result: pass
+    notes: "All 5 stories complete (US-32, US-33, US-34, US-35, US-36). Remaining: AGENTS.md structural criterion."
+    tokens: ~1k

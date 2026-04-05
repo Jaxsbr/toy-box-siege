@@ -29,7 +29,7 @@ state:
 
   # --- Task orchestration (owner: iterator) ---
   task_number: 12
-  next_task: null
+  next_task: "[phase] Update AGENTS.md to reflect playtest-tuning phase: Honey Bear, removed Teddy Bomb, HoneyTrap module, enemy scale, balance values"
   last_result: pass
   consecutive_fails: 0
 
