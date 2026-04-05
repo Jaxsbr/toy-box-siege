@@ -29,7 +29,7 @@ state:
 
   # --- Task orchestration (owner: iterator) ---
   task_number: 6
-  next_task: null
+  next_task: "[US-41] Create Tutorial.ts pure state machine, integrate dream bubble rendering in GameScene with gated interactivity"
   last_result: pass
   consecutive_fails: 0
 
@@ -42,4 +42,4 @@ state:
   retro_complete: false
 
   # --- Tracking (owner: iterator) ---
-  completed_stories: [US-40, US-44, US-42, US-43]
+  completed_stories: [US-40, US-44, US-42, US-43, US-41]
