@@ -12,10 +12,10 @@ Tune the game for playtest feedback: boost spark economy (faster drops, larger t
 ### Done-when (observable)
 
 #### US-32 — Spark economy boost
-- [ ] `SPARK_SPAWN_INTERVAL` reduced to <= 4500ms (from 8000ms) [US-32]
-- [ ] Spark click zone (interactive Zone) increased to >= 44x44 pixels (from 24x24) [US-32]
-- [ ] Spark visual diamond shape scaled proportionally to match the larger click zone [US-32]
-- [ ] Enlarged sparks read as glowing collectible tokens — visually distinct from ambient dust motes and projectile impacts (verified by: spark uses multi-layer diamond/star shape at the new scale, not a plain circle) [US-32]
+- [x] `SPARK_SPAWN_INTERVAL` reduced to <= 4500ms (from 8000ms) [US-32]
+- [x] Spark click zone (interactive Zone) increased to >= 44x44 pixels (from 24x24) [US-32]
+- [x] Spark visual diamond shape scaled proportionally to match the larger click zone [US-32]
+- [x] Enlarged sparks read as glowing collectible tokens — visually distinct from ambient dust motes and projectile impacts (verified by: spark uses multi-layer diamond/star shape at the new scale, not a plain circle) [US-32]
 
 #### US-33 — Jack-in-the-Box collectible spark drops
 - [ ] `generatesIncome` for the `generator` entry in DEFENDER_TYPES is 0 [US-33]
