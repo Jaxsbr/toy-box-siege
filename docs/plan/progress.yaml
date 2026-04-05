@@ -28,8 +28,8 @@ state:
   status: running
 
   # --- Task orchestration (owner: iterator) ---
-  task_number: 3
-  next_task: null
+  task_number: 4
+  next_task: "[US-32] Implement spark economy boost: SPARK_SPAWN_INTERVAL 8000→4000, Zone 24→48, scale diamond shape proportionally"
   last_result: pass
   consecutive_fails: 0
 
