@@ -52,14 +52,14 @@ Tune the game for playtest feedback: boost spark economy (faster drops, larger t
 - [x] Bomb-related test cases removed from `test/SingleUseDefenders.test.ts`; mine test cases remain and pass [US-35]
 
 #### US-36 — Enemy visual differentiation
-- [ ] `EnemyType` interface in `src/config/enemies.ts` includes an optional `scale?: number` field [US-36]
-- [ ] Enemy scale values set: basic (Dust Bunny) = 1.0, tough (Cleaning Robot) >= 1.3, armored (Armored Bunny) between 1.05 and 1.2, jumper (Sock Puppet) <= 0.95 [US-36]
-- [ ] `EnemyEntity.ts` applies `scale` from the enemy type config to the rendered Graphics shape (multiplies drawing dimensions) [US-36]
-- [ ] Cleaning Robot has at least one added visual detail suggesting mechanical toughness (gear, antenna, or panel lines) [US-36]
-- [ ] Sock Puppet has at least one added visual detail suggesting jump capability (spring, coil, or legs) [US-36]
-- [ ] Enemy size differences read as a clear visual hierarchy — Cleaning Robot is noticeably larger than Dust Bunny, Dust Bunny is noticeably larger than Sock Puppet (verified by: each type's drawn bounding box differs by at least 15% from its neighbors in the hierarchy) [US-36]
-- [ ] Existing movement animations (bounce for Dust Bunny, rock for Cleaning Robot) render correctly at the new scale values — no clipping, no off-center positioning [US-36]
-- [ ] Hit flash, death particles, and health bar positioning adjust to the scaled entity size [US-36]
+- [x] `EnemyType` interface in `src/config/enemies.ts` includes an optional `scale?: number` field [US-36]
+- [x] Enemy scale values set: basic (Dust Bunny) = 1.0, tough (Cleaning Robot) >= 1.3, armored (Armored Bunny) between 1.05 and 1.2, jumper (Sock Puppet) <= 0.95 [US-36]
+- [x] `EnemyEntity.ts` applies `scale` from the enemy type config to the rendered Graphics shape (multiplies drawing dimensions) [US-36]
+- [x] Cleaning Robot has at least one added visual detail suggesting mechanical toughness (gear, antenna, or panel lines) [US-36]
+- [x] Sock Puppet has at least one added visual detail suggesting jump capability (spring, coil, or legs) [US-36]
+- [x] Enemy size differences read as a clear visual hierarchy — Cleaning Robot is noticeably larger than Dust Bunny, Dust Bunny is noticeably larger than Sock Puppet (verified by: each type's drawn bounding box differs by at least 15% from its neighbors in the hierarchy) [US-36]
+- [x] Existing movement animations (bounce for Dust Bunny, rock for Cleaning Robot) render correctly at the new scale values — no clipping, no off-center positioning [US-36]
+- [x] Hit flash, death particles, and health bar positioning adjust to the scaled entity size [US-36]
 
 #### Structural
 - [ ] AGENTS.md reflects: Honey Bear defender (trapper behavior), removed Teddy Bomb, HoneyTrap system module, enemy scale field, updated balance values introduced in this phase [phase]
