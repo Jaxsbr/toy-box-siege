@@ -1,4 +1,10 @@
 # Phase log — economy-polish
 # Each entry: { task, story, description, result, notes, tokens }
 
-entries: []
+entries:
+  - task: 1
+    story: US-37
+    description: "Investigation — spark constants, loadout selection current state"
+    result: pass
+    notes: "SPARK_SPAWN_INTERVAL=6000 (need 12000), SPARK_VALUE=25 (need 50), GENERATOR_INCOME_INTERVAL=8000 (stays). US-37 is a 2-constant change. US-38 loadout in LevelSelectScene.ts:145. Queued US-37 implement."
+    tokens: ~3k

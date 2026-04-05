@@ -28,8 +28,8 @@ state:
   status: running
 
   # --- Task orchestration (owner: iterator) ---
-  task_number: 1
-  next_task: null
+  task_number: 2
+  next_task: "[US-37] Update SPARK_SPAWN_INTERVAL to 12000 and SPARK_VALUE to 50 in GameScene.ts"
   last_result: pass
   consecutive_fails: 0
 
