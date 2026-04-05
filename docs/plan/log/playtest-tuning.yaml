@@ -20,3 +20,9 @@ entries:
     result: pass
     notes: "SPARK_SPAWN_INTERVAL=8000 L39→4000. Zone 24x24 L645→48x48. Diamond shape: outer glow r=12→22, diamond ±8/±6→±16/±12, center r=3→5. Already has 3-layer shape (glow+diamond+spot). Queued implement."
     tokens: ~3k
+  - task: 4
+    story: US-32
+    description: "Implement spark economy boost — SPARK_SPAWN_INTERVAL 8000→4000, click zone 24→48, scale diamond shape"
+    result: pass
+    notes: "Multi-layer shape (glow+ring+diamond+star cross+center). 117 tests pass, no regressions. ✓ US-32 complete"
+    tokens: ~3k
