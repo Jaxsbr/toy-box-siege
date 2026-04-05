@@ -65,8 +65,8 @@ Introduce new players to the game gradually through a guided 5-level progression
 - [x] A single Water Pistol survives L1's wave: total enemy HP in wave <= pistol DPS (15/s) x wave duration [US-44]
 - [x] L1 starting balance is a value X where 50 <= X < 100 (generator affordable, pistol not) — verified by unit test [US-44]
 - [x] npm test passes with updated level configs and unlock progression [US-44]
-- [ ] AGENTS.md reflects: variable lane system, tutorial dream bubble system, toy unlock cards, enemy bio screens, guided level progression (L1-L5 structure), updated defender unlock schedule [phase]
-- [ ] AGENTS.md includes explicit depth layer map: grid 0, atmosphere -10, entities 5, sparks 10, HUD 50, dream-bubble 105, pointer 106, overlay-bg 199, overlay-card 200, overlay-btn 201 [phase]
+- [x] AGENTS.md reflects: variable lane system, tutorial dream bubble system, toy unlock cards, enemy bio screens, guided level progression (L1-L5 structure), updated defender unlock schedule [phase]
+- [x] AGENTS.md includes explicit depth layer map: grid 0, atmosphere -10, entities 5, sparks 10, HUD 50, dream-bubble 105, pointer 106, overlay-bg 199, overlay-card 200, overlay-btn 201 [phase]
 
 ### Golden principles (phase-relevant)
 - Game logic separated from Phaser rendering — Tutorial.ts is pure TS with no Phaser dependency, testable in isolation

@@ -38,3 +38,17 @@ entries:
     result: pass
     notes: "Tutorial.ts: pure TS, 3-step state machine. GameScene: dream bubble thought-clouds (depth 105) with animated pointer arrows (depth 106). Gated interactivity per step. Immediate spark spawn in step 2. localStorage tutorial_complete tracking. 11 new tests (144 total). ✓ US-41 complete"
     tokens: ~8k
+  - task: 7
+    story: phase
+    description: "Phase completion gate — all done-when criteria verified, AGENTS.md updated"
+    result: pass
+    notes: |
+      All done-when criteria met. Evidence:
+      - US-40: LevelConfig.activeLanes, GameScene dims inactive rows, click zones filtered, spawn filtered, atmosphere filtered, 4 new tests
+      - US-41: Tutorial.ts pure TS state machine, dream bubbles at depth 105/106, gated interactivity, localStorage tracking, 11 new tests
+      - US-42: DefenderType.bio, unlock card overlay in GameOverScene (depth 199-201), slide-in animation, Collect! button, localStorage tracking
+      - US-43: EnemyType.bio, enemy bio overlay in LevelSelectScene (depth 199-201), Continue button, localStorage tracking
+      - US-44: L1-L5 guided configs, startingBalance/tutorialMode/enemyBio on LevelConfig, INITIAL_DEFENDERS=['generator','shooter'], UNLOCK_MAP={3:'wall'}
+      - Phase: AGENTS.md updated with variable lanes, tutorial, bio overlays, depth layer map, guided progression, updated unlock schedule
+      144 tests pass, 0 regressions
+    tokens: ~3k
