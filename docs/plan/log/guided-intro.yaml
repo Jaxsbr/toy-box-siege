@@ -1,4 +1,10 @@
 # Phase log — guided-intro
 # Each entry: { task, story, description, result, notes, tokens }
 
-entries: []
+entries:
+  - task: 1
+    story: US-40
+    description: "Investigation — LevelConfig, GameScene grid/click-zone/atmosphere/spawn code, existing tests"
+    result: pass
+    notes: "LevelConfig in WaveManager.ts has no activeLanes field. GameScene.drawGrid iterates GRID_ROWS(5)×GRID_COLS(9) with carpet shades. createGridClickZones iterates same. createAtmosphere randomizes toyPositions across all GRID_ROWS. Enemy spawn uses spawn.lane directly from WaveConfig. STARTING_BALANCE is global const (500). DefenderUnlocks: INITIAL_DEFENDERS=['shooter','generator','wall'], UNLOCK_MAP={2:'trapper',3:'mine'}. 15 test files, 123 tests pass. Plan: add activeLanes?:number[] to LevelConfig, filter grid rendering (dimmed inactive rows), filter click zones, filter atmosphere toy positions, filter enemy spawn lanes. Queued implement."
+    tokens: ~5k
