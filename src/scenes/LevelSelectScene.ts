@@ -188,7 +188,8 @@ export class LevelSelectScene extends Phaser.Scene {
       const type = DEFENDER_TYPES[key];
       const x = startX + i * (cardWidth + gap);
 
-      const container = this.add.container(x, startY);
+      const entryOffset = Math.floor(GAME_HEIGHT * 0.08);
+      const container = this.add.container(x, startY + entryOffset);
       container.setDepth(11);
       container.setAlpha(0);
 
@@ -256,10 +257,6 @@ export class LevelSelectScene extends Phaser.Scene {
         duration: 400,
         delay: i * 120,
         ease: 'Back.easeOut',
-        props: {
-          y: { from: startY + Math.floor(GAME_HEIGHT * 0.08) },
-          alpha: { from: 0 },
-        },
       });
     }
 
