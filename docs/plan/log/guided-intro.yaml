@@ -26,3 +26,9 @@ entries:
     result: pass
     notes: "DefenderType.bio added with kid-friendly text for all 5 defenders. GameOverScene shows unlock card overlay after level-win when unlock triggers: dimmed bg (depth 199), card (depth 200) with DRAW_DEFENDER at 2x, name, cost, bio. Collect! button (depth 201). Card slides from above (400ms). localStorage bio_shown_defender_<key> tracking. 132 tests pass. ✓ US-42 complete"
     tokens: ~6k
+  - task: 5
+    story: US-43
+    description: "Add bio field to EnemyType, build pre-round enemy bio overlay in LevelSelectScene"
+    result: pass
+    notes: "EnemyType.bio added (optional). Armored Bunny bio explains helmet mechanics. LevelSelectScene shows enemy bio overlay before L5: dimmed bg, card with DRAW_ENEMY at 2x, name, bio. Continue button dismisses. localStorage bio_shown_enemy_<key> tracking. Exported DRAW_ENEMY from EnemyEntity. 133 tests pass. ✓ US-43 complete"
+    tokens: ~5k
