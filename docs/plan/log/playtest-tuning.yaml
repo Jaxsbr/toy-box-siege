@@ -5,6 +5,6 @@ entries:
   - task: 1
     story: US-34
     description: "Investigation — current balance values, test references, GameScene config usage"
-    result: pending
-    notes: "Starting with US-34 (simplest config-only story). Cross-cutting phase — investigate-first mandate."
-    tokens: ~2k
+    result: pass
+    notes: "Water Pistol damage 25→15, Block Tower cost 50→25 health 400→90, Mine recharge 30000→20000, MINE_ARM_DELAY 10000→6000. Tests use hardcoded fixtures (Combat) or import constants (SingleUseDefenders) — all should pass after config changes. Wall health 90 > others' 40, passes Defenders.test relative check."
+    tokens: ~5k
