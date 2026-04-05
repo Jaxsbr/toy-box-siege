@@ -18,12 +18,12 @@ Tune the game for playtest feedback: boost spark economy (faster drops, larger t
 - [x] Enlarged sparks read as glowing collectible tokens — visually distinct from ambient dust motes and projectile impacts (verified by: spark uses multi-layer diamond/star shape at the new scale, not a plain circle) [US-32]
 
 #### US-33 — Jack-in-the-Box collectible spark drops
-- [ ] `generatesIncome` for the `generator` entry in DEFENDER_TYPES is 0 [US-33]
-- [ ] When a Jack-in-the-Box defender is alive, it spawns a clickable spark token at its grid position every GENERATOR_INCOME_INTERVAL ms [US-33]
-- [ ] Generator-spawned sparks are collectible via pointer click — add SPARK_VALUE to economy balance, play collect SFX, show collection animation [US-33]
-- [ ] Generator-spawned sparks that are not collected are removed after ~5000ms (no persistent screen clutter from generators) [US-33]
-- [ ] Jack-in-the-Box plays a visible produce animation (existing `playProduce()` or equivalent) when spawning a spark [US-33]
-- [ ] Test coverage: generator income is 0 — placing a generator and advancing time without clicking does NOT increase economy balance [US-33]
+- [x] `generatesIncome` for the `generator` entry in DEFENDER_TYPES is 0 [US-33]
+- [x] When a Jack-in-the-Box defender is alive, it spawns a clickable spark token at its grid position every GENERATOR_INCOME_INTERVAL ms [US-33]
+- [x] Generator-spawned sparks are collectible via pointer click — add SPARK_VALUE to economy balance, play collect SFX, show collection animation [US-33]
+- [x] Generator-spawned sparks that are not collected are removed after ~5000ms (no persistent screen clutter from generators) [US-33]
+- [x] Jack-in-the-Box plays a visible produce animation (existing `playProduce()` or equivalent) when spawning a spark [US-33]
+- [x] Test coverage: generator income is 0 — placing a generator and advancing time without clicking does NOT increase economy balance [US-33]
 
 #### US-34 — Defender balance pass
 - [x] Water Pistol `damage` reduced to <= 15 (from 25) in `src/config/defenders.ts` [US-34]
