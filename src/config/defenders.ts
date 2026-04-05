@@ -21,7 +21,7 @@ export const DEFENDER_TYPES: Record<string, DefenderType> = {
     damage: 0,
     range: 0,
     fireRate: 0,
-    generatesIncome: 25,
+    generatesIncome: 0,
     behavior: 'generator',
     singleUse: false,
   },

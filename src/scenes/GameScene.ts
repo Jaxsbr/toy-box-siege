@@ -39,7 +39,8 @@ const STARTING_BALANCE = 500;
 const SPARK_SPAWN_INTERVAL = 4000; // ms between spark spawns
 const SPARK_VALUE = 25; // sparks balance added per collection
 const SPARK_FALL_SPEED = 30; // pixels per second
-const GENERATOR_INCOME_INTERVAL = 5000; // ms
+const GENERATOR_INCOME_INTERVAL = 5000; // ms between generator spark spawns
+const GENERATOR_SPARK_EXPIRY = 5000; // ms before uncollected generator sparks despawn
 const FADE_DURATION = 600;
 
 export class GameScene extends Phaser.Scene {
@@ -126,11 +127,63 @@ export class GameScene extends Phaser.Scene {
 
   private tickGeneratorIncome(): void {
     for (const def of this.defenders) {
-      if (def.defenderType.generatesIncome > 0 && !isDead(def)) {
-        this.economy.addIncome(def.defenderType.generatesIncome);
+      if (def.defenderType.behavior === 'generator' && !isDead(def)) {
         def.playProduce();
+        this.spawnGeneratorSpark(def.x, def.y);
       }
     }
+  }
+
+  private spawnGeneratorSpark(defX: number, defY: number): void {
+    // Slight random offset so sparks don't stack exactly
+    const x = defX + (Math.random() - 0.5) * 20;
+    const y = defY - 15;
+
+    const spark = this.add.container(x, y);
+    spark.setDepth(10);
+
+    // Same multi-layer diamond shape as floating sparks
+    const gfx = this.add.graphics();
+    gfx.fillStyle(0x81d4fa, 0.3);
+    gfx.fillCircle(0, 0, 22);
+    gfx.fillStyle(0x4fc3f7, 0.4);
+    gfx.fillCircle(0, 0, 16);
+    gfx.fillStyle(0x4fc3f7, 0.9);
+    gfx.beginPath();
+    gfx.moveTo(0, -16);
+    gfx.lineTo(12, 0);
+    gfx.lineTo(0, 16);
+    gfx.lineTo(-12, 0);
+    gfx.closePath();
+    gfx.fillPath();
+    gfx.fillStyle(0xb3e5fc, 0.6);
+    gfx.beginPath();
+    gfx.moveTo(0, -12);
+    gfx.lineTo(4, 0);
+    gfx.lineTo(0, 12);
+    gfx.lineTo(-4, 0);
+    gfx.closePath();
+    gfx.fillPath();
+    gfx.fillStyle(0xffffff, 0.9);
+    gfx.fillCircle(0, 0, 5);
+    spark.add(gfx);
+
+    const zone = this.add.zone(0, 0, 48, 48).setInteractive({ useHandCursor: true });
+    spark.add(zone);
+
+    zone.on('pointerdown', () => {
+      this.collectSpark(spark);
+    });
+
+    this.sparks.push(spark);
+
+    // Auto-expire after GENERATOR_SPARK_EXPIRY
+    this.time.delayedCall(GENERATOR_SPARK_EXPIRY, () => {
+      if (spark.active) {
+        spark.destroy();
+        this.sparks = this.sparks.filter(s => s !== spark);
+      }
+    });
   }
 
   private drawGrid(): void {
