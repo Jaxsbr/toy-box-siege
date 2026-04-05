@@ -8,3 +8,9 @@ entries:
     result: pass
     notes: "LevelConfig in WaveManager.ts has no activeLanes field. GameScene.drawGrid iterates GRID_ROWS(5)×GRID_COLS(9) with carpet shades. createGridClickZones iterates same. createAtmosphere randomizes toyPositions across all GRID_ROWS. Enemy spawn uses spawn.lane directly from WaveConfig. STARTING_BALANCE is global const (500). DefenderUnlocks: INITIAL_DEFENDERS=['shooter','generator','wall'], UNLOCK_MAP={2:'trapper',3:'mine'}. 15 test files, 123 tests pass. Plan: add activeLanes?:number[] to LevelConfig, filter grid rendering (dimmed inactive rows), filter click zones, filter atmosphere toy positions, filter enemy spawn lanes. Queued implement."
     tokens: ~5k
+  - task: 2
+    story: US-40
+    description: "Add activeLanes to LevelConfig, update GameScene grid/click-zones/atmosphere/spawn filtering"
+    result: pass
+    notes: "LevelConfig.activeLanes added. GameScene: drawGrid dims inactive rows (0.25 alpha), createGridClickZones iterates activeLanes only, createAtmosphere randomizes from activeLanes, enemy spawn skips non-active lanes. 4 new tests (127 total). ✓ US-40 complete"
+    tokens: ~4k
