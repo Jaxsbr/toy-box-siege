@@ -15,7 +15,7 @@ Enable Phaser's built-in Scale Manager so the game canvas fills the available br
 - [x] `index.html` body background color remains `#3e2723` — page background matches the bedroom aesthetic so letterbox regions do not show a jarring contrast colour [US-39]
 - [x] `index.html` canvas CSS retains `border: 3px solid #5d4037` and `border-radius: 8px` (visual treatment preserved after scaling) [US-39]
 - [x] `npm test` passes — no existing Vitest unit tests broken [US-39]
-- [ ] AGENTS.md `Tech stack` or game config section documents the Scale Manager strategy (`Phaser.Scale.FIT`, `autoCenter: CENTER_BOTH`) introduced in this phase [phase]
+- [x] AGENTS.md `Tech stack` or game config section documents the Scale Manager strategy (`Phaser.Scale.FIT`, `autoCenter: CENTER_BOTH`) introduced in this phase [phase]
 
 ### Golden principles (phase-relevant)
 - Game logic separated from Phaser rendering — this change is config-only; no scene logic is affected
