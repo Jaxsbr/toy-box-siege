@@ -14,6 +14,7 @@ export const GAME_HEIGHT = GRID_ROWS * CELL_SIZE + HUD_HEIGHT;
 
 export const gameConfig: Phaser.Types.Core.GameConfig = {
   type: Phaser.AUTO,
+  parent: 'game-container',
   width: GAME_WIDTH,
   height: GAME_HEIGHT,
   backgroundColor: '#5d4037',
