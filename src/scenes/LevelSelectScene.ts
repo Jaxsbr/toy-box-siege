@@ -149,7 +149,7 @@ export class LevelSelectScene extends Phaser.Scene {
 
     // Dim the level entries
     const overlay = this.add.rectangle(
-      GAME_WIDTH / 2, GAME_HEIGHT / 2, GAME_WIDTH, GAME_HEIGHT, 0x000000, 0.6,
+      GAME_WIDTH / 2, GAME_HEIGHT / 2, GAME_WIDTH, GAME_HEIGHT, 0x000000, 1,
     );
     overlay.setDepth(10);
 
@@ -181,7 +181,7 @@ export class LevelSelectScene extends Phaser.Scene {
     const cornerRadius = Math.floor(cardWidth * 0.08);
 
     // Preview scale — proportional to card size, minimum 0.75
-    const previewScale = Math.max(0.75, cardWidth / 110);
+    const previewScale = Math.max(1.5, (cardWidth / 110) * 2);
 
     for (let i = 0; i < this.unlocked.length; i++) {
       const key = this.unlocked[i];
