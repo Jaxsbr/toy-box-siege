@@ -20,6 +20,19 @@ entries:
     result: pass
     notes: "US-39 complete. Remaining unmet: AGENTS.md Tech stack section has no Scale Manager entry. Queued AGENTS.md update."
     tokens: ~1k
+  - task: 5
+    story: phase
+    description: "Phase completion gate — all done-when criteria verified"
+    result: pass
+    notes: |
+      All 10 done-when criteria met. Evidence:
+      - US-39: gameConfig.scale.mode=Phaser.Scale.FIT (game.ts:21), autoCenter=CENTER_BOTH (game.ts:22)
+      - US-39: GAME_WIDTH=576, GAME_HEIGHT=400 (derived constants, unchanged)
+      - US-39: index.html body height:100vh, overflow:hidden
+      - US-39: index.html body background:#3e2723, canvas border:3px solid #5d4037, border-radius:8px
+      - US-39: 123 tests pass
+      - Phase: AGENTS.md Tech stack section has Scale Manager entry
+    tokens: ~1k
   - task: 4
     story: phase
     description: "Update AGENTS.md — Scale Manager strategy documented"
