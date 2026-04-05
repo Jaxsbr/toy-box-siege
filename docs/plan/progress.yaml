@@ -28,8 +28,8 @@ state:
   status: running
 
   # --- Task orchestration (owner: iterator) ---
-  task_number: 6
-  next_task: "[US-41] Create Tutorial.ts pure state machine, integrate dream bubble rendering in GameScene with gated interactivity"
+  task_number: 7
+  next_task: null
   last_result: pass
   consecutive_fails: 0
 

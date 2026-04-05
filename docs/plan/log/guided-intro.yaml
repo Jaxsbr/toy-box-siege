@@ -32,3 +32,9 @@ entries:
     result: pass
     notes: "EnemyType.bio added (optional). Armored Bunny bio explains helmet mechanics. LevelSelectScene shows enemy bio overlay before L5: dimmed bg, card with DRAW_ENEMY at 2x, name, bio. Continue button dismisses. localStorage bio_shown_enemy_<key> tracking. Exported DRAW_ENEMY from EnemyEntity. 133 tests pass. ✓ US-43 complete"
     tokens: ~5k
+  - task: 6
+    story: US-41
+    description: "Create Tutorial.ts pure state machine and integrate dream bubble rendering in GameScene"
+    result: pass
+    notes: "Tutorial.ts: pure TS, 3-step state machine. GameScene: dream bubble thought-clouds (depth 105) with animated pointer arrows (depth 106). Gated interactivity per step. Immediate spark spawn in step 2. localStorage tutorial_complete tracking. 11 new tests (144 total). ✓ US-41 complete"
+    tokens: ~8k
