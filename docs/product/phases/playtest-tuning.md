@@ -1,6 +1,6 @@
 # Phase: playtest-tuning
 
-Status: draft
+Status: shipped
 
 ## Design direction
 
