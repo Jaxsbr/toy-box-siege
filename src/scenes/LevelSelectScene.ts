@@ -1,10 +1,14 @@
 import Phaser from 'phaser';
 import { GAME_WIDTH, GAME_HEIGHT } from '../config/game';
 import { DEFENDER_TYPES } from '../config/defenders';
+import { ENEMY_TYPES } from '../config/enemies';
 import { DRAW_DEFENDER } from '../entities/DefenderEntity';
+import { DRAW_ENEMY } from '../entities/EnemyEntity';
 import { ALL_LEVELS } from '../config/levels';
 import { loadProgress, saveProgress, completeLevel, getLevelState, ProgressData } from '../systems/LevelProgress';
 import { loadUnlocks, saveUnlocks, updateUnlocksAfterLevel, needsLoadoutSelection, MAX_LOADOUT } from '../systems/DefenderUnlocks';
+
+const BIO_SHOWN_ENEMY_PREFIX = 'bio_shown_enemy_';
 
 const FADE_DURATION = 600;
 
@@ -133,13 +137,168 @@ export class LevelSelectScene extends Phaser.Scene {
 
   private startLevel(levelIndex: number): void {
     this.pendingLevelIndex = levelIndex;
+    const levelConfig = ALL_LEVELS[levelIndex];
 
+    // Check for enemy bio overlay before starting
+    if (levelConfig?.enemyBio) {
+      const enemyKey = levelConfig.enemyBio.enemyKey;
+      if (!this.hasShownEnemyBio(enemyKey)) {
+        this.showEnemyBio(enemyKey, () => {
+          this.proceedToGame();
+        });
+        return;
+      }
+    }
+
+    this.proceedToGame();
+  }
+
+  private proceedToGame(): void {
     if (needsLoadoutSelection(this.unlocked)) {
       this.showLoadoutSelection();
     } else {
-      // Auto-fill with all unlocked defenders
       this.launchGame(this.unlocked);
     }
+  }
+
+  private hasShownEnemyBio(key: string): boolean {
+    try {
+      return localStorage.getItem(`${BIO_SHOWN_ENEMY_PREFIX}${key}`) === 'true';
+    } catch {
+      return false;
+    }
+  }
+
+  private showEnemyBio(enemyKey: string, onDismiss: () => void): void {
+    const enemyType = ENEMY_TYPES[enemyKey];
+    if (!enemyType || !enemyType.bio) {
+      onDismiss();
+      return;
+    }
+
+    // Dimmed background overlay — interactive to block clicks on lower-depth objects
+    const dimBg = this.add.rectangle(
+      GAME_WIDTH / 2, GAME_HEIGHT / 2, GAME_WIDTH, GAME_HEIGHT, 0x000000, 0.7,
+    );
+    dimBg.setDepth(199);
+    dimBg.setInteractive();
+
+    // Card dimensions
+    const cardWidth = 250;
+    const cardHeight = 300;
+    const cardX = GAME_WIDTH / 2 - cardWidth / 2;
+    const cardY = GAME_HEIGHT / 2 - cardHeight / 2;
+
+    // Card container — starts above screen, slides down
+    const cardContainer = this.add.container(0, -cardHeight - 50);
+    cardContainer.setDepth(200);
+
+    // Card background with warm brown border
+    const cardGfx = this.add.graphics();
+    cardGfx.fillStyle(0xfff8e1, 1); // cream background
+    cardGfx.fillRoundedRect(cardX, cardY, cardWidth, cardHeight, 12);
+    cardGfx.lineStyle(4, 0x5d4037, 1); // warm brown border >= 3px
+    cardGfx.strokeRoundedRect(cardX, cardY, cardWidth, cardHeight, 12);
+    cardContainer.add(cardGfx);
+
+    // "New Enemy!" header
+    const headerText = this.add.text(GAME_WIDTH / 2, cardY + 20, 'Watch Out!', {
+      fontSize: '20px',
+      color: '#c62828',
+      fontFamily: 'monospace',
+      fontStyle: 'bold',
+    }).setOrigin(0.5);
+    cardContainer.add(headerText);
+
+    // Enemy visual at >= 1.5x scale
+    const previewY = cardY + cardHeight * 0.38;
+    const previewContainer = this.add.container(GAME_WIDTH / 2, previewY);
+    const previewGfx = this.add.graphics();
+    const drawFn = DRAW_ENEMY[enemyKey];
+    if (drawFn) {
+      drawFn(previewGfx);
+    }
+    previewContainer.add(previewGfx);
+    previewContainer.setScale(2.0); // >= 1.5x scale
+    cardContainer.add(previewContainer);
+
+    // Enemy name — >= 18px monospace
+    const nameText = this.add.text(GAME_WIDTH / 2, cardY + cardHeight * 0.62, enemyType.name, {
+      fontSize: '20px',
+      color: '#3e2723',
+      fontFamily: 'monospace',
+      fontStyle: 'bold',
+    }).setOrigin(0.5);
+    cardContainer.add(nameText);
+
+    // Bio text — >= 14px monospace, word-wrapped
+    const bioText = this.add.text(GAME_WIDTH / 2, cardY + cardHeight * 0.78, enemyType.bio, {
+      fontSize: '14px',
+      color: '#5d4037',
+      fontFamily: 'monospace',
+      wordWrap: { width: cardWidth - 30 },
+      align: 'center',
+    }).setOrigin(0.5);
+    cardContainer.add(bioText);
+
+    // Slide-in animation (300-500ms)
+    this.tweens.add({
+      targets: cardContainer,
+      y: 0,
+      duration: 400,
+      ease: 'Back.easeOut',
+    });
+
+    // "Continue" button at depth 201
+    const btnWidth = 140;
+    const btnHeight = 48;
+    const btnX = GAME_WIDTH / 2 - btnWidth / 2;
+    const btnY = cardY + cardHeight + 15;
+
+    const btnContainer = this.add.container(0, -cardHeight - 50);
+    btnContainer.setDepth(201);
+
+    const btnGfx = this.add.graphics();
+    btnGfx.fillStyle(0x1565c0, 1);
+    btnGfx.fillRoundedRect(btnX, btnY, btnWidth, btnHeight, 8);
+    btnGfx.lineStyle(2, 0x0d47a1, 1);
+    btnGfx.strokeRoundedRect(btnX, btnY, btnWidth, btnHeight, 8);
+    btnContainer.add(btnGfx);
+
+    const btnText = this.add.text(GAME_WIDTH / 2, btnY + btnHeight / 2, 'Continue', {
+      fontSize: '20px',
+      color: '#ffffff',
+      fontFamily: 'monospace',
+      fontStyle: 'bold',
+    }).setOrigin(0.5);
+    btnContainer.add(btnText);
+
+    // Hit area >= 48x48
+    const btnZone = this.add.zone(btnX, btnY, btnWidth, btnHeight)
+      .setOrigin(0).setInteractive({ useHandCursor: true });
+    btnContainer.add(btnZone);
+
+    // Slide button in with the card
+    this.tweens.add({
+      targets: btnContainer,
+      y: 0,
+      duration: 400,
+      ease: 'Back.easeOut',
+    });
+
+    btnZone.on('pointerdown', () => {
+      btnZone.disableInteractive();
+      try {
+        localStorage.setItem(`${BIO_SHOWN_ENEMY_PREFIX}${enemyKey}`, 'true');
+      } catch {
+        // localStorage unavailable
+      }
+      // Clean up overlay
+      dimBg.destroy();
+      cardContainer.destroy();
+      btnContainer.destroy();
+      onDismiss();
+    });
   }
 
   private showLoadoutSelection(): void {

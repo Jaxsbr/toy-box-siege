@@ -15,6 +15,15 @@ describe('Enemy types', () => {
     }
   });
 
+  it('armored bunny has bio text (kid-friendly, explains armor degradation)', () => {
+    const armored = ENEMY_TYPES.armored;
+    expect(armored.bio).toBeTruthy();
+    expect(typeof armored.bio).toBe('string');
+    expect(armored.bio!.length).toBeGreaterThan(10);
+    // Bio should mention helmet or armor
+    expect(armored.bio!.toLowerCase()).toMatch(/helmet|armor|crack/);
+  });
+
   it('basic and tough have distinct health/speed values', () => {
     const basic = ENEMY_TYPES.basic;
     const tough = ENEMY_TYPES.tough;

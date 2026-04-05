@@ -140,7 +140,7 @@ function drawSockPuppet(g: Phaser.GameObjects.Graphics): void {
   }
 }
 
-const DRAW_ENEMY: Record<string, (g: Phaser.GameObjects.Graphics) => void> = {
+export const DRAW_ENEMY: Record<string, (g: Phaser.GameObjects.Graphics) => void> = {
   basic: drawDustBunny,
   tough: drawCleaningRobot,
   armored: drawArmoredBunny,
