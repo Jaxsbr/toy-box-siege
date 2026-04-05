@@ -36,7 +36,7 @@ import {
 } from '../systems/SFX';
 
 const STARTING_BALANCE = 500;
-const SPARK_SPAWN_INTERVAL = 8000; // ms between spark spawns
+const SPARK_SPAWN_INTERVAL = 4000; // ms between spark spawns
 const SPARK_VALUE = 25; // sparks balance added per collection
 const SPARK_FALL_SPEED = 30; // pixels per second
 const GENERATOR_INCOME_INTERVAL = 5000; // ms
@@ -622,27 +622,39 @@ export class GameScene extends Phaser.Scene {
     const spark = this.add.container(x, y);
     spark.setDepth(10);
 
-    // Draw spark shape — diamond/star glow (distinct from yellow circle projectiles)
+    // Draw spark shape — multi-layer diamond/star glow (distinct from ambient dust motes and projectile impacts)
     const gfx = this.add.graphics();
     // Outer glow
-    gfx.fillStyle(0x81d4fa, 0.4);
-    gfx.fillCircle(0, 0, 12);
+    gfx.fillStyle(0x81d4fa, 0.3);
+    gfx.fillCircle(0, 0, 22);
+    // Mid glow ring
+    gfx.fillStyle(0x4fc3f7, 0.4);
+    gfx.fillCircle(0, 0, 16);
     // Inner diamond
     gfx.fillStyle(0x4fc3f7, 0.9);
     gfx.beginPath();
-    gfx.moveTo(0, -8);
-    gfx.lineTo(6, 0);
-    gfx.lineTo(0, 8);
-    gfx.lineTo(-6, 0);
+    gfx.moveTo(0, -16);
+    gfx.lineTo(12, 0);
+    gfx.lineTo(0, 16);
+    gfx.lineTo(-12, 0);
+    gfx.closePath();
+    gfx.fillPath();
+    // Star cross overlay
+    gfx.fillStyle(0xb3e5fc, 0.6);
+    gfx.beginPath();
+    gfx.moveTo(0, -12);
+    gfx.lineTo(4, 0);
+    gfx.lineTo(0, 12);
+    gfx.lineTo(-4, 0);
     gfx.closePath();
     gfx.fillPath();
     // Center bright spot
-    gfx.fillStyle(0xffffff, 0.8);
-    gfx.fillCircle(0, 0, 3);
+    gfx.fillStyle(0xffffff, 0.9);
+    gfx.fillCircle(0, 0, 5);
     spark.add(gfx);
 
-    // Clickable zone
-    const zone = this.add.zone(0, 0, 24, 24).setInteractive({ useHandCursor: true });
+    // Clickable zone — large target for easy collection
+    const zone = this.add.zone(0, 0, 48, 48).setInteractive({ useHandCursor: true });
     spark.add(zone);
 
     zone.on('pointerdown', () => {
