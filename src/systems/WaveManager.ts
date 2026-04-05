@@ -15,6 +15,7 @@ export interface LevelConfig {
   setupDelay?: number;       // seconds before first wave (default 25)
   interWaveDelay?: number;   // seconds between waves (default 18)
   announceDuration?: number; // seconds to show announcement (default 2.5)
+  activeLanes?: number[];    // which grid rows are playable (default: all rows)
 }
 
 export type WaveState = 'setup' | 'announcing' | 'spawning' | 'waiting' | 'complete';

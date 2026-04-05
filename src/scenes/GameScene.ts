@@ -73,6 +73,7 @@ export class GameScene extends Phaser.Scene {
   private rechargeTimers: Map<string, number> = new Map(); // defenderKey → remaining ms
   private currentLevelIndex: number = 0;
   private activeLoadout: string[] = [];
+  private activeLanes: number[] = [];
   private transitioning = false;
 
   constructor() {
@@ -87,6 +88,7 @@ export class GameScene extends Phaser.Scene {
 
     // Initialize systems
     const levelConfig = data?.levelConfig ?? LEVEL_1;
+    this.activeLanes = levelConfig.activeLanes ?? Array.from({ length: GRID_ROWS }, (_, i) => i);
     this.grid = new Grid(GRID_ROWS, GRID_COLS);
     this.economy = new Economy(STARTING_BALANCE);
     this.placement = new Placement(this.grid, this.economy);
@@ -201,12 +203,13 @@ export class GameScene extends Phaser.Scene {
       for (let col = 0; col < GRID_COLS; col++) {
         const x = col * CELL_SIZE;
         const y = HUD_HEIGHT + row * CELL_SIZE;
+        const isActive = this.activeLanes.includes(row);
 
         const shade = (row + col) % 2 === 0 ? 0xc4a882 : 0xb0956e;
-        graphics.fillStyle(shade, 1);
+        graphics.fillStyle(shade, isActive ? 1 : 0.25);
         graphics.fillRect(x, y, CELL_SIZE, CELL_SIZE);
 
-        graphics.lineStyle(1, 0x8b7355, 0.3);
+        graphics.lineStyle(1, 0x8b7355, isActive ? 0.3 : 0.1);
         graphics.strokeRect(x, y, CELL_SIZE, CELL_SIZE);
       }
     }
@@ -235,10 +238,11 @@ export class GameScene extends Phaser.Scene {
     fg.lineBetween(GRID_COLS * CELL_SIZE - 115, HUD_HEIGHT + 14, GRID_COLS * CELL_SIZE - 45, HUD_HEIGHT + 14);
     fg.lineBetween(GRID_COLS * CELL_SIZE - 115, HUD_HEIGHT + 24, GRID_COLS * CELL_SIZE - 45, HUD_HEIGHT + 24);
 
-    // Decorative toy details on random grid cells (3-5 pieces)
+    // Decorative toy details on random active lane cells (3-5 pieces)
     const toyPositions: { row: number; col: number }[] = [];
-    while (toyPositions.length < 4) {
-      const r = Math.floor(Math.random() * GRID_ROWS);
+    const maxToys = Math.min(4, this.activeLanes.length * GRID_COLS);
+    while (toyPositions.length < maxToys) {
+      const r = this.activeLanes[Math.floor(Math.random() * this.activeLanes.length)];
       const c = Math.floor(Math.random() * GRID_COLS);
       if (!toyPositions.some(p => p.row === r && p.col === c)) {
         toyPositions.push({ row: r, col: c });
@@ -472,7 +476,7 @@ export class GameScene extends Phaser.Scene {
   }
 
   private createGridClickZones(): void {
-    for (let row = 0; row < GRID_ROWS; row++) {
+    for (const row of this.activeLanes) {
       for (let col = 0; col < GRID_COLS; col++) {
         const x = col * CELL_SIZE;
         const y = HUD_HEIGHT + row * CELL_SIZE;
@@ -819,9 +823,10 @@ export class GameScene extends Phaser.Scene {
   update(_time: number, delta: number): void {
     const dt = delta / 1000;
 
-    // Wave spawning
+    // Wave spawning — only spawn enemies in active lanes
     const spawns = this.waveManager.update(dt);
     for (const spawn of spawns) {
+      if (!this.activeLanes.includes(spawn.lane)) continue;
       const spawnCol = GRID_COLS; // right edge
       const enemyKey = Object.entries(ENEMY_TYPES).find(([, v]) => v === spawn.type)?.[0] ?? 'basic';
       const enemy = new EnemyEntity(this, spawn.lane, spawnCol, enemyKey, spawn.type);
