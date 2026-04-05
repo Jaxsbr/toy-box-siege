@@ -29,7 +29,7 @@ export const DEFENDER_TYPES: Record<string, DefenderType> = {
     name: 'Water Pistol',
     cost: 100,
     health: 40,
-    damage: 25,
+    damage: 15,
     range: 9, // full lane
     fireRate: 1,
     generatesIncome: 0,
@@ -38,8 +38,8 @@ export const DEFENDER_TYPES: Record<string, DefenderType> = {
   },
   wall: {
     name: 'Block Tower',
-    cost: 50,
-    health: 400,
+    cost: 25,
+    health: 90,
     damage: 0,
     range: 0,
     fireRate: 0,
@@ -69,8 +69,8 @@ export const DEFENDER_TYPES: Record<string, DefenderType> = {
     generatesIncome: 0,
     behavior: 'mine',
     singleUse: true,
-    rechargeTime: 30000,
+    rechargeTime: 20000,
   },
 };
 
-export const MINE_ARM_DELAY = 10000; // ms before mine becomes armed
+export const MINE_ARM_DELAY = 6000; // ms before mine becomes armed
