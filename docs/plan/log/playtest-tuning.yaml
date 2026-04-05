@@ -50,6 +50,12 @@ entries:
     result: pass
     notes: "7-file change: DefenderBehavior bomb→trapper, DEFENDER_TYPES bomb→trapper (Honey Bear cost 75 health 60), bombDetonate removed, GameScene bomb branch→trapper registration + honey pot toss/expire/speed-modifier loop, DefenderEntity drawHoneyBear (amber bear), idle breathing tween, DefenderUnlocks L2→trapper, bomb tests removed, loadout tests updated. TS compiles clean. 123 tests pass. ✓ US-35 complete"
     tokens: ~12k
+  - task: 10
+    story: US-36
+    description: "Investigation — EnemyType interface, EnemyEntity rendering, animations, scaling approach"
+    result: pass
+    notes: "EnemyType needs optional scale field. EnemyEntity shapeGraphics can be scaled independently — setScale on shape child after drawing. Flash overlay r=20 needs scaling. Health bar position offset adjusts with scale. Scales: basic=1.0, tough=1.35, armored=1.1, jumper=0.85. Visual details: Robot needs gear bolts, Puppet needs spring coil. Queued full implementation."
+    tokens: ~6k
   - task: 8
     story: US-35
     description: "Create HoneyTrap.ts pure logic module + test/HoneyTrap.test.ts with 8 test cases"
