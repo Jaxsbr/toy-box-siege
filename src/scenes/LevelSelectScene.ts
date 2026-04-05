@@ -191,7 +191,6 @@ export class LevelSelectScene extends Phaser.Scene {
       const container = this.add.container(x, startY);
       container.setDepth(11);
       container.setAlpha(0);
-      container.setData('baseY', startY);
 
       const bg = this.add.graphics();
       bg.fillStyle(0x334155, 1);
