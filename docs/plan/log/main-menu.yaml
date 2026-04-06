@@ -18,3 +18,12 @@ entries:
       LevelSelectScene.ts: need to add selectedLevel init data reading.
       Queued: add nextUnbeatenLevel + tests (US-53 pure logic).
     tokens: ~3k
+  - task: 2
+    story: US-53
+    description: "Add nextUnbeatenLevel to LevelProgress.ts and 3 test cases in LevelProgress.test.ts"
+    result: pass
+    notes: |
+      LevelProgress.ts: added nextUnbeatenLevel(data) — returns first 'unlocked' index, or TOTAL_LEVELS-1 if all completed.
+      LevelProgress.test.ts: 3 new tests: no completions→0, levels 0-3 completed→4, all 9 completed→8.
+      165 tests pass (162+3 new). US-53 logic criteria met (3/8 criteria done); MainMenuScene still needed.
+    tokens: ~1k

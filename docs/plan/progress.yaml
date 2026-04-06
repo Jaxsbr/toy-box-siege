@@ -28,8 +28,8 @@ state:
   status: running
 
   # --- Task orchestration (owner: iterator) ---
-  task_number: 2
-  next_task: "[US-53] Add nextUnbeatenLevel(data) to LevelProgress.ts and 3 test cases in LevelProgress.test.ts"
+  task_number: 3
+  next_task: "[US-52] Create src/scenes/MainMenuScene.ts with bedroom atmosphere and 4 nav items; update game.ts + main.ts to register MainMenuScene/ToysScene/EnemiesScene and remove TitleScene"
   last_result: pass
   consecutive_fails: 0
 
