@@ -25,3 +25,11 @@ Gradual introduction of toys and enemies across 9 levels. Each level teaches one
 - L7 mirrors L4 pattern: just-unlocked toy (Honey Bear) is the intended tool; no new enemy to split attention.
 - L8 introduces the Sock Puppet (jumps over first defender) with a pre-round warning; warmup wave before jumpers appear.
 - L9 is the stage one finale: all 4 enemy types, first loadout selection (5 unlocked defenders, pick 4).
+
+## Difficulty tuning (difficulty-tuning phase)
+
+Enemy speeds and wave pacing were tuned for kid-friendly play — PvZ-style where most players should clear L1 comfortably and feel the difficulty increase as a gentle staircase, not a cliff.
+
+**Enemy speed hierarchy (tank archetype):** Sock Puppet (0.30) > Dust Bunny (0.25) > Armored Bunny (0.20) > Cleaning Robot (0.15). High HP = slow — previously Armored Bunny was faster than basic Dust Bunny, violating the archetype and making L5-L7 punishing.
+
+**Wave pacing:** Minimum spawn interval raised to 2.0s across all levels (was 1.0-1.5s in L2-L3, 1.5s in L5-L9 wave 4, 1.2s in L9 wave 5). Difficulty graduates between levels via widening minimum gaps (L1=5.0s → L9=2.0s), not within levels. Setup delays for bio-screen levels (L5, L6, L8) extended to 25s to give adequate prep time.
