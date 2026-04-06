@@ -22,7 +22,7 @@ import {
   HONEY_BEAR_PROJECTILE_SPEED,
 } from '../systems/Combat';
 import { DefenderEntity, DRAW_DEFENDER } from '../entities/DefenderEntity';
-import { mineTriggerCheck, MineState, createMineState, updateMineState } from '../systems/SingleUse';
+import { mineTriggerCheck, MineState, createMineState, updateMineState, MINE_BOSS_DAMAGE } from '../systems/SingleUse';
 import { HoneyPot, createHoneyPot, updateHoneyPots, getSpeedModifier, HONEY_POT_DURATION } from '../systems/HoneyTrap';
 import { EnemyEntity } from '../entities/EnemyEntity';
 import { ProjectileEntity } from '../entities/ProjectileEntity';
@@ -1263,8 +1263,10 @@ export class GameScene extends Phaser.Scene {
       if (mineState.armed) {
         const target = mineTriggerCheck(def.gridRow, def.gridCol, this.enemies);
         if (target) {
-          applyDamage(target, def.defenderType.damage);
           const ent = this.enemies.find(e => e === target);
+          const isBoss = ent?.enemyType.bossType === true;
+          const mineDamage = isBoss ? MINE_BOSS_DAMAGE : def.defenderType.damage;
+          applyDamage(target, mineDamage);
           if (ent) {
             ent.drawHealthBar();
             ent.updateHelmet();
@@ -1386,7 +1388,7 @@ export class GameScene extends Phaser.Scene {
       if (isDead(this.enemies[i])) {
         const e = this.enemies[i];
         const deathColors: Record<string, number> = {
-          basic: 0xf48fb1, tough: 0xb388ff, armored: 0xf48fb1, jumper: 0xff8a65,
+          basic: 0xf48fb1, tough: 0xb388ff, armored: 0xf48fb1, jumper: 0xff8a65, boss: 0x78909c,
         };
         const deathColor = deathColors[e.enemyKey] ?? 0xffffff;
         this.spawnDeathParticles(e.x, e.y, deathColor);

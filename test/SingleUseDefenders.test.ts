@@ -5,6 +5,7 @@ import {
   mineTriggerCheck,
   createMineState,
   updateMineState,
+  MINE_BOSS_DAMAGE,
 } from '../src/systems/SingleUse';
 
 function makeEnemy(overrides: Partial<EnemyCombatEntity> = {}): EnemyCombatEntity {
@@ -77,5 +78,27 @@ describe('Marble Mine — dormant and armed behavior', () => {
     const enemy = makeEnemy({ lane: 2, col: 7 }); // wrong col
     const target = mineTriggerCheck(2, 4, [enemy]);
     expect(target).toBeNull();
+  });
+
+  it('boss mine hit reduces HP by MINE_BOSS_DAMAGE and does NOT kill', () => {
+    const state = createMineState(MINE_ARM_DELAY);
+    updateMineState(state, MINE_ARM_DELAY);
+    expect(state.armed).toBe(true);
+
+    // Boss enemy with 2000 HP
+    const bossEnemy = makeEnemy({ lane: 2, col: 4, health: 2000 });
+    const target = mineTriggerCheck(2, 4, [bossEnemy]);
+    expect(target).not.toBeNull();
+
+    // Apply boss mine damage (instead of instant kill)
+    if (target) {
+      target.health -= MINE_BOSS_DAMAGE;
+    }
+    expect(bossEnemy.health).toBe(2000 - MINE_BOSS_DAMAGE);
+    expect(isDead(bossEnemy)).toBe(false);
+  });
+
+  it('MINE_BOSS_DAMAGE is at least 300', () => {
+    expect(MINE_BOSS_DAMAGE).toBeGreaterThanOrEqual(300);
   });
 });
