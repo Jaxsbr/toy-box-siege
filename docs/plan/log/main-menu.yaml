@@ -63,6 +63,26 @@ entries:
       drawSelectionHighlight(): white double-ring (3px white + 1px amber outer ring) around selected entry.
       165 tests pass (no regressions). ✓ US-53 complete.
     tokens: ~1k
+  - task: 7
+    story: phase
+    description: "Phase completion gate — all done-when criteria verified"
+    result: pass
+    notes: |
+      All done-when criteria met. Evidence:
+      - US-52: MainMenuScene.ts at key 'MainMenuScene'. game.ts scene array: [MainMenuScene, ...] (first).
+        ToysScene + EnemiesScene registered. TitleScene removed. Title 42px amber y=70, subtitle y=105.
+        Play/Continue at y=165, Toys at y=225, Enemies at y=273, Sound toggle at y=335. All zones 160×48px.
+        Background #5d4037, floor boards, rug, furniture, toys (matches TitleScene). Sound toggle setSfxMuted. npm test ✓.
+      - US-53: nextUnbeatenLevel exported from LevelProgress.ts. 3 test cases in LevelProgress.test.ts.
+        MainMenuScene.create(): loadProgress(), Play when no completed, Continue when any completed.
+        LevelSelectScene.create() reads this.scene.settings.data.selectedLevel, highlights with white ring.
+      - US-54: ToysScene.ts key 'ToysScene'. 5 defender cards. generator/shooter always unlocked.
+        wall/trapper/mine: loadUnlocks(). Silhouette alpha 0.25. All bios present. Back zone 60×48px.
+      - US-55: EnemiesScene.ts key 'EnemiesScene'. 4 enemy cards. basic always discovered.
+        Others: localStorage bio_shown_enemy_<key>. Silhouette alpha 0.25. All bios including basic. Back zone 60×48px.
+      - Structural: AGENTS.md scenes updated, nextUnbeatenLevel noted, MainMenuScene as initial. ARCHITECTURE.md updated.
+      165 tests pass, 0 regressions (up from 162 — 3 new tests).
+    tokens: ~2k
   - task: 6
     story: phase
     description: "Update AGENTS.md and ARCHITECTURE.md for main-menu phase scene changes"
