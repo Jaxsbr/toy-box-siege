@@ -14,6 +14,12 @@ entries:
       Enemies.test.ts: basic>tough holds (0.25>0.15); armored covered by new hierarchy test.
       157 tests pass (156+1 new). ✓ US-50 complete
     tokens: ~2k
+  - task: 5
+    story: phase
+    description: "Branch B — both stories complete, queue structural update task"
+    result: pass
+    notes: "US-50 and US-51 done. Structural criteria unmet: AGENTS.md speed values/pacing philosophy, stage-one.md design notes. Queued structural task."
+    tokens: ~1k
   - task: 4
     story: US-51
     description: "Rebalance wave pacing in levels.ts — widen intervals to 2.0s minimum, fix setup delays, add smooth curve tests"
