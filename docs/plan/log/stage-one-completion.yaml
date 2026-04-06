@@ -14,3 +14,9 @@ entries:
     result: pass
     notes: "vite.config.ts already has base:'./' (US-49 criterion already met). .github/workflows has phase-retro-check.yml but no deploy.yml. levels.ts imports ENEMY_TYPES from ./enemies, LevelConfig from ../systems/WaveManager. Ready to implement L6-L9 configs + enemy bios + unlock map. Queued implement task."
     tokens: ~1k
+  - task: 3
+    story: US-45
+    description: "Add bio to ENEMY_TYPES.tough and .jumper, add LEVEL_6-LEVEL_9 configs, update UNLOCK_MAP (6:trapper, 8:mine), update ALL_LEVELS, update tests"
+    result: pass
+    notes: "enemies.ts: tough.bio and jumper.bio added. levels.ts: LEVEL_6-LEVEL_9 added (L6 Cleaning Robot intro/Honey Bear unlock, L7 Honey Bear practice, L8 Sock Puppet intro/Marble Mine unlock, L9 Marble Mine practice). DefenderUnlocks.ts: UNLOCK_MAP now {3:wall, 6:trapper, 8:mine}. ALL_LEVELS length 9. LoadoutSelection.test.ts test renamed and expanded with 3 new unlock tests. Levels.test.ts extended with L6-L9 tests. 156 tests pass (144+12). ✓ US-45 complete ✓ US-46 complete ✓ US-47 complete ✓ US-48 complete"
+    tokens: ~8k

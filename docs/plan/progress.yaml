@@ -28,8 +28,8 @@ state:
   status: running
 
   # --- Task orchestration (owner: iterator) ---
-  task_number: 3
-  next_task: "[US-45] Implement: add bio to ENEMY_TYPES.tough and ENEMY_TYPES.jumper, add LEVEL_6-LEVEL_9 configs, update ALL_LEVELS, update UNLOCK_MAP with 6:trapper and 8:mine, update tests"
+  task_number: 4
+  next_task: null
   last_result: pass
   consecutive_fails: 0
 
@@ -42,4 +42,4 @@ state:
   retro_complete: false
 
   # --- Tracking (owner: iterator) ---
-  completed_stories: []
+  completed_stories: [US-45, US-46, US-47, US-48]
