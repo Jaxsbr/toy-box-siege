@@ -14,6 +14,20 @@ entries:
       Enemies.test.ts: basic>tough holds (0.25>0.15); armored covered by new hierarchy test.
       157 tests pass (156+1 new). ✓ US-50 complete
     tokens: ~2k
+  - task: 4
+    story: US-51
+    description: "Rebalance wave pacing in levels.ts — widen intervals to 2.0s minimum, fix setup delays, add smooth curve tests"
+    result: pass
+    notes: |
+      levels.ts: L2-L9 spawn intervals redesigned. Targets: L2 min=3.5s, L3 min=3.0s, L4 min=2.5s, L5-L9 min=2.0s.
+      All waves have >= 2.0s consecutive spawn gaps. Within-level ramps: 3.0s→2.5s→2.0s→2.0s for L5-L9.
+      Setup delays: L5/L6 20→25s, L8 18→25s, L9 16→18s. All 70% inter-level and 60% within-level ratios satisfied.
+      Enemy counts preserved (L2:7, L3:12, L4:15, L5-L8:32, L9:45).
+      Levels.test.ts: traverse time comment updated (0.5→0.25 cells/s, 18→36s). New tests:
+        'no wave min interval below 2.0s', 'smooth difficulty curve monotonic', 'setup delay >= 18s',
+        'setup delay >= 25s for bio levels', 'within-level cliff <= 40% drop'.
+      162 tests pass (157+5 new). ✓ US-51 complete
+    tokens: ~5k
   - task: 3
     story: US-51
     description: "Branch B — US-50 complete, queue US-51 wave pacing implementation"

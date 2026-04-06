@@ -20,17 +20,17 @@ Balance and pacing pass to make the game feel gentler and more forgiving for kid
 - [x] `npm test` passes [US-50]
 
 #### US-51 — Rebalance wave pacing L1-L9 for smooth difficulty curve
-- [ ] No wave in any level (L1-L9) has a minimum spawn interval below 2.0s [US-51]
-- [ ] Minimum spawn intervals do not tighten faster than levels progress: for each pair of adjacent levels, the tighter-interval level's minimum spawn gap is >= 70% of the wider-interval level's minimum spawn gap [US-51]
-- [ ] Within each level, the last wave's minimum spawn interval is no less than 60% of the first wave's minimum spawn interval (prevents within-level difficulty cliffs) [US-51]
-- [ ] Setup delay for levels with `enemyBio` (L5, L6, L8) >= 25s [US-51]
-- [ ] Setup delay for all levels >= 18s [US-51]
-- [ ] Level wave counts unchanged: L1(1), L2(2), L3(3), L4(3), L5(4), L6(4), L7(4), L8(4), L9(5) [US-51]
-- [ ] Enemy type composition per wave preserved (all existing composition test assertions in `Levels.test.ts` pass) [US-51]
-- [ ] Total enemy count per level is the same or higher than current values [US-51]
-- [ ] A new test in `test/Levels.test.ts` validates the smooth difficulty curve: minimum spawn interval across all waves in level N is >= minimum spawn interval across all waves in level N+1 [US-51]
-- [ ] `test/Levels.test.ts` starting balance and timing assertions updated to match new config values [US-51]
-- [ ] `npm test` passes [US-51]
+- [x] No wave in any level (L1-L9) has a minimum spawn interval below 2.0s [US-51]
+- [x] Minimum spawn intervals do not tighten faster than levels progress: for each pair of adjacent levels, the tighter-interval level's minimum spawn gap is >= 70% of the wider-interval level's minimum spawn gap [US-51]
+- [x] Within each level, the last wave's minimum spawn interval is no less than 60% of the first wave's minimum spawn interval (prevents within-level difficulty cliffs) [US-51]
+- [x] Setup delay for levels with `enemyBio` (L5, L6, L8) >= 25s [US-51]
+- [x] Setup delay for all levels >= 18s [US-51]
+- [x] Level wave counts unchanged: L1(1), L2(2), L3(3), L4(3), L5(4), L6(4), L7(4), L8(4), L9(5) [US-51]
+- [x] Enemy type composition per wave preserved (all existing composition test assertions in `Levels.test.ts` pass) [US-51]
+- [x] Total enemy count per level is the same or higher than current values [US-51]
+- [x] A new test in `test/Levels.test.ts` validates the smooth difficulty curve: minimum spawn interval across all waves in level N is >= minimum spawn interval across all waves in level N+1 [US-51]
+- [x] `test/Levels.test.ts` starting balance and timing assertions updated to match new config values [US-51]
+- [x] `npm test` passes [US-51]
 
 #### Structural
 - [ ] `AGENTS.md` level progression description updated to reflect new enemy speeds and pacing philosophy (gentle curve, PvZ-style stage one) [phase]
