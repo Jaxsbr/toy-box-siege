@@ -92,3 +92,14 @@ entries:
       Test file is SingleUseDefenders.test.ts (not SingleUse.test.ts).
       Queued: add bossType + boss type + MINE_BOSS_DAMAGE + test + GameScene mine update.
     tokens: ~4k
+  - task: 8
+    story: US-57
+    description: "Add bossType to EnemyType, register boss in enemies.ts, MINE_BOSS_DAMAGE, GameScene mine update, 2 tests"
+    result: pass
+    notes: |
+      enemies.ts: bossType?: boolean field. 'boss' entry: Mega Mop, 2000HP, 0.08 speed, scale 1.6.
+      SingleUse.ts: MINE_BOSS_DAMAGE=400.
+      GameScene: mine trigger checks ent.enemyType.bossType for damage cap. Boss death color 0x78909c.
+      SingleUseDefenders.test.ts: boss mine hit reduces by MINE_BOSS_DAMAGE, not dead. Constant >= 300.
+      174 tests pass (172 + 2 new). tsc --noEmit clean.
+    tokens: ~3k

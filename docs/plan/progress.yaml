@@ -28,8 +28,8 @@ state:
   status: running
 
   # --- Task orchestration (owner: iterator) ---
-  task_number: 7
-  next_task: "[US-57] Add bossType to EnemyType, register boss in enemies.ts, add MINE_BOSS_DAMAGE to SingleUse.ts, add boss mine test, update GameScene mine trigger for boss"
+  task_number: 8
+  next_task: "[US-57] Add drawBoss shape to EnemyEntity.ts, boss movement animation, boss entry in EnemiesScene discovery"
   last_result: pass
   consecutive_fails: 0
 
