@@ -77,10 +77,16 @@ describe('LevelProgress', () => {
     expect(nextUnbeatenLevel(progress)).toBe(4);
   });
 
-  it('nextUnbeatenLevel: all 9 completed returns 8 (last index)', () => {
+  it('nextUnbeatenLevel: all 10 completed returns 9 (last index)', () => {
+    let progress = loadProgress(storage);
+    for (let i = 0; i < 10; i++) progress = completeLevel(progress, i);
+    expect(nextUnbeatenLevel(progress)).toBe(9);
+  });
+
+  it('nextUnbeatenLevel: L9 completed returns L10 as next unbeaten', () => {
     let progress = loadProgress(storage);
     for (let i = 0; i < 9; i++) progress = completeLevel(progress, i);
-    expect(nextUnbeatenLevel(progress)).toBe(8);
+    expect(nextUnbeatenLevel(progress)).toBe(9);
   });
 
   it('replaying completed level does not change unlock state', () => {

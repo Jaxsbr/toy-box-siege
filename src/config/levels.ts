@@ -470,7 +470,87 @@ export const LEVEL_9: LevelConfig = {
   ],
 };
 
+// L10: Boss fight — 5 waves, tight formation spawns (<=0.8s intervals), boss in wave 5
+// Waves 1-4: all 4 enemy types at tight intervals creating coordinated rush feel
+// Wave 5: single boss spawn — the climactic encounter
+// setupDelay 20s: preparation time before wave 1
+export const LEVEL_10: LevelConfig = {
+  startingBalance: 100,
+  enemyBio: { enemyKey: 'boss' },
+  setupDelay: 20,
+  interWaveDelay: 18,
+  announceDuration: 2.5,
+  waves: [
+    {
+      // Wave 1: 7 enemies, 0.8s intervals — coordinated rush
+      spawns: [
+        { type: ENEMY_TYPES.basic,   lane: 0, delay: 0 },
+        { type: ENEMY_TYPES.armored, lane: 4, delay: 0.8 },
+        { type: ENEMY_TYPES.basic,   lane: 2, delay: 1.6 },
+        { type: ENEMY_TYPES.tough,   lane: 1, delay: 2.4 },
+        { type: ENEMY_TYPES.basic,   lane: 3, delay: 3.2 },
+        { type: ENEMY_TYPES.armored, lane: 0, delay: 4.0 },
+        { type: ENEMY_TYPES.jumper,  lane: 4, delay: 4.8 },
+      ],
+    },
+    {
+      // Wave 2: 9 enemies, 0.7s intervals — tighter rush
+      spawns: [
+        { type: ENEMY_TYPES.tough,   lane: 2, delay: 0 },
+        { type: ENEMY_TYPES.jumper,  lane: 0, delay: 0.7 },
+        { type: ENEMY_TYPES.armored, lane: 4, delay: 1.4 },
+        { type: ENEMY_TYPES.basic,   lane: 1, delay: 2.1 },
+        { type: ENEMY_TYPES.tough,   lane: 3, delay: 2.8 },
+        { type: ENEMY_TYPES.jumper,  lane: 2, delay: 3.5 },
+        { type: ENEMY_TYPES.armored, lane: 0, delay: 4.2 },
+        { type: ENEMY_TYPES.basic,   lane: 4, delay: 4.9 },
+        { type: ENEMY_TYPES.tough,   lane: 1, delay: 5.6 },
+      ],
+    },
+    {
+      // Wave 3: 11 enemies, 0.6s intervals — intense formation
+      spawns: [
+        { type: ENEMY_TYPES.armored, lane: 0, delay: 0 },
+        { type: ENEMY_TYPES.tough,   lane: 4, delay: 0.6 },
+        { type: ENEMY_TYPES.jumper,  lane: 2, delay: 1.2 },
+        { type: ENEMY_TYPES.armored, lane: 1, delay: 1.8 },
+        { type: ENEMY_TYPES.basic,   lane: 3, delay: 2.4 },
+        { type: ENEMY_TYPES.tough,   lane: 0, delay: 3.0 },
+        { type: ENEMY_TYPES.jumper,  lane: 4, delay: 3.6 },
+        { type: ENEMY_TYPES.armored, lane: 2, delay: 4.2 },
+        { type: ENEMY_TYPES.tough,   lane: 1, delay: 4.8 },
+        { type: ENEMY_TYPES.basic,   lane: 3, delay: 5.4 },
+        { type: ENEMY_TYPES.jumper,  lane: 0, delay: 6.0 },
+      ],
+    },
+    {
+      // Wave 4: 13 enemies, 0.5s intervals — overwhelming rush before boss
+      spawns: [
+        { type: ENEMY_TYPES.tough,   lane: 0, delay: 0 },
+        { type: ENEMY_TYPES.armored, lane: 4, delay: 0.5 },
+        { type: ENEMY_TYPES.jumper,  lane: 2, delay: 1.0 },
+        { type: ENEMY_TYPES.tough,   lane: 1, delay: 1.5 },
+        { type: ENEMY_TYPES.basic,   lane: 3, delay: 2.0 },
+        { type: ENEMY_TYPES.armored, lane: 0, delay: 2.5 },
+        { type: ENEMY_TYPES.jumper,  lane: 4, delay: 3.0 },
+        { type: ENEMY_TYPES.tough,   lane: 2, delay: 3.5 },
+        { type: ENEMY_TYPES.basic,   lane: 1, delay: 4.0 },
+        { type: ENEMY_TYPES.armored, lane: 3, delay: 4.5 },
+        { type: ENEMY_TYPES.tough,   lane: 0, delay: 5.0 },
+        { type: ENEMY_TYPES.jumper,  lane: 4, delay: 5.5 },
+        { type: ENEMY_TYPES.armored, lane: 2, delay: 6.0 },
+      ],
+    },
+    {
+      // Wave 5: boss fight — single boss spawn
+      spawns: [
+        { type: ENEMY_TYPES.boss, lane: 2, delay: 0 },
+      ],
+    },
+  ],
+};
+
 export const ALL_LEVELS: LevelConfig[] = [
   LEVEL_1, LEVEL_2, LEVEL_3, LEVEL_4, LEVEL_5,
-  LEVEL_6, LEVEL_7, LEVEL_8, LEVEL_9,
+  LEVEL_6, LEVEL_7, LEVEL_8, LEVEL_9, LEVEL_10,
 ];

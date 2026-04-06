@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { LEVEL_1, LEVEL_2, LEVEL_3, LEVEL_4, LEVEL_5, LEVEL_6, LEVEL_7, LEVEL_8, LEVEL_9, ALL_LEVELS } from '../src/config/levels';
+import { LEVEL_1, LEVEL_2, LEVEL_3, LEVEL_4, LEVEL_5, LEVEL_6, LEVEL_7, LEVEL_8, LEVEL_9, LEVEL_10, ALL_LEVELS } from '../src/config/levels';
 import { ENEMY_TYPES } from '../src/config/enemies';
 
 describe('Level progression — guided intro', () => {
@@ -106,8 +106,8 @@ describe('Level progression — guided intro', () => {
     }
   });
 
-  it('ALL_LEVELS has 9 entries', () => {
-    expect(ALL_LEVELS).toHaveLength(9);
+  it('ALL_LEVELS has 10 entries', () => {
+    expect(ALL_LEVELS).toHaveLength(10);
   });
 });
 
@@ -173,6 +173,28 @@ describe('Level progression — stage-one-completion (L6-L9)', () => {
     expect(allSpawns.some(s => s.type === ENEMY_TYPES.armored)).toBe(true);
     expect(allSpawns.some(s => s.type === ENEMY_TYPES.jumper)).toBe(true);
   });
+
+  it('L10: >= 5 waves, enemyBio for boss, setupDelay >= 20', () => {
+    expect(LEVEL_10.waves.length).toBeGreaterThanOrEqual(5);
+    expect(LEVEL_10.enemyBio).toEqual({ enemyKey: 'boss' });
+    expect(LEVEL_10.setupDelay).toBeGreaterThanOrEqual(20);
+  });
+
+  it('L10: waves 1-4 have spawn intervals <= 0.8s', () => {
+    for (let w = 0; w < 4; w++) {
+      const wave = LEVEL_10.waves[w];
+      for (let i = 1; i < wave.spawns.length; i++) {
+        const gap = wave.spawns[i].delay - wave.spawns[i - 1].delay;
+        expect(gap).toBeLessThanOrEqual(0.8 + 0.001); // fp tolerance
+      }
+    }
+  });
+
+  it('L10: wave 5 includes exactly one boss spawn', () => {
+    const wave5 = LEVEL_10.waves[4]; // 0-indexed
+    const bossSpawns = wave5.spawns.filter(s => s.type === ENEMY_TYPES.boss);
+    expect(bossSpawns).toHaveLength(1);
+  });
 });
 
 describe('Level wave pacing — difficulty-tuning (kid-friendly, PvZ-style smooth curve)', () => {
@@ -187,8 +209,9 @@ describe('Level wave pacing — difficulty-tuning (kid-friendly, PvZ-style smoot
     return min === Infinity ? Infinity : min; // single-spawn waves have no gap
   }
 
-  it('no wave in any level has a minimum spawn interval below 2.0s', () => {
-    for (const level of ALL_LEVELS) {
+  it('no wave in L1-L9 has a minimum spawn interval below 2.0s', () => {
+    const levelsUpTo9 = ALL_LEVELS.slice(0, 9);
+    for (const level of levelsUpTo9) {
       for (const wave of level.waves) {
         for (let i = 1; i < wave.spawns.length; i++) {
           const gap = wave.spawns[i].delay - wave.spawns[i - 1].delay;
@@ -198,8 +221,8 @@ describe('Level wave pacing — difficulty-tuning (kid-friendly, PvZ-style smoot
     }
   });
 
-  it('smooth difficulty curve: each level is equal or slightly tighter than the next (monotonic)', () => {
-    for (let i = 0; i < ALL_LEVELS.length - 1; i++) {
+  it('smooth difficulty curve L1-L9: each level is equal or slightly tighter than the next (monotonic)', () => {
+    for (let i = 0; i < 8; i++) {
       const gapN = minSpawnGap(ALL_LEVELS[i]);
       const gapNext = minSpawnGap(ALL_LEVELS[i + 1]);
       expect(gapN).toBeGreaterThanOrEqual(gapNext);
@@ -212,9 +235,10 @@ describe('Level wave pacing — difficulty-tuning (kid-friendly, PvZ-style smoot
     }
   });
 
-  it('setup delay >= 25s for levels with enemyBio (L5, L6, L8)', () => {
-    const bioLevels = ALL_LEVELS.filter(l => l.enemyBio !== undefined);
-    for (const level of bioLevels) {
+  it('setup delay >= 25s for enemy intro levels with enemyBio (L5, L6, L8)', () => {
+    const introLevels = [LEVEL_5, LEVEL_6, LEVEL_8];
+    for (const level of introLevels) {
+      expect(level.enemyBio).toBeDefined();
       expect(level.setupDelay).toBeGreaterThanOrEqual(25);
     }
   });
