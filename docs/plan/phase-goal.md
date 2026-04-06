@@ -49,9 +49,9 @@ Deliver endgame content: rework Honey Bear into a projectile-based area-denial d
 
 #### Structural / phase criteria
 
-- [ ] AGENTS.md Honey Bear entry updated to reflect the new projectile + 3-lane AOE + honey pool on hit mechanic (periodic tossing removed) [phase]
-- [ ] AGENTS.md Enemies section updated to include Stage-1 Boss (key: 'boss', bossType flag, stats, boss mine damage behaviour) [phase]
-- [ ] AGENTS.md Level progression section updated to include Level 10 (formation waves 1-4, Stage-1 Boss in wave 5) [phase]
+- [x] AGENTS.md Honey Bear entry updated to reflect the new projectile + 3-lane AOE + honey pool on hit mechanic (periodic tossing removed) [phase]
+- [x] AGENTS.md Enemies section updated to include Stage-1 Boss (key: 'boss', bossType flag, stats, boss mine damage behaviour) [phase]
+- [x] AGENTS.md Level progression section updated to include Level 10 (formation waves 1-4, Stage-1 Boss in wave 5) [phase]
 
 ### Golden principles (phase-relevant)
 - Game logic in src/systems/ as pure TypeScript, no Phaser dependencies — AOE damage logic in Combat.ts, boss mine interaction in SingleUse.ts
