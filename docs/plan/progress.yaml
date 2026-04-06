@@ -28,8 +28,8 @@ state:
   status: running
 
   # --- Task orchestration (owner: iterator) ---
-  task_number: 4
-  next_task: "[US-56] Rework GameScene: remove periodic honey tossing, integrate Honey Bear into shooter projectile loop with amber projectile color, AOE damage on hit, and honey pot creation on hit"
+  task_number: 5
+  next_task: null
   last_result: pass
   consecutive_fails: 0
 
@@ -42,4 +42,4 @@ state:
   retro_complete: false
 
   # --- Tracking (owner: iterator) ---
-  completed_stories: []
+  completed_stories: [US-56]

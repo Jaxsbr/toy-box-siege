@@ -11,16 +11,16 @@ Deliver endgame content: rework Honey Bear into a projectile-based area-denial d
 
 #### US-56 — Honey Bear: Projectile Attack & Vertical AOE
 
-- [ ] Honey Bear fires a projectile toward the nearest enemy in its lane; projectile uses an amber fill color (hex in range #e65100–#ffd54f), visually distinct from the Water Pistol's yellow projectile [US-56]
-- [ ] Honey Bear projectile speed is defined as a named constant (e.g. HONEY_BEAR_PROJECTILE_SPEED); value is strictly less than the Water Pistol equivalent projectile speed [US-56]
-- [ ] Honey Bear fire interval is defined as a named constant (e.g. HONEY_BEAR_FIRE_INTERVAL); Honey Bear fires at most one projectile per interval — no concurrent overlapping shots from a single Honey Bear [US-56]
-- [ ] On projectile hit, damage >= 1 is applied to all enemies in the target row +/- 1 row (up to 3 rows, clamped to valid grid row bounds 0-4) at the hit column [US-56]
-- [ ] test/Combat.test.ts (or a dedicated honey-AOE test) includes a test verifying that a honey projectile hit applies damage to enemies in the target row and each adjacent row within grid bounds [US-56]
-- [ ] On projectile hit, HoneyTrap.createHoneyPot is called for each affected row at the hit column; resulting pools slow passing enemies to HONEY_POT_SLOW (0.5x) for HONEY_POT_DURATION (8 s) [US-56]
-- [ ] Honey pool renders on the grid at depth 2 (above grid tiles at 0, below entities at 5) with amber fill (hex in range #e65100–#ffd54f), alpha 0.3–0.6, and no pointer input zone — reads as a ground-level hazard, not a collectible [US-56]
-- [ ] Periodic honey pot tossing removed — Honey Bear entity no longer schedules honey pots on a recurring interval timer [US-56]
-- [ ] Honey Bear plays a fire animation reaction (recoil or forward-lunge tween) on each projectile launch [US-56]
-- [ ] test/HoneyTrap.test.ts confirms honey pools created via a projectile-hit code path expire after HONEY_POT_DURATION and return the correct HONEY_POT_SLOW modifier from getSpeedModifier [US-56]
+- [x] Honey Bear fires a projectile toward the nearest enemy in its lane; projectile uses an amber fill color (hex in range #e65100–#ffd54f), visually distinct from the Water Pistol's yellow projectile [US-56]
+- [x] Honey Bear projectile speed is defined as a named constant (e.g. HONEY_BEAR_PROJECTILE_SPEED); value is strictly less than the Water Pistol equivalent projectile speed [US-56]
+- [x] Honey Bear fire interval is defined as a named constant (e.g. HONEY_BEAR_FIRE_INTERVAL); Honey Bear fires at most one projectile per interval — no concurrent overlapping shots from a single Honey Bear [US-56]
+- [x] On projectile hit, damage >= 1 is applied to all enemies in the target row +/- 1 row (up to 3 rows, clamped to valid grid row bounds 0-4) at the hit column [US-56]
+- [x] test/Combat.test.ts (or a dedicated honey-AOE test) includes a test verifying that a honey projectile hit applies damage to enemies in the target row and each adjacent row within grid bounds [US-56]
+- [x] On projectile hit, HoneyTrap.createHoneyPot is called for each affected row at the hit column; resulting pools slow passing enemies to HONEY_POT_SLOW (0.5x) for HONEY_POT_DURATION (8 s) [US-56]
+- [x] Honey pool renders on the grid at depth 2 (above grid tiles at 0, below entities at 5) with amber fill (hex in range #e65100–#ffd54f), alpha 0.3–0.6, and no pointer input zone — reads as a ground-level hazard, not a collectible [US-56]
+- [x] Periodic honey pot tossing removed — Honey Bear entity no longer schedules honey pots on a recurring interval timer [US-56]
+- [x] Honey Bear plays a fire animation reaction (recoil or forward-lunge tween) on each projectile launch [US-56]
+- [x] test/HoneyTrap.test.ts confirms honey pools created via a projectile-hit code path expire after HONEY_POT_DURATION and return the correct HONEY_POT_SLOW modifier from getSpeedModifier [US-56]
 
 #### US-57 — Stage-1 Boss Enemy
 
