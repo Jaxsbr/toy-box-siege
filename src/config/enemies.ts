@@ -6,6 +6,7 @@ export interface EnemyType {
   scale?: number;   // visual scale multiplier (default 1.0)
   jumpsRemaining?: number; // number of defender-jumps available (sock puppet)
   armorStages?: number;    // number of visual degradation stages (armored bunny)
+  bossType?: boolean;      // boss enemies: mine does chunk damage instead of instant kill
   bio?: string;     // kid-friendly description shown on pre-round bio screen
 }
 
@@ -43,5 +44,14 @@ export const ENEMY_TYPES: Record<string, EnemyType> = {
     scale: 0.85,
     jumpsRemaining: 1,
     bio: 'Watch out! The Sock Puppet jumps over the first toy it encounters. Put your shooters behind your walls!',
+  },
+  boss: {
+    name: 'Mega Mop',
+    health: 5500,
+    speed: 0.08,
+    damage: 40,
+    scale: 1.6,
+    bossType: true,
+    bio: 'The Mega Mop is HUGE and TOUGH! It takes forever to bring down — use everything you have!',
   },
 };

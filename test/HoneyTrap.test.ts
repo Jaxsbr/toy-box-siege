@@ -66,4 +66,23 @@ describe('HoneyTrap — honey pot state management', () => {
     expect(remaining[0].remainingMs).toBe(5000);
     expect(getSpeedModifier(remaining, 3, 2)).toBe(HONEY_POT_SLOW);
   });
+
+  it('honey pools from projectile-hit path expire after HONEY_POT_DURATION and apply correct slow modifier', () => {
+    // Simulates the projectile-hit code path: createHoneyPot for each AOE row
+    const aoeRows = [1, 2, 3]; // target row 2 ± 1
+    const hitCol = 5;
+    const pots = aoeRows.map(row => createHoneyPot(row, hitCol, HONEY_POT_DURATION));
+
+    // All 3 pools are active and apply slow
+    for (const row of aoeRows) {
+      expect(getSpeedModifier(pots, row, hitCol)).toBe(HONEY_POT_SLOW);
+    }
+
+    // After full duration, all pools expire
+    const remaining = updateHoneyPots(pots, HONEY_POT_DURATION + 1);
+    expect(remaining).toHaveLength(0);
+    for (const row of aoeRows) {
+      expect(getSpeedModifier(pots, row, hitCol)).toBe(1.0);
+    }
+  });
 });

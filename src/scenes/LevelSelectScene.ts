@@ -102,9 +102,9 @@ export class LevelSelectScene extends Phaser.Scene {
       }
     }
 
-    // Row 2: levels 6-9 (indices 5-8) + boss placeholder at slot 10
+    // Row 2: levels 6-10 (indices 5-9)
     const row2Y = startY + entryHeight + gap;
-    for (let i = 5; i < 9; i++) {
+    for (let i = 5; i < 10; i++) {
       const x = startX + (i - 5) * (entryWidth + gap);
       const state = getLevelState(this.progress, i);
       this.drawLevelEntry(x, row2Y, entryWidth, entryHeight, i, state);
@@ -112,9 +112,6 @@ export class LevelSelectScene extends Phaser.Scene {
         this.drawSelectionHighlight(x, row2Y, entryWidth, entryHeight);
       }
     }
-    // Slot 10: boss placeholder (always locked)
-    const bossX = startX + 4 * (entryWidth + gap);
-    this.drawBossPlaceholder(bossX, row2Y, entryWidth, entryHeight);
   }
 
   private drawSelectionHighlight(x: number, y: number, width: number, height: number): void {
@@ -123,24 +120,6 @@ export class LevelSelectScene extends Phaser.Scene {
     highlight.strokeRoundedRect(x - 3, y - 3, width + 6, height + 6, 10);
     highlight.lineStyle(1, 0xffc107, 0.6);
     highlight.strokeRoundedRect(x - 6, y - 6, width + 12, height + 12, 12);
-  }
-
-  private drawBossPlaceholder(x: number, y: number, width: number, height: number): void {
-    const g = this.add.graphics();
-    g.fillStyle(0x4a0000, 0.6);
-    g.fillRoundedRect(x, y, width, height, 8);
-    g.lineStyle(2, 0x8b0000, 0.5);
-    g.strokeRoundedRect(x, y, width, height, 8);
-    // Skull: circle head + two eye sockets + teeth bar
-    g.fillStyle(0x8b0000, 0.45);
-    g.fillCircle(x + width / 2, y + 36, 16);
-    g.fillStyle(0x4a0000, 0.9);
-    g.fillCircle(x + width / 2 - 6, y + 33, 4);
-    g.fillCircle(x + width / 2 + 6, y + 33, 4);
-    g.fillRect(x + width / 2 - 8, y + 46, 16, 4);
-    this.add.text(x + width / 2, y + height - 18, '? BOSS', {
-      fontSize: '10px', color: '#8b0000', fontFamily: 'monospace',
-    }).setOrigin(0.5);
   }
 
   private drawLevelEntry(

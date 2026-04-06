@@ -11,6 +11,10 @@ import {
   applyDamage,
   isDead,
   wallBlocks,
+  getAOETargetRows,
+  applyAOEDamage,
+  HONEY_BEAR_PROJECTILE_SPEED,
+  HONEY_BEAR_AOE_DAMAGE,
 } from '../src/systems/Combat';
 
 function makeShooter(overrides: Partial<ShooterEntity> = {}): ShooterEntity {
@@ -140,5 +144,52 @@ describe('Combat — Wall blocking', () => {
     const enemy = makeEnemy({ lane: 0, col: 3 });
     const blocked = wallBlocks(wall, enemy, 1);
     expect(blocked).toBe(false);
+  });
+});
+
+describe('Combat — Honey Bear AOE', () => {
+  it('getAOETargetRows returns center row and both adjacent rows', () => {
+    const rows = getAOETargetRows(2);
+    expect(rows).toEqual([1, 2, 3]);
+  });
+
+  it('getAOETargetRows clamps to top grid bound', () => {
+    const rows = getAOETargetRows(0);
+    expect(rows).toEqual([0, 1]);
+  });
+
+  it('getAOETargetRows clamps to bottom grid bound', () => {
+    const rows = getAOETargetRows(4);
+    expect(rows).toEqual([3, 4]);
+  });
+
+  it('applyAOEDamage hits enemies in target row and adjacent rows at the hit column', () => {
+    const e1 = makeEnemy({ lane: 1, col: 5, health: 100 }); // adjacent row above
+    const e2 = makeEnemy({ lane: 2, col: 5, health: 100 }); // target row
+    const e3 = makeEnemy({ lane: 3, col: 5, health: 100 }); // adjacent row below
+    const e4 = makeEnemy({ lane: 4, col: 5, health: 100 }); // out of AOE range
+    const e5 = makeEnemy({ lane: 2, col: 7, health: 100 }); // same row but different col
+
+    const hit = applyAOEDamage(2, 5, HONEY_BEAR_AOE_DAMAGE, [e1, e2, e3, e4, e5]);
+
+    expect(hit).toHaveLength(3);
+    expect(e1.health).toBe(100 - HONEY_BEAR_AOE_DAMAGE);
+    expect(e2.health).toBe(100 - HONEY_BEAR_AOE_DAMAGE);
+    expect(e3.health).toBe(100 - HONEY_BEAR_AOE_DAMAGE);
+    expect(e4.health).toBe(100); // untouched
+    expect(e5.health).toBe(100); // untouched
+  });
+
+  it('applyAOEDamage skips dead enemies', () => {
+    const alive = makeEnemy({ lane: 2, col: 5, health: 100 });
+    const dead = makeEnemy({ lane: 2, col: 5, health: 0 });
+
+    const hit = applyAOEDamage(2, 5, 10, [alive, dead]);
+    expect(hit).toHaveLength(1);
+    expect(hit[0]).toBe(alive);
+  });
+
+  it('HONEY_BEAR_PROJECTILE_SPEED is less than Water Pistol projectile speed (4)', () => {
+    expect(HONEY_BEAR_PROJECTILE_SPEED).toBeLessThan(4);
   });
 });

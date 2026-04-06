@@ -2,6 +2,7 @@ export interface CombatEntity {
   health: number;
   lane: number;
   col: number; // grid column position
+  hitboxLanes?: number; // rows the entity occupies (1 = own lane only, 3 = ±1 adjacent); default 1
 }
 
 export interface ShooterEntity extends CombatEntity {
@@ -22,7 +23,12 @@ export interface ProjectileState {
   speed: number;
 }
 
-const PROJECTILE_SPEED = 4; // cells per second
+const PROJECTILE_SPEED = 4; // cells per second (Water Pistol)
+
+// Honey Bear projectile — slower than Water Pistol, area-denial focus
+export const HONEY_BEAR_PROJECTILE_SPEED = 2; // cells per second (must be < PROJECTILE_SPEED)
+export const HONEY_BEAR_FIRE_INTERVAL = 3; // seconds between shots
+export const HONEY_BEAR_AOE_DAMAGE = 25; // damage applied to each enemy in AOE
 
 export function updateShooterCooldown(shooter: ShooterEntity, deltaSeconds: number): void {
   if (shooter.fireCooldown > 0) {
@@ -69,8 +75,10 @@ export function checkProjectileHit(
   projectile: ProjectileState,
   enemy: CombatEntity,
 ): boolean {
+  const laneDist = Math.abs(projectile.lane - enemy.lane);
+  const reach = ((enemy.hitboxLanes ?? 1) - 1) / 2; // 1→0, 3→1
   return (
-    projectile.lane === enemy.lane &&
+    laneDist <= reach &&
     Math.abs(projectile.x - enemy.col) < 0.5 &&
     enemy.health > 0
   );
@@ -82,6 +90,40 @@ export function applyDamage(target: CombatEntity, damage: number): void {
 
 export function isDead(entity: CombatEntity): boolean {
   return entity.health <= 0;
+}
+
+/**
+ * Returns the rows affected by a vertical AOE centered on targetRow.
+ * Clamps to valid grid bounds [0, gridRows-1].
+ */
+export function getAOETargetRows(targetRow: number, gridRows: number = 5): number[] {
+  const rows = [targetRow];
+  if (targetRow > 0) rows.push(targetRow - 1);
+  if (targetRow < gridRows - 1) rows.push(targetRow + 1);
+  return rows.sort((a, b) => a - b);
+}
+
+/**
+ * Apply AOE damage to all alive enemies in targetRow ± 1 row at the target column.
+ * Returns the list of enemies that were hit.
+ */
+export function applyAOEDamage(
+  targetRow: number,
+  targetCol: number,
+  damage: number,
+  enemies: CombatEntity[],
+  gridRows: number = 5,
+): CombatEntity[] {
+  const rows = getAOETargetRows(targetRow, gridRows);
+  const hit: CombatEntity[] = [];
+  for (const enemy of enemies) {
+    if (enemy.health <= 0) continue;
+    if (rows.includes(enemy.lane) && Math.abs(enemy.col - targetCol) < 0.5) {
+      enemy.health -= damage;
+      hit.push(enemy);
+    }
+  }
+  return hit;
 }
 
 export function wallBlocks(

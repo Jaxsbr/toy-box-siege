@@ -96,3 +96,11 @@ entries:
       ToysScene + EnemiesScene added to module list. All structural criteria met.
       165 tests pass.
     tokens: ~1k
+
+reconciliation_status:
+  r0: done
+  r1: done
+  r2: done
+  r3: done
+  r4: done
+  r5: done

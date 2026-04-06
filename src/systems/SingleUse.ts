@@ -1,5 +1,7 @@
 import { CombatEntity, isDead } from './Combat';
 
+export const MINE_BOSS_DAMAGE = 400; // chunk damage to boss enemies instead of instant kill
+
 /**
  * Mine — check if any enemy is on the mine's cell.
  * Returns the first enemy on the mine cell, or null.

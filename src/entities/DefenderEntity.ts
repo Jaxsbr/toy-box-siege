@@ -284,17 +284,27 @@ export class DefenderEntity extends Phaser.GameObjects.Container {
     }
   }
 
-  /** Water Pistol recoil — brief scale kick on fire */
+  /** Projectile fire reaction — recoil for shooter, forward-lunge for trapper */
   playRecoil(): void {
-    if (this.defenderKey !== 'shooter') return;
-    this.scene.tweens.add({
-      targets: this,
-      scaleX: 0.85,
-      scaleY: 1.1,
-      duration: 80,
-      ease: 'Quad.easeOut',
-      yoyo: true,
-    });
+    if (this.defenderKey === 'shooter') {
+      this.scene.tweens.add({
+        targets: this,
+        scaleX: 0.85,
+        scaleY: 1.1,
+        duration: 80,
+        ease: 'Quad.easeOut',
+        yoyo: true,
+      });
+    } else if (this.defenderType.behavior === 'trapper') {
+      // Honey Bear forward-lunge — brief x push toward enemies
+      this.scene.tweens.add({
+        targets: this,
+        x: this.x + 4,
+        duration: 100,
+        ease: 'Quad.easeOut',
+        yoyo: true,
+      });
+    }
   }
 
   /** Jack-in-the-Box produce — body pulse on income tick */

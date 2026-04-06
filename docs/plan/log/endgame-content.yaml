@@ -1,0 +1,175 @@
+# Phase log — endgame-content
+# Each entry: { task, story, description, result, notes, tokens }
+
+entries:
+  - task: 1
+    story: US-56
+    description: "Branch B investigation — read current state, identify affected files, plan Honey Bear projectile implementation"
+    result: pass
+    notes: |
+      165 tests pass (16 files). Key findings:
+      Combat.ts: PROJECTILE_SPEED=4, tryFire/ProjectileState pattern for Water Pistol. Honey Bear projectile speed must be < 4.
+      HoneyTrap.ts: createHoneyPot(row, col, duration) reusable. HONEY_TOSS_INTERVAL/HONEY_TOSS_RANGE for periodic tossing — remove.
+      SingleUse.ts: mineTriggerCheck returns enemy, doesn't kill. Kill logic in GameScene. Need MINE_BOSS_DAMAGE for boss.
+      defenders.ts: trapper has fireRate:0, damage:0 — needs updating for projectile behavior.
+      enemies.ts: EnemyType needs bossType? field. No 'boss' entry yet.
+      levels.ts: ALL_LEVELS length 9. LevelProgress.ts: TOTAL_LEVELS=9. Both need 10.
+      Phase type: server/schema/cross-cutting — investigate-first mandate applies.
+      Queued: investigate GameScene honey bear tossing and Water Pistol projectile rendering.
+    tokens: ~5k
+  - task: 2
+    story: US-56
+    description: "Investigate GameScene — Honey Bear tossing and Water Pistol projectile patterns"
+    result: pass
+    notes: |
+      Water Pistol: tryFire→ProjectileEntity→moveProjectile/checkProjectileHit→applyDamage (single target).
+      Current Honey Bear: trapperTimers + honeyProjectiles arrays (visual circles), random target col, no Combat.ts.
+      Mine kill: applyDamage(target, 9999) = instant kill. Boss needs MINE_BOSS_DAMAGE cap.
+      ProjectileEntity: fixed yellow (0xfbbf24). Need amber variant for honey.
+      Plan: add HONEY_BEAR constants + applyAOEDamage to Combat.ts, update trapper config, add tests,
+      then rework GameScene to remove trapperTimers and integrate trapper into shooter loop.
+      Queued: add Combat.ts AOE logic + defenders.ts trapper config + tests.
+    tokens: ~4k
+  - task: 3
+    story: US-56
+    description: "Add HONEY_BEAR constants, applyAOEDamage function to Combat.ts, update trapper config in defenders.ts, add 6 AOE damage tests"
+    result: pass
+    notes: |
+      Combat.ts: added HONEY_BEAR_PROJECTILE_SPEED=2, HONEY_BEAR_FIRE_INTERVAL=3, HONEY_BEAR_AOE_DAMAGE=5.
+      getAOETargetRows(row, gridRows): returns [row-1, row, row+1] clamped to bounds.
+      applyAOEDamage(row, col, damage, enemies): hits alive enemies in AOE rows at col.
+      defenders.ts trapper: fireRate=1/3, damage=5, range=9, bio updated.
+      6 new tests: 3 for AOE row clamping, 2 for AOE damage application, 1 for speed constant.
+      171 tests pass (165 + 6 new). No regressions.
+    tokens: ~3k
+  - task: 4
+    story: US-56
+    description: "Branch B — queue GameScene rework for Honey Bear projectile integration"
+    result: pass
+    notes: |
+      Pure logic (Combat.ts) and config (defenders.ts) done. Next: rework GameScene.
+      Remove: trapperTimers, honeyProjectiles, HONEY_PROJECTILE_SPEED, random-target tossing.
+      Add: integrate trapper into shooter fire loop, amber ProjectileEntity variant,
+      AOE damage via applyAOEDamage on hit, honey pot creation via createHoneyPot per AOE row,
+      honey pool rendering at depth 2 with amber fill.
+      Queued: GameScene rework implementation.
+    tokens: ~1k
+  - task: 5
+    story: US-56
+    description: "Rework GameScene: remove periodic tossing, integrate trapper into shooter loop, amber projectile, AOE on hit, honey pools, fire animation, HoneyTrap test"
+    result: pass
+    notes: |
+      GameScene: removed trapperTimers, honeyProjectiles, HONEY_PROJECTILE_SPEED.
+      Trapper now uses same tryFire→ProjectileEntity loop as shooter with HONEY_BEAR_PROJECTILE_SPEED.
+      On honey hit: applyAOEDamage to ±1 rows + createHoneyPot per AOE row at hit col.
+      Honey pool renders at depth 2 (0xe65100, alpha 0.35). ProjectileEntity.isHoney flag.
+      DefenderEntity.playRecoil: trapper gets forward-lunge tween.
+      HoneyTrap.test.ts: new projectile-hit path test.
+      172 tests pass (171 + 1 new). ✓ US-56 complete — all 10 criteria met.
+    tokens: ~5k
+  - task: 6
+    story: US-57
+    description: "Branch B — queue investigation for Stage-1 Boss implementation"
+    result: pass
+    notes: |
+      US-56 complete. Moving to US-57 (Stage-1 Boss).
+      Need to investigate: EnemyEntity.ts per-key shape drawing, animation patterns,
+      SingleUse.ts/test for mine-boss interaction, EnemiesScene for discovery rendering.
+      Queued: investigate EnemyEntity.ts + SingleUse + GameScene patterns.
+    tokens: ~1k
+  - task: 7
+    story: US-57
+    description: "Investigate EnemyEntity.ts, SingleUse, GameScene mine patterns for boss implementation"
+    result: pass
+    notes: |
+      EnemyEntity.ts: 4 draw functions (drawDustBunny, drawCleaningRobot, drawArmoredBunny, drawSockPuppet).
+      DRAW_ENEMY map with 4 keys. Need drawBoss (unique). startMovementAnimation has 4 cases — add 'boss'.
+      Hit flash: works per scale already. Health bar: scales with enemyType.scale already.
+      SingleUse.ts: mineTriggerCheck returns enemy. Kill logic in GameScene: applyDamage(target, 9999).
+      Need MINE_BOSS_DAMAGE constant + bossType check in GameScene.
+      Death colors in GameScene: basic=pink, tough=purple, armored=pink, jumper=orange. Need boss.
+      EnemiesScene: ALWAYS_DISCOVERED = ['basic']. Others use localStorage bio_shown_enemy_<key>.
+      Test file is SingleUseDefenders.test.ts (not SingleUse.test.ts).
+      Queued: add bossType + boss type + MINE_BOSS_DAMAGE + test + GameScene mine update.
+    tokens: ~4k
+  - task: 8
+    story: US-57
+    description: "Add bossType to EnemyType, register boss in enemies.ts, MINE_BOSS_DAMAGE, GameScene mine update, 2 tests"
+    result: pass
+    notes: |
+      enemies.ts: bossType?: boolean field. 'boss' entry: Mega Mop, 2000HP, 0.08 speed, scale 1.6.
+      SingleUse.ts: MINE_BOSS_DAMAGE=400.
+      GameScene: mine trigger checks ent.enemyType.bossType for damage cap. Boss death color 0x78909c.
+      SingleUseDefenders.test.ts: boss mine hit reduces by MINE_BOSS_DAMAGE, not dead. Constant >= 300.
+      174 tests pass (172 + 2 new). tsc --noEmit clean.
+    tokens: ~3k
+  - task: 9
+    story: US-57
+    description: "Add drawBoss shape, boss stomp animation, verify EnemiesScene discovery"
+    result: pass
+    notes: |
+      EnemyEntity.ts: drawBoss function — mop-headed brute with armor plates, red eyes, heavy treads.
+      DRAW_ENEMY['boss'] registered. Boss movement: slow stomp tween (800ms, vertical + squash).
+      EnemiesScene: boss auto-discovered via Object.keys(ENEMY_TYPES) + bio_shown_enemy_boss pattern.
+      All 11 US-57 criteria verified: bossType, config, unique shape, health bar, animation,
+      hit flash, death particles, MINE_BOSS_DAMAGE, discovery. ✓ US-57 complete.
+      174 tests pass. tsc --noEmit clean.
+    tokens: ~3k
+  - task: 10
+    story: US-58
+    description: "Branch B — queue Level 10 implementation"
+    result: pass
+    notes: |
+      US-56 and US-57 complete. Last story: US-58 (Level 10).
+      Need: LEVEL_10 config, ALL_LEVELS length 10, TOTAL_LEVELS=10, test updates.
+      levels.ts pattern clear from investigation. LevelProgress.ts TOTAL_LEVELS=9 → 10.
+      LevelProgress.test.ts has tests using 9-level arrays — need updating.
+      Queued: add LEVEL_10 + update TOTAL_LEVELS + update tests.
+    tokens: ~1k
+  - task: 11
+    story: US-58
+    description: "Add LEVEL_10 config, update TOTAL_LEVELS to 10, update LevelProgress tests, add 3 L10 tests, scope difficulty tests to L1-L9"
+    result: pass
+    notes: |
+      levels.ts: LEVEL_10 config — 5 waves, formation rush waves 1-4 (0.5-0.8s intervals),
+      wave 5 with single boss spawn. enemyBio for 'boss', setupDelay=20s.
+      ALL_LEVELS includes LEVEL_10 (length 10).
+      LevelProgress.ts: TOTAL_LEVELS=10. Migration pads old 5-level saves.
+      LevelProgress.test.ts: updated "all completed" to 10, added L9→L10 nextUnbeatenLevel test.
+      Levels.test.ts: ALL_LEVELS length 10, 3 new L10 tests (structure, intervals, boss spawn).
+      Difficulty-tuning tests scoped to L1-L9 (L10 intentionally breaks 2.0s floor).
+      FP tolerance fix for 0.8s interval check (+0.001).
+      176 tests pass (174 + 2 new). tsc --noEmit clean. ✓ US-58 complete — all 8 criteria met.
+    tokens: ~4k
+  - task: 12
+    story: phase
+    description: "Update AGENTS.md — Honey Bear projectile AOE, Stage-1 Boss, Level 10, honey pool depth layer"
+    result: pass
+    notes: |
+      AGENTS.md updates for 3 structural criteria:
+      1. Honey Bear: replaced periodic tossing with projectile + 3-lane AOE + honey pool on hit.
+      2. Enemies: added Mega Mop/boss (0.08 cells/s, 2000 HP, scale 1.6, bossType, MINE_BOSS_DAMAGE=400).
+      3. Level progression: 9→10 levels, added L10 (formation rush, boss fight).
+      Also: added honey pools at depth 2 in depth layer map, updated ProjectileEntity description,
+      updated config directory listing (LEVEL_1-LEVEL_10), updated EnemyEntity key list.
+      All phase criteria now checked.
+    tokens: ~2k
+  - task: 13
+    story: review
+    description: "[review] review-pr pr=15 auto=true"
+    result: pass
+    notes: |
+      PR #15 reviewed. 0 critical, 1 concern (AOE row duplication in GameScene),
+      0 nits. Review posted as COMMENT. Concern: GameScene manually builds aoeRows
+      instead of calling getAOETargetRows from Combat.ts.
+    tokens: ~3k
+  - task: 14
+    story: review
+    description: "[review] handle-pr-review pr=15 auto=true"
+    result: pass
+    notes: |
+      1 unresolved thread (AOE row duplication in GameScene).
+      Triage: Fix — replaced manual aoeRows build with getAOETargetRows(proj.lane, GRID_ROWS).
+      Committed, pushed, thread resolved, summary posted.
+      178 tests pass, tsc clean. Review complete.
+    tokens: ~3k
