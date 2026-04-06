@@ -163,3 +163,13 @@ entries:
       0 nits. Review posted as COMMENT. Concern: GameScene manually builds aoeRows
       instead of calling getAOETargetRows from Combat.ts.
     tokens: ~3k
+  - task: 14
+    story: review
+    description: "[review] handle-pr-review pr=15 auto=true"
+    result: pass
+    notes: |
+      1 unresolved thread (AOE row duplication in GameScene).
+      Triage: Fix — replaced manual aoeRows build with getAOETargetRows(proj.lane, GRID_ROWS).
+      Committed, pushed, thread resolved, summary posted.
+      178 tests pass, tsc clean. Review complete.
+    tokens: ~3k
