@@ -27,9 +27,9 @@ export const ENEMY_TYPES: Record<string, EnemyType> = {
   },
   armored: {
     name: 'Armored Bunny',
-    health: 240, // exactly 3x basic
-    speed: 0.4,  // same as basic
-    damage: 10,
+    health: 300,
+    speed: 0.5,
+    damage: 20,
     scale: 1.15,
     armorStages: 3, // full → cracked → bare
     bio: 'Armored Bunny wears a tough helmet! Keep shooting \u2014 the helmet cracks and breaks off.',
