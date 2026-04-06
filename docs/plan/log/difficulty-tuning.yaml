@@ -1,0 +1,81 @@
+# Phase log — difficulty-tuning
+# Each entry: { task, story, description, result, notes, tokens }
+
+entries:
+  - task: 2
+    story: US-50
+    description: "Update enemy speeds in enemies.ts, fix speed assertions in EnemyTypes.test.ts, add full hierarchy test"
+    result: pass
+    notes: |
+      enemies.ts: basic 0.4→0.25, armored 0.45→0.20, tough 0.25→0.15, jumper 0.455→0.30.
+      Hierarchy: jumper(0.30)>basic(0.25)>armored(0.20)>tough(0.15) — tank archetype fixed.
+      EnemyTypes.test.ts: armored 'speed is 0.45'→'speed is 0.20', jumper 'speed=0.455'→'speed=0.30'.
+      New test: 'Enemy speed hierarchy' with 3 unconditional assertions (no-silent-pass compliant).
+      Enemies.test.ts: basic>tough holds (0.25>0.15); armored covered by new hierarchy test.
+      157 tests pass (156+1 new). ✓ US-50 complete
+    tokens: ~2k
+  - task: 7
+    story: phase
+    description: "Phase completion gate — all done-when criteria verified"
+    result: pass
+    notes: |
+      All done-when criteria met. Evidence:
+      - US-50: basic=0.25∈[0.2,0.3], armored=0.20<basic, tough=0.15∈[0.1,0.18], jumper=0.30∈[0.25,0.35].
+        Hierarchy: 0.30>0.25>0.20>0.15. EnemyTypes.test.ts assertions updated. New hierarchy test added.
+      - US-51: All waves >= 2.0s min gap. 70% inter-level rule met. Within-level cliff 60-88% (all >= 60%).
+        Setup delays: L5=25, L6=25, L8=25, L9=18. Wave counts preserved. Composition tests pass.
+        Enemy counts preserved. New 5-test suite: monotonic curve, min gap, setup delays, cliff guard.
+      - Phase: AGENTS.md speed values and pacing philosophy updated. stage-one.md design notes updated.
+      162 tests pass, 0 regressions (up from 156 — 6 new tests added).
+    tokens: ~2k
+  - task: 6
+    story: phase
+    description: "Update AGENTS.md enemy speeds/pacing, stage-one.md design notes"
+    result: pass
+    notes: |
+      AGENTS.md: enemy speeds added (basic=0.25, armored=0.20, tough=0.15, jumper=0.30), speed hierarchy noted,
+      level progression description updated with 2.0s minimum gap, PvZ-style pacing, setup delays.
+      stage-one.md: new 'Difficulty tuning' section with speed hierarchy rationale and wave pacing rationale.
+      162 tests pass (no regressions).
+    tokens: ~2k
+  - task: 5
+    story: phase
+    description: "Branch B — both stories complete, queue structural update task"
+    result: pass
+    notes: "US-50 and US-51 done. Structural criteria unmet: AGENTS.md speed values/pacing philosophy, stage-one.md design notes. Queued structural task."
+    tokens: ~1k
+  - task: 4
+    story: US-51
+    description: "Rebalance wave pacing in levels.ts — widen intervals to 2.0s minimum, fix setup delays, add smooth curve tests"
+    result: pass
+    notes: |
+      levels.ts: L2-L9 spawn intervals redesigned. Targets: L2 min=3.5s, L3 min=3.0s, L4 min=2.5s, L5-L9 min=2.0s.
+      All waves have >= 2.0s consecutive spawn gaps. Within-level ramps: 3.0s→2.5s→2.0s→2.0s for L5-L9.
+      Setup delays: L5/L6 20→25s, L8 18→25s, L9 16→18s. All 70% inter-level and 60% within-level ratios satisfied.
+      Enemy counts preserved (L2:7, L3:12, L4:15, L5-L8:32, L9:45).
+      Levels.test.ts: traverse time comment updated (0.5→0.25 cells/s, 18→36s). New tests:
+        'no wave min interval below 2.0s', 'smooth difficulty curve monotonic', 'setup delay >= 18s',
+        'setup delay >= 25s for bio levels', 'within-level cliff <= 40% drop'.
+      162 tests pass (157+5 new). ✓ US-51 complete
+    tokens: ~5k
+  - task: 3
+    story: US-51
+    description: "Branch B — US-50 complete, queue US-51 wave pacing implementation"
+    result: pass
+    notes: "All US-50 criteria met. US-51 unmet: L2 wave 2 min gap=1.5s, L3 min gaps below 2.0s, L5-L9 wave 4 min gap=1.5s, L9 wave 5 min gap=1.2s. Setup delays: L5/L6 need 25s (currently 20), L8 needs 25s (currently 18), L9 needs 18s (currently 16). Queued US-51 implement task."
+    tokens: ~1k
+  - task: 1
+    story: US-50
+    description: "Branch B investigation — read enemies.ts, levels.ts, all speed/interval values, current test assertions"
+    result: pass
+    notes: |
+      156 tests pass (16 files). Current speeds: basic=0.4, tough=0.25, armored=0.45, jumper=0.455.
+      Violations: armored (0.45) > basic (0.4) breaks tank archetype; all speeds too fast.
+      Target speeds: basic=0.25, armored=0.20, tough=0.15, jumper=0.30 — hierarchy: jumper>basic>armored>tough.
+      EnemyTypes.test.ts: armored speed asserts 0.45, jumper stats assert 0.455 — both need updating.
+      Enemies.test.ts: basic > tough already passes; no armored speed assertion present.
+      Levels.test.ts: timing comparison uses 18 (traverse at 0.5 cells/s, already stale).
+      Current level issues: L2 wave 2 min gap=1.5s, L3 waves 1-3 min gaps 1.5/1.0/1.0s, L5-L9 wave 4 min gap=1.5s,
+      L9 wave 5 min gap=1.2s. L5/L6 setupDelay=20 (needs 25). L8 setupDelay=18 (needs 25). L9 setupDelay=16 (needs 18).
+      Queued US-50 implement task.
+    tokens: ~4k

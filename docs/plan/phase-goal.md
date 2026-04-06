@@ -1,59 +1,43 @@
 ## Phase goal
 
-Extend the guided progression from 5 to 9 levels by adding L6–L9 as pure config additions, and deploy the game to GitHub Pages. L6 introduces the Cleaning Robot enemy with a pre-round bio screen and unlocks the Honey Bear on completion. L7 is a Honey Bear practice level. L8 introduces the Sock Puppet with a bio screen and unlocks the Marble Mine. L9 is a Marble Mine practice level featuring the full enemy roster and the first loadout selection moment. A GitHub Actions workflow deploys `dist/` to the `gh-pages` branch on every push to `main`.
+Balance and pacing pass to make the game feel gentler and more forgiving for kids — PvZ-style where most players clear stage one comfortably. All changes are config value updates in `src/config/enemies.ts` (speed values) and `src/config/levels.ts` (spawn intervals, setup delays). No system or scene code changes.
 
 ### Stories in scope
-- US-45 — L6: Introduce the Cleaning Robot
-- US-46 — L7: Honey Bear practice level
-- US-47 — L8: Introduce the Sock Puppet
-- US-48 — L9: Marble Mine practice level
-- US-49 — GitHub Pages deployment
+- US-50 — Reduce enemy speeds for kid-friendly pacing
+- US-51 — Rebalance wave pacing L1-L9 for smooth difficulty curve
 
 ### Done-when (observable)
 
-#### US-45 — L6: Introduce the Cleaning Robot
-- [x] `ENEMY_TYPES.tough` in `src/config/enemies.ts` has a non-empty `bio` string field (kid-friendly description mentioning the Cleaning Robot is slow but very tough) [US-45]
-- [x] `LEVEL_6` in `src/config/levels.ts` has no `activeLanes` override (all 5 lanes), `enemyBio: { enemyKey: 'tough' }`, `startingBalance >= 450`, and >= 4 waves [US-45]
-- [x] L6 wave 1 spawns are all `ENEMY_TYPES.basic`; each of waves 2+ contains at least one `ENEMY_TYPES.tough` spawn [US-45]
-- [x] `LEVEL_6` is included in `ALL_LEVELS` (array length becomes 6) [US-45]
-- [x] `UNLOCK_MAP` in `src/systems/DefenderUnlocks.ts` contains entry `6: 'trapper'` [US-45]
-- [x] Unit test: `getUnlockedDefenders` called with completed levels [1,2,3,4,5,6] returns array containing `'trapper'`; called with [1,2,3,4,5] it does not [US-45]
-- [x] `LoadoutSelection.test.ts` test "trapper and mine are not in initial defenders or unlock map" is renamed/updated to reflect they are now in `UNLOCK_MAP` at L6 and L8 — the updated test verifies completing only L1–L5 (indices 0–4) still does not yield trapper or mine [US-45]
-- [x] `npm test` passes [US-45]
+#### US-50 — Reduce enemy speeds for kid-friendly pacing
+- [x] Dust Bunny (`ENEMY_TYPES.basic`) speed in range [0.2, 0.3] cells/s (reduced from 0.4) [US-50]
+- [x] Armored Bunny (`ENEMY_TYPES.armored`) speed strictly less than Dust Bunny speed [US-50]
+- [x] Cleaning Robot (`ENEMY_TYPES.tough`) speed in range [0.1, 0.18] cells/s (reduced from 0.25) — slowest enemy [US-50]
+- [x] Sock Puppet (`ENEMY_TYPES.jumper`) speed in range [0.25, 0.35] cells/s (reduced from 0.455) — fastest enemy [US-50]
+- [x] Speed hierarchy holds: `jumper.speed > basic.speed > armored.speed > tough.speed` [US-50]
+- [x] `test/EnemyTypes.test.ts` speed/stat assertions updated to match new values [US-50]
+- [x] `test/Enemies.test.ts` "basic.speed > tough.speed" assertion still holds (already true, but verify armored is also covered) [US-50]
+- [x] New test in `test/EnemyTypes.test.ts` (or `test/Enemies.test.ts`) validates the full speed hierarchy: `jumper.speed > basic.speed > armored.speed > tough.speed` [US-50]
+- [x] `npm test` passes [US-50]
 
-#### US-46 — L7: Honey Bear practice level
-- [x] `LEVEL_7` in `src/config/levels.ts` has no `activeLanes` override, no `enemyBio`, `startingBalance >= 500`, and >= 4 waves [US-46]
-- [x] Every wave in L7 contains at least one `ENEMY_TYPES.tough` spawn [US-46]
-- [x] `LEVEL_7` is included in `ALL_LEVELS` (array length becomes 7) [US-46]
-- [x] `npm test` passes [US-46]
-
-#### US-47 — L8: Introduce the Sock Puppet
-- [x] `ENEMY_TYPES.jumper` in `src/config/enemies.ts` has a non-empty `bio` string field that explicitly states the Sock Puppet jumps over the first toy/defender it encounters [US-47]
-- [x] `LEVEL_8` in `src/config/levels.ts` has no `activeLanes` override, `enemyBio: { enemyKey: 'jumper' }`, `startingBalance >= 550`, and >= 4 waves [US-47]
-- [x] L8 wave 1 contains no `ENEMY_TYPES.jumper` spawns; each of waves 2+ contains at least one `ENEMY_TYPES.jumper` spawn [US-47]
-- [x] `LEVEL_8` is included in `ALL_LEVELS` (array length becomes 8) [US-47]
-- [x] `UNLOCK_MAP` in `src/systems/DefenderUnlocks.ts` contains entry `8: 'mine'` [US-47]
-- [x] Unit test: `getUnlockedDefenders` called with completed levels [1,2,3,4,5,6,7,8] returns array containing `'mine'`; called with [1,2,3,4,5,6,7] it does not [US-47]
-- [x] `npm test` passes [US-47]
-
-#### US-48 — L9: Marble Mine practice level
-- [x] `LEVEL_9` in `src/config/levels.ts` has no `activeLanes` override, no `enemyBio`, `startingBalance >= 600`, and >= 5 waves [US-48]
-- [x] L9 waves collectively include at least one spawn each of `ENEMY_TYPES.basic`, `ENEMY_TYPES.tough`, `ENEMY_TYPES.armored`, and `ENEMY_TYPES.jumper` [US-48]
-- [x] `LEVEL_9` is included in `ALL_LEVELS` (array length becomes 9) [US-48]
-- [x] `needsLoadoutSelection(getUnlockedDefenders([1,2,3,4,5,6,7,8]))` returns `true` — 5 unlocked defenders exceeds `MAX_LOADOUT=4`, triggering the loadout selection screen before L9 [US-48]
-- [x] `npm test` passes [US-48]
-
-#### US-49 — GitHub Pages deployment
-- [x] `.github/workflows/deploy.yml` exists with a workflow job triggered on `push` to `main` [US-49]
-- [x] Workflow steps include: `actions/checkout`, Node.js setup, `npm ci`, `npm run build`, and deployment of `dist/` to the `gh-pages` branch [US-49]
-- [x] `vite.config.ts` retains `base: './'` (relative paths compatible with GitHub Pages subdirectory hosting) [US-49]
-- [x] `npm run build` completes without TypeScript errors and produces `dist/index.html` [US-49]
+#### US-51 — Rebalance wave pacing L1-L9 for smooth difficulty curve
+- [x] No wave in any level (L1-L9) has a minimum spawn interval below 2.0s [US-51]
+- [x] Minimum spawn intervals do not tighten faster than levels progress: for each pair of adjacent levels, the tighter-interval level's minimum spawn gap is >= 70% of the wider-interval level's minimum spawn gap [US-51]
+- [x] Within each level, the last wave's minimum spawn interval is no less than 60% of the first wave's minimum spawn interval (prevents within-level difficulty cliffs) [US-51]
+- [x] Setup delay for levels with `enemyBio` (L5, L6, L8) >= 25s [US-51]
+- [x] Setup delay for all levels >= 18s [US-51]
+- [x] Level wave counts unchanged: L1(1), L2(2), L3(3), L4(3), L5(4), L6(4), L7(4), L8(4), L9(5) [US-51]
+- [x] Enemy type composition per wave preserved (all existing composition test assertions in `Levels.test.ts` pass) [US-51]
+- [x] Total enemy count per level is the same or higher than current values [US-51]
+- [x] A new test in `test/Levels.test.ts` validates the smooth difficulty curve: minimum spawn interval across all waves in level N is >= minimum spawn interval across all waves in level N+1 [US-51]
+- [x] `test/Levels.test.ts` starting balance and timing assertions updated to match new config values [US-51]
+- [x] `npm test` passes [US-51]
 
 #### Structural
-- [ ] `docs/product/stage-one.md` level table extended with rows for L6 (Cleaning Robot intro, Honey Bear unlock reward), L7 (Honey Bear practice), L8 (Sock Puppet intro, Marble Mine unlock reward), and L9 (Marble Mine practice) [phase]
-- [ ] `AGENTS.md` updated to reflect: `ALL_LEVELS` length 9, `UNLOCK_MAP` entries L6→trapper and L8→mine, level progression description extended to L1–L9 [phase]
+- [x] `AGENTS.md` level progression description updated to reflect new enemy speeds and pacing philosophy (gentle curve, PvZ-style stage one) [phase]
+- [x] `docs/product/stage-one.md` design notes section updated to mention the difficulty tuning rationale [phase]
 
 ### Golden principles (phase-relevant)
-- Config-driven entities — new levels are pure `LevelConfig` additions; bio text added to `EnemyType.bio` fields; no new Phaser scene code required
-- Game logic separated from Phaser rendering — `DefenderUnlocks.ts` changes are pure TS and covered by existing test suite
-- agents-consistency — AGENTS.md and stage-one.md updated to reflect shipped level progression and unlock schedule
+- Config-driven entities — all changes are config value updates in `enemies.ts` and `levels.ts`; no system/scene code changes
+- Game logic separated from Phaser rendering — speed values and spawn delays are consumed by existing pure TS systems (EnemyMovement, WaveManager)
+- no-silent-pass — new difficulty curve test must have unconditional assertions (no early returns before assertions)
+- agents-consistency — AGENTS.md updated to reflect shipped balance values before phase is marked complete
