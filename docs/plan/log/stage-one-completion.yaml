@@ -26,3 +26,9 @@ entries:
     result: pass
     notes: "US-45/46/47/48 complete. US-49 pending: .github/workflows/deploy.yml does not exist. vite.config.ts already has base:'./' (criterion met). Queued implement task for deploy.yml."
     tokens: ~1k
+  - task: 5
+    story: US-49
+    description: "Create .github/workflows/deploy.yml — GitHub Pages on push to main"
+    result: pass
+    notes: "deploy.yml created: triggers on push to main, steps checkout/setup-node/npm-ci/npm-run-build/peaceiris-gh-pages@v4. vite.config.ts already has base:'./' — no changes needed. npm run build produces dist/index.html (TypeScript clean). 156 tests pass. ✓ US-49 complete"
+    tokens: ~2k

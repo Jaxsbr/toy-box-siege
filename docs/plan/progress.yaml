@@ -28,8 +28,8 @@ state:
   status: running
 
   # --- Task orchestration (owner: iterator) ---
-  task_number: 5
-  next_task: "[US-49] Implement: create .github/workflows/deploy.yml with build-and-deploy to gh-pages on push to main"
+  task_number: 6
+  next_task: null
   last_result: pass
   consecutive_fails: 0
 
@@ -42,4 +42,4 @@ state:
   retro_complete: false
 
   # --- Tracking (owner: iterator) ---
-  completed_stories: [US-45, US-46, US-47, US-48]
+  completed_stories: [US-45, US-46, US-47, US-48, US-49]

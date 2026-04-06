@@ -44,10 +44,10 @@ Extend the guided progression from 5 to 9 levels by adding L6–L9 as pure confi
 - [x] `npm test` passes [US-48]
 
 #### US-49 — GitHub Pages deployment
-- [ ] `.github/workflows/deploy.yml` exists with a workflow job triggered on `push` to `main` [US-49]
-- [ ] Workflow steps include: `actions/checkout`, Node.js setup, `npm ci`, `npm run build`, and deployment of `dist/` to the `gh-pages` branch [US-49]
-- [ ] `vite.config.ts` retains `base: './'` (relative paths compatible with GitHub Pages subdirectory hosting) [US-49]
-- [ ] `npm run build` completes without TypeScript errors and produces `dist/index.html` [US-49]
+- [x] `.github/workflows/deploy.yml` exists with a workflow job triggered on `push` to `main` [US-49]
+- [x] Workflow steps include: `actions/checkout`, Node.js setup, `npm ci`, `npm run build`, and deployment of `dist/` to the `gh-pages` branch [US-49]
+- [x] `vite.config.ts` retains `base: './'` (relative paths compatible with GitHub Pages subdirectory hosting) [US-49]
+- [x] `npm run build` completes without TypeScript errors and produces `dist/index.html` [US-49]
 
 #### Structural
 - [ ] `docs/product/stage-one.md` level table extended with rows for L6 (Cleaning Robot intro, Honey Bear unlock reward), L7 (Honey Bear practice), L8 (Sock Puppet intro, Marble Mine unlock reward), and L9 (Marble Mine practice) [phase]
