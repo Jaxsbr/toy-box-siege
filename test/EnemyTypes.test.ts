@@ -7,8 +7,8 @@ describe('Armored Bunny — config', () => {
     expect(ENEMY_TYPES.armored.health).toBe(300);
   });
 
-  it('speed is 0.5', () => {
-    expect(ENEMY_TYPES.armored.speed).toBe(0.5);
+  it('speed is 0.45', () => {
+    expect(ENEMY_TYPES.armored.speed).toBe(0.45);
   });
 });
 

@@ -19,7 +19,7 @@ export const ENEMY_TYPES: Record<string, EnemyType> = {
   },
   tough: {
     name: 'Cleaning Robot',
-    health: 750,
+    health: 550,
     speed: 0.25,
     damage: 30,
     scale: 1.35,
@@ -28,7 +28,7 @@ export const ENEMY_TYPES: Record<string, EnemyType> = {
   armored: {
     name: 'Armored Bunny',
     health: 300,
-    speed: 0.5,
+    speed: 0.45,
     damage: 20,
     scale: 1.15,
     armorStages: 3, // full → cracked → bare
