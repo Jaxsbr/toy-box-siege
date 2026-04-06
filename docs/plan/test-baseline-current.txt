@@ -6,8 +6,8 @@
  RUN  v4.1.2 /Users/jacobusbrink/dev/zombo
 
 
- Test Files  15 passed (15)
-      Tests  123 passed (123)
-   Start at  20:38:40
-   Duration  254ms (transform 340ms, setup 0ms, import 508ms, tests 33ms, environment 1ms)
+ Test Files  16 passed (16)
+      Tests  144 passed (144)
+   Start at  11:24:34
+   Duration  274ms (transform 385ms, setup 0ms, import 559ms, tests 41ms, environment 1ms)
 

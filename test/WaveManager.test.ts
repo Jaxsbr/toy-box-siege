@@ -97,6 +97,66 @@ describe('WaveManager', () => {
   });
 });
 
+describe('WaveManager — activeLanes', () => {
+  it('LevelConfig accepts activeLanes field', () => {
+    const level: LevelConfig = {
+      activeLanes: [2],
+      waves: [{ spawns: [{ type: ENEMY_TYPES.basic, lane: 2, delay: 0 }] }],
+      setupDelay: 0,
+      announceDuration: 0,
+    };
+    const wm = new WaveManager(level);
+    expect(wm.totalWaves).toBe(1);
+  });
+
+  it('activeLanes is optional — omitting defaults to all rows', () => {
+    const level: LevelConfig = {
+      waves: [{ spawns: [{ type: ENEMY_TYPES.basic, lane: 4, delay: 0 }] }],
+      setupDelay: 0,
+      announceDuration: 0,
+    };
+    // activeLanes not set — should compile and work
+    expect(level.activeLanes).toBeUndefined();
+    const wm = new WaveManager(level);
+    const spawns = wm.update(0);
+    expect(spawns).toHaveLength(1);
+    expect(spawns[0].lane).toBe(4);
+  });
+
+  it('spawn with lane outside activeLanes is still returned by WaveManager (scene filters)', () => {
+    const level: LevelConfig = {
+      activeLanes: [2],
+      waves: [{ spawns: [
+        { type: ENEMY_TYPES.basic, lane: 0, delay: 0 },
+        { type: ENEMY_TYPES.basic, lane: 2, delay: 0 },
+      ] }],
+      setupDelay: 0,
+      announceDuration: 0,
+    };
+    const wm = new WaveManager(level);
+    const spawns = wm.update(0);
+    // WaveManager returns all spawns — GameScene filters by activeLanes
+    expect(spawns).toHaveLength(2);
+  });
+
+  it('activeLanes: [1,2,3] is accepted for 3-lane config', () => {
+    const level: LevelConfig = {
+      activeLanes: [1, 2, 3],
+      waves: [{ spawns: [
+        { type: ENEMY_TYPES.basic, lane: 1, delay: 0 },
+        { type: ENEMY_TYPES.basic, lane: 2, delay: 0.5 },
+        { type: ENEMY_TYPES.basic, lane: 3, delay: 1 },
+      ] }],
+      setupDelay: 0,
+      announceDuration: 0,
+    };
+    expect(level.activeLanes).toEqual([1, 2, 3]);
+    const wm = new WaveManager(level);
+    const spawns = wm.update(1);
+    expect(spawns).toHaveLength(3);
+  });
+});
+
 describe('WaveManager — wave state machine', () => {
   // Delayed level with staggered spawns so spawning state persists across ticks
   const delayedLevel: LevelConfig = {

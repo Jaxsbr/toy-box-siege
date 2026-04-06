@@ -6,6 +6,7 @@ export interface EnemyType {
   scale?: number;   // visual scale multiplier (default 1.0)
   jumpsRemaining?: number; // number of defender-jumps available (sock puppet)
   armorStages?: number;    // number of visual degradation stages (armored bunny)
+  bio?: string;     // kid-friendly description shown on pre-round bio screen
 }
 
 export const ENEMY_TYPES: Record<string, EnemyType> = {
@@ -30,6 +31,7 @@ export const ENEMY_TYPES: Record<string, EnemyType> = {
     damage: 20,
     scale: 1.15,
     armorStages: 3, // full → cracked → bare
+    bio: 'Armored Bunny wears a tough helmet! Keep shooting \u2014 the helmet cracks and breaks off.',
   },
   jumper: {
     name: 'Sock Puppet',

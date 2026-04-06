@@ -1,0 +1,66 @@
+# Phase log — guided-intro
+# Each entry: { task, story, description, result, notes, tokens }
+
+entries:
+  - task: 1
+    story: US-40
+    description: "Investigation — LevelConfig, GameScene grid/click-zone/atmosphere/spawn code, existing tests"
+    result: pass
+    notes: "LevelConfig in WaveManager.ts has no activeLanes field. GameScene.drawGrid iterates GRID_ROWS(5)×GRID_COLS(9) with carpet shades. createGridClickZones iterates same. createAtmosphere randomizes toyPositions across all GRID_ROWS. Enemy spawn uses spawn.lane directly from WaveConfig. STARTING_BALANCE is global const (500). DefenderUnlocks: INITIAL_DEFENDERS=['shooter','generator','wall'], UNLOCK_MAP={2:'trapper',3:'mine'}. 15 test files, 123 tests pass. Plan: add activeLanes?:number[] to LevelConfig, filter grid rendering (dimmed inactive rows), filter click zones, filter atmosphere toy positions, filter enemy spawn lanes. Queued implement."
+    tokens: ~5k
+  - task: 2
+    story: US-40
+    description: "Add activeLanes to LevelConfig, update GameScene grid/click-zones/atmosphere/spawn filtering"
+    result: pass
+    notes: "LevelConfig.activeLanes added. GameScene: drawGrid dims inactive rows (0.25 alpha), createGridClickZones iterates activeLanes only, createAtmosphere randomizes from activeLanes, enemy spawn skips non-active lanes. 4 new tests (127 total). ✓ US-40 complete"
+    tokens: ~4k
+  - task: 3
+    story: US-44
+    description: "Rewrite L1-L5 configs, add startingBalance/tutorialMode/enemyBio to LevelConfig, change initial defenders and unlock map"
+    result: pass
+    notes: "LevelConfig: added startingBalance, tutorialMode, enemyBio fields. Levels rewritten: L1(1-lane tutorial,75 sparks), L2(3-lane), L3(5-lane), L4(practice walls), L5(armored enemies). INITIAL_DEFENDERS=['generator','shooter'], UNLOCK_MAP={3:'wall'}. GameScene reads startingBalance from config. Tests updated: 130 pass. ✓ US-44 complete"
+    tokens: ~5k
+  - task: 4
+    story: US-42
+    description: "Add bio field to DefenderType, build unlock card overlay in GameOverScene"
+    result: pass
+    notes: "DefenderType.bio added with kid-friendly text for all 5 defenders. GameOverScene shows unlock card overlay after level-win when unlock triggers: dimmed bg (depth 199), card (depth 200) with DRAW_DEFENDER at 2x, name, cost, bio. Collect! button (depth 201). Card slides from above (400ms). localStorage bio_shown_defender_<key> tracking. 132 tests pass. ✓ US-42 complete"
+    tokens: ~6k
+  - task: 5
+    story: US-43
+    description: "Add bio field to EnemyType, build pre-round enemy bio overlay in LevelSelectScene"
+    result: pass
+    notes: "EnemyType.bio added (optional). Armored Bunny bio explains helmet mechanics. LevelSelectScene shows enemy bio overlay before L5: dimmed bg, card with DRAW_ENEMY at 2x, name, bio. Continue button dismisses. localStorage bio_shown_enemy_<key> tracking. Exported DRAW_ENEMY from EnemyEntity. 133 tests pass. ✓ US-43 complete"
+    tokens: ~5k
+  - task: 6
+    story: US-41
+    description: "Create Tutorial.ts pure state machine and integrate dream bubble rendering in GameScene"
+    result: pass
+    notes: "Tutorial.ts: pure TS, 3-step state machine. GameScene: dream bubble thought-clouds (depth 105) with animated pointer arrows (depth 106). Gated interactivity per step. Immediate spark spawn in step 2. localStorage tutorial_complete tracking. 11 new tests (144 total). ✓ US-41 complete"
+    tokens: ~8k
+  - task: 7
+    story: phase
+    description: "Phase completion gate — all done-when criteria verified, AGENTS.md updated"
+    result: pass
+    notes: |
+      All done-when criteria met. Evidence:
+      - US-40: LevelConfig.activeLanes, GameScene dims inactive rows, click zones filtered, spawn filtered, atmosphere filtered, 4 new tests
+      - US-41: Tutorial.ts pure TS state machine, dream bubbles at depth 105/106, gated interactivity, localStorage tracking, 11 new tests
+      - US-42: DefenderType.bio, unlock card overlay in GameOverScene (depth 199-201), slide-in animation, Collect! button, localStorage tracking
+      - US-43: EnemyType.bio, enemy bio overlay in LevelSelectScene (depth 199-201), Continue button, localStorage tracking
+      - US-44: L1-L5 guided configs, startingBalance/tutorialMode/enemyBio on LevelConfig, INITIAL_DEFENDERS=['generator','shooter'], UNLOCK_MAP={3:'wall'}
+      - Phase: AGENTS.md updated with variable lanes, tutorial, bio overlays, depth layer map, guided progression, updated unlock schedule
+      144 tests pass, 0 regressions
+    tokens: ~3k
+  - task: 8
+    story: review
+    description: "Create PR #11, run review-pr auto=true"
+    result: pass
+    notes: "PR #11 created from build/guided-intro to main. review-pr posted: 0 critical, 4 concerns, 1 nit. Concerns: GameOverScene dimBg not setInteractive (inconsistency with LevelSelectScene), GameScene misleading comment on grid zone gating, tutorial spawnSpark no duplicate guard, EnemyType bio optional vs DefenderType required asymmetry, DefenderUnlocks index base inconsistency."
+    tokens: ~8k
+  - task: 9
+    story: review
+    description: "Run handle-pr-review auto=true — triage, fix, challenge, post summary"
+    result: pass
+    notes: "3 fixed: dimBg setInteractive on GameOverScene, misleading comment in PLACE_GENERATOR gating, spark duplicate guard. 2 challenged: EnemyType bio optional asymmetry (intentional), DefenderUnlocks index base (handled internally). Summary posted. 144 tests pass. review_complete=true."
+    tokens: ~10k

@@ -92,6 +92,11 @@ export function playSfxAnnounce(): void {
   setTimeout(() => playTone(660, 0.15, 'square', 880, 0.2), 100);
 }
 
+/** Placement rejected — low thud */
+export function playSfxReject(): void {
+  playTone(120, 0.12, 'sine', 60, 0.25);
+}
+
 /** Set mute state */
 export function setSfxMuted(value: boolean): void {
   muted = value;

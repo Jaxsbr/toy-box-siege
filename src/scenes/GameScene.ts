@@ -25,6 +25,7 @@ import { HoneyPot, createHoneyPot, updateHoneyPots, getSpeedModifier, HONEY_TOSS
 import { EnemyEntity } from '../entities/EnemyEntity';
 import { ProjectileEntity } from '../entities/ProjectileEntity';
 import { attemptJump } from '../systems/EnemyMovement';
+import { Tutorial, TutorialStep } from '../systems/Tutorial';
 import {
   playSfxPlace,
   playSfxFire,
@@ -32,11 +33,12 @@ import {
   playSfxDeath,
   playSfxAnnounce,
   playSfxCollect,
+  playSfxReject,
   setSfxMuted,
   isSfxMuted,
 } from '../systems/SFX';
 
-const STARTING_BALANCE = 500;
+const DEFAULT_STARTING_BALANCE = 500;
 const SPARK_SPAWN_INTERVAL = 12000; // ms between spark spawns
 const SPARK_VALUE = 50; // sparks balance added per collection
 const SPARK_FALL_SPEED = 30; // pixels per second
@@ -73,6 +75,11 @@ export class GameScene extends Phaser.Scene {
   private rechargeTimers: Map<string, number> = new Map(); // defenderKey → remaining ms
   private currentLevelIndex: number = 0;
   private activeLoadout: string[] = [];
+  private activeLanes: number[] = [];
+  private tutorial: Tutorial | null = null;
+  private tutorialBubble: Phaser.GameObjects.Container | null = null;
+  private tutorialPointer: Phaser.GameObjects.Graphics | null = null;
+  private tutorialHighlight: Phaser.Tweens.Tween | null = null;
   private transitioning = false;
 
   constructor() {
@@ -87,8 +94,9 @@ export class GameScene extends Phaser.Scene {
 
     // Initialize systems
     const levelConfig = data?.levelConfig ?? LEVEL_1;
+    this.activeLanes = levelConfig.activeLanes ?? Array.from({ length: GRID_ROWS }, (_, i) => i);
     this.grid = new Grid(GRID_ROWS, GRID_COLS);
-    this.economy = new Economy(STARTING_BALANCE);
+    this.economy = new Economy(levelConfig.startingBalance ?? DEFAULT_STARTING_BALANCE);
     this.placement = new Placement(this.grid, this.economy);
     this.waveManager = new WaveManager(levelConfig);
     this.gameFlow = new GameFlow();
@@ -115,14 +123,245 @@ export class GameScene extends Phaser.Scene {
     this.createProgressDots();
     this.createCountdownBar();
 
-    // Spark spawner (replaces passive income timer)
+    // Spark spawner (replaces passive income timer) — suppressed during tutorial
     this.time.addEvent({
       delay: SPARK_SPAWN_INTERVAL,
-      callback: () => this.spawnSpark(),
+      callback: () => {
+        if (this.tutorial && !this.tutorial.isComplete) return;
+        this.spawnSpark();
+      },
       loop: true,
     });
 
+    // Tutorial setup
+    this.tutorial = null;
+    this.tutorialBubble = null;
+    this.tutorialPointer = null;
+    if (levelConfig.tutorialMode && !Tutorial.hasCompleted()) {
+      this.tutorial = new Tutorial();
+      this.initTutorialStep();
+    }
+
   }
+
+  // --- Tutorial dream bubble methods ---
+
+  private initTutorialStep(): void {
+    this.destroyTutorialBubble();
+    if (!this.tutorial || this.tutorial.isComplete) return;
+    this.applyTutorialGating();
+    this.showDreamBubble();
+  }
+
+  private applyTutorialGating(): void {
+    if (!this.tutorial) return;
+    const step = this.tutorial.step;
+
+    if (step === 'PLACE_GENERATOR') {
+      // Only generator panel card is interactive; disable other panel cards
+      for (const [key, card] of this.panelCards) {
+        const zone = card.list.find((c): c is Phaser.GameObjects.Zone => c instanceof Phaser.GameObjects.Zone);
+        if (zone) {
+          if (key === 'generator') zone.setInteractive({ useHandCursor: true });
+          else zone.disableInteractive();
+        }
+      }
+      // Grid zones stay active — player needs to click a cell after selecting generator
+    } else if (step === 'COLLECT_SPARK') {
+      // Disable panel cards and grid zones — only sparks are interactive
+      for (const [, card] of this.panelCards) {
+        const zone = card.list.find((c): c is Phaser.GameObjects.Zone => c instanceof Phaser.GameObjects.Zone);
+        if (zone) zone.disableInteractive();
+      }
+      for (const zone of this.cellZones) {
+        zone.disableInteractive();
+      }
+      // Spawn a spark immediately (not on timer) — guard against duplicate calls
+      if (this.sparks.length === 0) {
+        this.spawnSpark();
+      }
+    } else if (step === 'PLACE_PISTOL') {
+      // Enable pistol card and grid zones
+      for (const [key, card] of this.panelCards) {
+        const zone = card.list.find((c): c is Phaser.GameObjects.Zone => c instanceof Phaser.GameObjects.Zone);
+        if (zone) {
+          if (key === 'shooter') zone.setInteractive({ useHandCursor: true });
+          else zone.disableInteractive();
+        }
+      }
+      for (const zone of this.cellZones) {
+        zone.setInteractive({ useHandCursor: true });
+      }
+    }
+  }
+
+  private completeTutorial(): void {
+    this.destroyTutorialBubble();
+    Tutorial.markComplete();
+    this.tutorial = null;
+
+    // Re-enable all interactive zones
+    for (const [, card] of this.panelCards) {
+      const zone = card.list.find((c): c is Phaser.GameObjects.Zone => c instanceof Phaser.GameObjects.Zone);
+      if (zone) zone.setInteractive({ useHandCursor: true });
+    }
+    for (const zone of this.cellZones) {
+      zone.setInteractive({ useHandCursor: true });
+    }
+  }
+
+  private showDreamBubble(): void {
+    if (!this.tutorial) return;
+    const step = this.tutorial.step;
+
+    const messages: Record<TutorialStep, string> = {
+      PLACE_GENERATOR: 'Place it on the carpet!',
+      COLLECT_SPARK: 'Tap the spark!',
+      PLACE_PISTOL: 'Place it on the carpet!',
+      COMPLETE: '',
+    };
+    const text = messages[step];
+    if (!text) return;
+
+    // Bubble position: centered horizontally, below HUD
+    const bubbleX = (GRID_COLS * CELL_SIZE) / 2;
+    const bubbleY = 125;
+
+    const bubble = this.add.container(bubbleX, bubbleY);
+    bubble.setDepth(105);
+
+    // Thought-cloud shape: wider to fit icon + text
+    const bubbleW = 200;
+    const bubbleH = 64;
+    const gfx = this.add.graphics();
+    gfx.fillStyle(0xfffde7, 1);
+    gfx.fillRoundedRect(-bubbleW / 2, -bubbleH / 2, bubbleW, bubbleH, 20);
+    gfx.lineStyle(2, 0xbcaaa4, 0.6);
+    gfx.strokeRoundedRect(-bubbleW / 2, -bubbleH / 2, bubbleW, bubbleH, 20);
+    // Trailing thought circles at bottom-right
+    gfx.fillStyle(0xfffde7, 1);
+    gfx.fillCircle(bubbleW / 2 - 15, bubbleH / 2 + 7, 8);
+    gfx.strokeCircle(bubbleW / 2 - 15, bubbleH / 2 + 7, 8);
+    gfx.fillCircle(bubbleW / 2 + 2, bubbleH / 2 + 18, 5);
+    gfx.strokeCircle(bubbleW / 2 + 2, bubbleH / 2 + 18, 5);
+    gfx.fillCircle(bubbleW / 2 + 12, bubbleH / 2 + 26, 3);
+    gfx.strokeCircle(bubbleW / 2 + 12, bubbleH / 2 + 26, 3);
+    bubble.add(gfx);
+
+    // Icon inside bubble (left side)
+    const iconContainer = this.add.container(-bubbleW / 2 + 35, 0);
+    const iconGfx = this.add.graphics();
+    if (step === 'PLACE_GENERATOR') {
+      const drawFn = DRAW_DEFENDER['generator'];
+      if (drawFn) drawFn(iconGfx);
+    } else if (step === 'COLLECT_SPARK') {
+      // Small spark diamond
+      iconGfx.fillStyle(0x4fc3f7, 0.9);
+      iconGfx.beginPath();
+      iconGfx.moveTo(0, -10);
+      iconGfx.lineTo(8, 0);
+      iconGfx.lineTo(0, 10);
+      iconGfx.lineTo(-8, 0);
+      iconGfx.closePath();
+      iconGfx.fillPath();
+      iconGfx.fillStyle(0xffffff, 0.9);
+      iconGfx.fillCircle(0, 0, 3);
+    } else if (step === 'PLACE_PISTOL') {
+      const drawFn = DRAW_DEFENDER['shooter'];
+      if (drawFn) drawFn(iconGfx);
+    }
+    iconContainer.add(iconGfx);
+    iconContainer.setScale(0.8);
+    bubble.add(iconContainer);
+
+    // Text to the right of icon
+    const bubbleText = this.add.text(15, 0, text, {
+      fontSize: '14px',
+      color: '#3e2723',
+      fontFamily: 'monospace',
+      fontStyle: 'bold',
+      align: 'center',
+      wordWrap: { width: bubbleW - 80 },
+    }).setOrigin(0.5);
+    bubble.add(bubbleText);
+
+    this.tutorialBubble = bubble;
+
+    // Pulsing scale on the target panel card — reuses the same scale as selection emphasis
+    this.destroyTutorialHighlight();
+    const highlightKey = step === 'PLACE_GENERATOR' ? 'generator' : step === 'PLACE_PISTOL' ? 'shooter' : null;
+    if (highlightKey) {
+      const card = this.panelCards.get(highlightKey);
+      if (card) {
+        this.tutorialHighlight = this.tweens.add({
+          targets: card,
+          scaleX: { from: 1.0, to: 1.08 },
+          scaleY: { from: 1.0, to: 1.08 },
+          duration: 500,
+          yoyo: true,
+          repeat: -1,
+          ease: 'Sine.easeInOut',
+        });
+      }
+    }
+
+    // Animated pointer arrow (no pointer for card steps — highlight is enough)
+    const pointer = this.add.graphics();
+    pointer.setDepth(106);
+
+    if (step === 'COLLECT_SPARK') {
+      // Point toward center of grid (spark spawn area)
+      const targetX = (GRID_COLS * CELL_SIZE) / 2;
+      const targetY = HUD_HEIGHT + 20;
+      this.drawPointerArrow(pointer, targetX, targetY);
+      this.tweens.add({
+        targets: pointer,
+        y: pointer.y + 6,
+        duration: 600,
+        yoyo: true,
+        repeat: -1,
+        ease: 'Sine.easeInOut',
+      });
+    }
+
+    this.tutorialPointer = pointer;
+  }
+
+  private drawPointerArrow(gfx: Phaser.GameObjects.Graphics, x: number, y: number): void {
+    gfx.fillStyle(0xffc107, 0.9);
+    gfx.beginPath();
+    gfx.moveTo(x, y);
+    gfx.lineTo(x - 8, y - 16);
+    gfx.lineTo(x + 8, y - 16);
+    gfx.closePath();
+    gfx.fillPath();
+  }
+
+  private destroyTutorialHighlight(): void {
+    if (this.tutorialHighlight) {
+      // Reset scale on the card the tween was targeting
+      const targets = this.tutorialHighlight.targets;
+      if (targets?.length) {
+        (targets[0] as Phaser.GameObjects.Container).setScale(1.0);
+      }
+      this.tutorialHighlight.destroy();
+      this.tutorialHighlight = null;
+    }
+  }
+
+  private destroyTutorialBubble(): void {
+    if (this.tutorialBubble) {
+      this.tutorialBubble.destroy();
+      this.tutorialBubble = null;
+    }
+    if (this.tutorialPointer) {
+      this.tutorialPointer.destroy();
+      this.tutorialPointer = null;
+    }
+    this.destroyTutorialHighlight();
+  }
+
+  // --- End tutorial methods ---
 
   private randomGeneratorDelay(): number {
     // Randomize ±30% around GENERATOR_INCOME_INTERVAL
@@ -201,12 +440,13 @@ export class GameScene extends Phaser.Scene {
       for (let col = 0; col < GRID_COLS; col++) {
         const x = col * CELL_SIZE;
         const y = HUD_HEIGHT + row * CELL_SIZE;
+        const isActive = this.activeLanes.includes(row);
 
         const shade = (row + col) % 2 === 0 ? 0xc4a882 : 0xb0956e;
-        graphics.fillStyle(shade, 1);
+        graphics.fillStyle(shade, isActive ? 1 : 0.25);
         graphics.fillRect(x, y, CELL_SIZE, CELL_SIZE);
 
-        graphics.lineStyle(1, 0x8b7355, 0.3);
+        graphics.lineStyle(1, 0x8b7355, isActive ? 0.3 : 0.1);
         graphics.strokeRect(x, y, CELL_SIZE, CELL_SIZE);
       }
     }
@@ -235,10 +475,11 @@ export class GameScene extends Phaser.Scene {
     fg.lineBetween(GRID_COLS * CELL_SIZE - 115, HUD_HEIGHT + 14, GRID_COLS * CELL_SIZE - 45, HUD_HEIGHT + 14);
     fg.lineBetween(GRID_COLS * CELL_SIZE - 115, HUD_HEIGHT + 24, GRID_COLS * CELL_SIZE - 45, HUD_HEIGHT + 24);
 
-    // Decorative toy details on random grid cells (3-5 pieces)
+    // Decorative toy details on random active lane cells (3-5 pieces)
     const toyPositions: { row: number; col: number }[] = [];
-    while (toyPositions.length < 4) {
-      const r = Math.floor(Math.random() * GRID_ROWS);
+    const maxToys = Math.min(4, this.activeLanes.length * GRID_COLS);
+    while (toyPositions.length < maxToys) {
+      const r = this.activeLanes[Math.floor(Math.random() * this.activeLanes.length)];
       const c = Math.floor(Math.random() * GRID_COLS);
       if (!toyPositions.some(p => p.row === r && p.col === c)) {
         toyPositions.push({ row: r, col: c });
@@ -346,9 +587,10 @@ export class GameScene extends Phaser.Scene {
     const panelStartX = 140;
     const muteButtonSpace = 50;
     const availableWidth = GRID_COLS * CELL_SIZE - panelStartX - muteButtonSpace;
+    const maxCards = 6;
     const cardGap = 6;
-    // Dynamic card width: shrink to fit when many cards
-    this.cardWidth = Math.min(130, Math.floor((availableWidth - (keys.length - 1) * cardGap) / keys.length));
+    // Fixed card width: sized to fit max 6 cards so layout is stable regardless of loadout size
+    this.cardWidth = Math.floor((availableWidth - (maxCards - 1) * cardGap) / maxCards);
     this.cardHeight = 60;
 
     for (let i = 0; i < keys.length; i++) {
@@ -432,13 +674,26 @@ export class GameScene extends Phaser.Scene {
     this.updatePanelHighlight();
   }
 
+  private selectionPulseTween: Phaser.Tweens.Tween | null = null;
+
   private updatePanelHighlight(): void {
+    // Stop any existing selection pulse
+    if (this.selectionPulseTween) {
+      const prevTargets = this.selectionPulseTween.targets;
+      if (prevTargets?.length) {
+        (prevTargets[0] as Phaser.GameObjects.Container).setScale(1.0);
+      }
+      this.selectionPulseTween.destroy();
+      this.selectionPulseTween = null;
+    }
+
     for (const [key, card] of this.panelCards) {
       const bg = card.getData('bg') as Phaser.GameObjects.Graphics;
       const type = DEFENDER_TYPES[key];
       const canAfford = this.economy.getBalance() >= type.cost;
       const rechargeRemaining = this.rechargeTimers.get(key) ?? 0;
       const onCooldown = rechargeRemaining > 0;
+      const isSelected = key === this.selectedDefenderKey;
 
       const cw = this.cardWidth;
       const ch = this.cardHeight;
@@ -450,17 +705,38 @@ export class GameScene extends Phaser.Scene {
         const progress = 1 - rechargeRemaining / rechargeTime;
         bg.fillStyle(0xffc107, 0.4);
         bg.fillRoundedRect(0, ch - 8, cw * progress, 8, 3);
-      } else if (key === this.selectedDefenderKey) {
+      } else if (isSelected) {
         bg.fillStyle(0x475569, 1);
         bg.fillRoundedRect(0, 0, cw, ch, 6);
         bg.lineStyle(3, 0xffc107, 1);
         bg.strokeRoundedRect(0, 0, cw, ch, 6);
+        // Red diagonal strikethrough when selected but can't afford
+        if (!canAfford) {
+          bg.lineStyle(3, 0xef4444, 0.8);
+          bg.lineBetween(4, 4, cw - 4, ch - 4);
+        }
       } else if (!canAfford) {
         bg.fillStyle(0x1e293b, 0.6);
         bg.fillRoundedRect(0, 0, cw, ch, 6);
       } else {
         bg.fillStyle(0x334155, 1);
         bg.fillRoundedRect(0, 0, cw, ch, 6);
+      }
+
+      // Reset scale for non-selected cards
+      card.setScale(1.0);
+
+      // Pulsing scale on selected card (same animation as tutorial highlight)
+      if (isSelected) {
+        this.selectionPulseTween = this.tweens.add({
+          targets: card,
+          scaleX: { from: 1.0, to: 1.08 },
+          scaleY: { from: 1.0, to: 1.08 },
+          duration: 500,
+          yoyo: true,
+          repeat: -1,
+          ease: 'Sine.easeInOut',
+        });
       }
 
       const nameText = card.getData('nameText') as Phaser.GameObjects.Text;
@@ -472,7 +748,7 @@ export class GameScene extends Phaser.Scene {
   }
 
   private createGridClickZones(): void {
-    for (let row = 0; row < GRID_ROWS; row++) {
+    for (const row of this.activeLanes) {
       for (let col = 0; col < GRID_COLS; col++) {
         const x = col * CELL_SIZE;
         const y = HUD_HEIGHT + row * CELL_SIZE;
@@ -501,7 +777,30 @@ export class GameScene extends Phaser.Scene {
 
     const result = this.placement.place({ row, col }, type);
 
-    if (result.ok) {
+    if (!result.ok) {
+      if (result.reason === 'insufficient_funds') {
+        playSfxReject();
+        // Screen shake + red flash on balance text
+        this.cameras.main.shake(200, 0.008);
+        const origColor = this.balanceText.style.color;
+        this.balanceText.setColor('#ef4444');
+        this.tweens.add({
+          targets: this.balanceText,
+          scaleX: 1.4,
+          scaleY: 1.4,
+          duration: 100,
+          yoyo: true,
+          onComplete: () => {
+            this.balanceText.setColor(origColor as string);
+          },
+        });
+        // Refresh panel to show red diagonal on selected card
+        this.updatePanelHighlight();
+      }
+      return;
+    }
+
+    {
       playSfxPlace();
       const entity = new DefenderEntity(this, row, col, key, type);
       this.defenders.push(entity);
@@ -523,6 +822,16 @@ export class GameScene extends Phaser.Scene {
 
       this.updateHUDText();
       this.updatePanelHighlight();
+
+      // Tutorial integration — notify on defender placement
+      if (this.tutorial && !this.tutorial.isComplete) {
+        this.tutorial.onDefenderPlaced(key);
+        if (this.tutorial.isComplete) {
+          this.completeTutorial();
+        } else {
+          this.initTutorialStep();
+        }
+      }
     }
   }
 
@@ -721,6 +1030,36 @@ export class GameScene extends Phaser.Scene {
     spark.destroy();
     this.sparks = this.sparks.filter(s => s !== spark);
 
+    // "+50" fly-up text from spark to HUD
+    const flyText = this.add.text(x, y, `+${SPARK_VALUE}`, {
+      fontSize: '18px',
+      color: '#fbbf24',
+      fontFamily: 'monospace',
+      fontStyle: 'bold',
+      stroke: '#000000',
+      strokeThickness: 2,
+    }).setOrigin(0.5).setDepth(50);
+    this.tweens.add({
+      targets: flyText,
+      y: this.balanceText.y + 8,
+      x: this.balanceText.x + 40,
+      alpha: 0,
+      scale: 0.6,
+      duration: 600,
+      ease: 'Quad.easeIn',
+      onComplete: () => flyText.destroy(),
+    });
+
+    // Pulse the balance text to draw attention
+    this.tweens.add({
+      targets: this.balanceText,
+      scaleX: 1.3,
+      scaleY: 1.3,
+      duration: 100,
+      yoyo: true,
+      ease: 'Quad.easeOut',
+    });
+
     // Particle burst effect
     for (let i = 0; i < 6; i++) {
       const angle = (i / 6) * Math.PI * 2;
@@ -735,6 +1074,15 @@ export class GameScene extends Phaser.Scene {
         ease: 'Quad.easeOut',
         onComplete: () => dot.destroy(),
       });
+    }
+
+    // Tutorial integration — notify on spark collection
+    if (this.tutorial && !this.tutorial.isComplete) {
+      const pistolCost = DEFENDER_TYPES.shooter?.cost ?? 100;
+      this.tutorial.onSparkCollected(this.economy.getBalance(), pistolCost);
+      if (this.tutorial.step === 'PLACE_PISTOL') {
+        this.initTutorialStep();
+      }
     }
   }
 
@@ -819,13 +1167,16 @@ export class GameScene extends Phaser.Scene {
   update(_time: number, delta: number): void {
     const dt = delta / 1000;
 
-    // Wave spawning
-    const spawns = this.waveManager.update(dt);
-    for (const spawn of spawns) {
-      const spawnCol = GRID_COLS; // right edge
-      const enemyKey = Object.entries(ENEMY_TYPES).find(([, v]) => v === spawn.type)?.[0] ?? 'basic';
-      const enemy = new EnemyEntity(this, spawn.lane, spawnCol, enemyKey, spawn.type);
-      this.enemies.push(enemy);
+    // Wave spawning — paused during tutorial, only spawn enemies in active lanes
+    if (!this.tutorial || this.tutorial.isComplete) {
+      const spawns = this.waveManager.update(dt);
+      for (const spawn of spawns) {
+        if (!this.activeLanes.includes(spawn.lane)) continue;
+        const spawnCol = GRID_COLS; // right edge
+        const enemyKey = Object.entries(ENEMY_TYPES).find(([, v]) => v === spawn.type)?.[0] ?? 'basic';
+        const enemy = new EnemyEntity(this, spawn.lane, spawnCol, enemyKey, spawn.type);
+        this.enemies.push(enemy);
+      }
     }
 
     // Enemy movement
