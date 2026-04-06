@@ -42,7 +42,7 @@ export const DEFENDER_TYPES: Record<string, DefenderType> = {
   wall: {
     name: 'Block Tower',
     cost: 20,
-    health: 65,
+    health: 120,
     damage: 0,
     range: 0,
     fireRate: 0,
@@ -73,9 +73,9 @@ export const DEFENDER_TYPES: Record<string, DefenderType> = {
     generatesIncome: 0,
     behavior: 'mine',
     singleUse: true,
-    rechargeTime: 20000,
+    rechargeTime: 10000,
     bio: 'A sneaky marble that goes BOOM! Wait for it to arm, then any enemy that steps on it is gone.',
   },
 };
 
-export const MINE_ARM_DELAY = 6000; // ms before mine becomes armed
+export const MINE_ARM_DELAY = 3000; // ms before mine becomes armed

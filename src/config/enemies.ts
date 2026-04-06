@@ -38,7 +38,7 @@ export const ENEMY_TYPES: Record<string, EnemyType> = {
     name: 'Sock Puppet',
     health: 150,
     speed: 0.36,
-    damage: 20,
+    damage: 10,
     scale: 0.85,
     jumpsRemaining: 1,
     bio: 'Watch out! The Sock Puppet jumps over the first toy it encounters. Put your shooters behind your walls!',
