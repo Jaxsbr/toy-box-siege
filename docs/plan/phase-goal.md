@@ -33,8 +33,8 @@ Balance and pacing pass to make the game feel gentler and more forgiving for kid
 - [x] `npm test` passes [US-51]
 
 #### Structural
-- [ ] `AGENTS.md` level progression description updated to reflect new enemy speeds and pacing philosophy (gentle curve, PvZ-style stage one) [phase]
-- [ ] `docs/product/stage-one.md` design notes section updated to mention the difficulty tuning rationale [phase]
+- [x] `AGENTS.md` level progression description updated to reflect new enemy speeds and pacing philosophy (gentle curve, PvZ-style stage one) [phase]
+- [x] `docs/product/stage-one.md` design notes section updated to mention the difficulty tuning rationale [phase]
 
 ### Golden principles (phase-relevant)
 - Config-driven entities — all changes are config value updates in `enemies.ts` and `levels.ts`; no system/scene code changes

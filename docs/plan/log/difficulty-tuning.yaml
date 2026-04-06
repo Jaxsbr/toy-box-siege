@@ -14,6 +14,20 @@ entries:
       Enemies.test.ts: basic>tough holds (0.25>0.15); armored covered by new hierarchy test.
       157 tests pass (156+1 new). ✓ US-50 complete
     tokens: ~2k
+  - task: 7
+    story: phase
+    description: "Phase completion gate — all done-when criteria verified"
+    result: pass
+    notes: |
+      All done-when criteria met. Evidence:
+      - US-50: basic=0.25∈[0.2,0.3], armored=0.20<basic, tough=0.15∈[0.1,0.18], jumper=0.30∈[0.25,0.35].
+        Hierarchy: 0.30>0.25>0.20>0.15. EnemyTypes.test.ts assertions updated. New hierarchy test added.
+      - US-51: All waves >= 2.0s min gap. 70% inter-level rule met. Within-level cliff 60-88% (all >= 60%).
+        Setup delays: L5=25, L6=25, L8=25, L9=18. Wave counts preserved. Composition tests pass.
+        Enemy counts preserved. New 5-test suite: monotonic curve, min gap, setup delays, cliff guard.
+      - Phase: AGENTS.md speed values and pacing philosophy updated. stage-one.md design notes updated.
+      162 tests pass, 0 regressions (up from 156 — 6 new tests added).
+    tokens: ~2k
   - task: 6
     story: phase
     description: "Update AGENTS.md enemy speeds/pacing, stage-one.md design notes"
