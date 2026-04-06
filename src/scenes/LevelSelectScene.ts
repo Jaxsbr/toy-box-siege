@@ -183,9 +183,9 @@ export class LevelSelectScene extends Phaser.Scene {
     dimBg.setDepth(199);
     dimBg.setInteractive();
 
-    // Card dimensions
+    // Card dimensions — tall enough to fit header, visual, name, bio, and button inside border
     const cardWidth = 250;
-    const cardHeight = 300;
+    const cardHeight = 370;
     const cardX = GAME_WIDTH / 2 - cardWidth / 2;
     const cardY = GAME_HEIGHT / 2 - cardHeight / 2;
 
@@ -201,8 +201,8 @@ export class LevelSelectScene extends Phaser.Scene {
     cardGfx.strokeRoundedRect(cardX, cardY, cardWidth, cardHeight, 12);
     cardContainer.add(cardGfx);
 
-    // "New Enemy!" header
-    const headerText = this.add.text(GAME_WIDTH / 2, cardY + 20, 'Watch Out!', {
+    // "Watch Out!" header
+    const headerText = this.add.text(GAME_WIDTH / 2, cardY + 18, 'Watch Out!', {
       fontSize: '20px',
       color: '#c62828',
       fontFamily: 'monospace',
@@ -211,7 +211,7 @@ export class LevelSelectScene extends Phaser.Scene {
     cardContainer.add(headerText);
 
     // Enemy visual at >= 1.5x scale
-    const previewY = cardY + cardHeight * 0.38;
+    const previewY = cardY + 100;
     const previewContainer = this.add.container(GAME_WIDTH / 2, previewY);
     const previewGfx = this.add.graphics();
     const drawFn = DRAW_ENEMY[enemyKey];
@@ -223,7 +223,7 @@ export class LevelSelectScene extends Phaser.Scene {
     cardContainer.add(previewContainer);
 
     // Enemy name — >= 18px monospace
-    const nameText = this.add.text(GAME_WIDTH / 2, cardY + cardHeight * 0.62, enemyType.name, {
+    const nameText = this.add.text(GAME_WIDTH / 2, cardY + 175, enemyType.name, {
       fontSize: '20px',
       color: '#3e2723',
       fontFamily: 'monospace',
@@ -232,7 +232,7 @@ export class LevelSelectScene extends Phaser.Scene {
     cardContainer.add(nameText);
 
     // Bio text — >= 14px monospace, word-wrapped
-    const bioText = this.add.text(GAME_WIDTH / 2, cardY + cardHeight * 0.78, enemyType.bio, {
+    const bioText = this.add.text(GAME_WIDTH / 2, cardY + 230, enemyType.bio, {
       fontSize: '14px',
       color: '#5d4037',
       fontFamily: 'monospace',
@@ -241,29 +241,18 @@ export class LevelSelectScene extends Phaser.Scene {
     }).setOrigin(0.5);
     cardContainer.add(bioText);
 
-    // Slide-in animation (300-500ms)
-    this.tweens.add({
-      targets: cardContainer,
-      y: 0,
-      duration: 400,
-      ease: 'Back.easeOut',
-    });
-
-    // "Continue" button at depth 201
+    // "Continue" button inside card
     const btnWidth = 140;
     const btnHeight = 48;
     const btnX = GAME_WIDTH / 2 - btnWidth / 2;
-    const btnY = cardY + cardHeight + 15;
-
-    const btnContainer = this.add.container(0, -cardHeight - 50);
-    btnContainer.setDepth(201);
+    const btnY = cardY + cardHeight - btnHeight - 15;
 
     const btnGfx = this.add.graphics();
     btnGfx.fillStyle(0x1565c0, 1);
     btnGfx.fillRoundedRect(btnX, btnY, btnWidth, btnHeight, 8);
     btnGfx.lineStyle(2, 0x0d47a1, 1);
     btnGfx.strokeRoundedRect(btnX, btnY, btnWidth, btnHeight, 8);
-    btnContainer.add(btnGfx);
+    cardContainer.add(btnGfx);
 
     const btnText = this.add.text(GAME_WIDTH / 2, btnY + btnHeight / 2, 'Continue', {
       fontSize: '20px',
@@ -271,16 +260,17 @@ export class LevelSelectScene extends Phaser.Scene {
       fontFamily: 'monospace',
       fontStyle: 'bold',
     }).setOrigin(0.5);
-    btnContainer.add(btnText);
+    cardContainer.add(btnText);
 
-    // Hit area >= 48x48
+    // Hit area >= 48x48 — inside card at depth 201
     const btnZone = this.add.zone(btnX, btnY, btnWidth, btnHeight)
       .setOrigin(0).setInteractive({ useHandCursor: true });
-    btnContainer.add(btnZone);
+    btnZone.setDepth(201);
+    cardContainer.add(btnZone);
 
-    // Slide button in with the card
+    // Slide-in animation (300-500ms)
     this.tweens.add({
-      targets: btnContainer,
+      targets: cardContainer,
       y: 0,
       duration: 400,
       ease: 'Back.easeOut',
@@ -296,7 +286,6 @@ export class LevelSelectScene extends Phaser.Scene {
       // Clean up overlay
       dimBg.destroy();
       cardContainer.destroy();
-      btnContainer.destroy();
       onDismiss();
     });
   }

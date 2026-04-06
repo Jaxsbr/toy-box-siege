@@ -117,9 +117,9 @@ export class GameOverScene extends Phaser.Scene {
     dimBg.setDepth(199);
     dimBg.setInteractive();
 
-    // Card dimensions
+    // Card dimensions — tall enough to fit header, visual, name, bio, and button inside border
     const cardWidth = 250;
-    const cardHeight = 300;
+    const cardHeight = 370;
     const cardX = GAME_WIDTH / 2 - cardWidth / 2;
     const cardY = GAME_HEIGHT / 2 - cardHeight / 2;
 
@@ -136,7 +136,7 @@ export class GameOverScene extends Phaser.Scene {
     cardContainer.add(cardGfx);
 
     // "New Toy!" header
-    const headerText = this.add.text(GAME_WIDTH / 2, cardY + 20, 'New Toy!', {
+    const headerText = this.add.text(GAME_WIDTH / 2, cardY + 18, 'New Toy!', {
       fontSize: '20px',
       color: '#5d4037',
       fontFamily: 'monospace',
@@ -144,8 +144,8 @@ export class GameOverScene extends Phaser.Scene {
     }).setOrigin(0.5);
     cardContainer.add(headerText);
 
-    // Defender visual at >= 1.5x scale — occupying >= 40% of card height
-    const previewY = cardY + cardHeight * 0.38;
+    // Defender visual at >= 1.5x scale
+    const previewY = cardY + 100;
     const previewContainer = this.add.container(GAME_WIDTH / 2, previewY);
     const previewGfx = this.add.graphics();
     const drawFn = DRAW_DEFENDER[defenderKey];
@@ -157,7 +157,7 @@ export class GameOverScene extends Phaser.Scene {
     cardContainer.add(previewContainer);
 
     // Toy name — >= 18px monospace
-    const nameText = this.add.text(GAME_WIDTH / 2, cardY + cardHeight * 0.62, type.name, {
+    const nameText = this.add.text(GAME_WIDTH / 2, cardY + 175, type.name, {
       fontSize: '20px',
       color: '#3e2723',
       fontFamily: 'monospace',
@@ -165,16 +165,8 @@ export class GameOverScene extends Phaser.Scene {
     }).setOrigin(0.5);
     cardContainer.add(nameText);
 
-    // Cost
-    const costText = this.add.text(GAME_WIDTH / 2, cardY + cardHeight * 0.70, `${type.cost} sparks`, {
-      fontSize: '16px',
-      color: '#ff8f00',
-      fontFamily: 'monospace',
-    }).setOrigin(0.5);
-    cardContainer.add(costText);
-
     // Bio text — >= 14px monospace, word-wrapped
-    const bioText = this.add.text(GAME_WIDTH / 2, cardY + cardHeight * 0.80, type.bio, {
+    const bioText = this.add.text(GAME_WIDTH / 2, cardY + 230, type.bio, {
       fontSize: '14px',
       color: '#5d4037',
       fontFamily: 'monospace',
@@ -183,29 +175,18 @@ export class GameOverScene extends Phaser.Scene {
     }).setOrigin(0.5);
     cardContainer.add(bioText);
 
-    // Slide-in animation (300-500ms)
-    this.tweens.add({
-      targets: cardContainer,
-      y: 0,
-      duration: 400,
-      ease: 'Back.easeOut',
-    });
-
-    // "Collect!" button at depth 201
+    // "Collect!" button inside card
     const btnWidth = 140;
     const btnHeight = 48;
     const btnX = GAME_WIDTH / 2 - btnWidth / 2;
-    const btnY = cardY + cardHeight + 15;
-
-    const btnContainer = this.add.container(0, -cardHeight - 50);
-    btnContainer.setDepth(201);
+    const btnY = cardY + cardHeight - btnHeight - 15;
 
     const btnGfx = this.add.graphics();
     btnGfx.fillStyle(0x4caf50, 1);
     btnGfx.fillRoundedRect(btnX, btnY, btnWidth, btnHeight, 8);
     btnGfx.lineStyle(2, 0x388e3c, 1);
     btnGfx.strokeRoundedRect(btnX, btnY, btnWidth, btnHeight, 8);
-    btnContainer.add(btnGfx);
+    cardContainer.add(btnGfx);
 
     const btnText = this.add.text(GAME_WIDTH / 2, btnY + btnHeight / 2, 'Collect!', {
       fontSize: '20px',
@@ -213,16 +194,17 @@ export class GameOverScene extends Phaser.Scene {
       fontFamily: 'monospace',
       fontStyle: 'bold',
     }).setOrigin(0.5);
-    btnContainer.add(btnText);
+    cardContainer.add(btnText);
 
-    // Hit area >= 48x48
+    // Hit area >= 48x48 — inside card at depth 201
     const btnZone = this.add.zone(btnX, btnY, btnWidth, btnHeight)
       .setOrigin(0).setInteractive({ useHandCursor: true });
-    btnContainer.add(btnZone);
+    btnZone.setDepth(201);
+    cardContainer.add(btnZone);
 
-    // Slide button in with the card
+    // Slide-in animation (300-500ms)
     this.tweens.add({
-      targets: btnContainer,
+      targets: cardContainer,
       y: 0,
       duration: 400,
       ease: 'Back.easeOut',
