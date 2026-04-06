@@ -27,7 +27,7 @@ export class LevelSelectScene extends Phaser.Scene {
     super({ key: 'LevelSelectScene' });
   }
 
-  create(data?: { completedLevel?: number; won?: boolean }): void {
+  create(data?: { completedLevel?: number; won?: boolean; selectedLevel?: number }): void {
     this.cameras.main.fadeIn(FADE_DURATION, 0, 0, 0);
     this.cameras.main.setBackgroundColor('#5d4037');
     this.loadoutMode = false;
@@ -46,7 +46,8 @@ export class LevelSelectScene extends Phaser.Scene {
 
     this.drawBackground();
     this.drawTitle();
-    this.drawLevelEntries();
+    const selectedLevel = (this.scene.settings.data as { selectedLevel?: number })?.selectedLevel;
+    this.drawLevelEntries(selectedLevel);
   }
 
   private drawBackground(): void {
@@ -72,7 +73,7 @@ export class LevelSelectScene extends Phaser.Scene {
     }).setOrigin(0.5);
   }
 
-  private drawLevelEntries(): void {
+  private drawLevelEntries(selectedLevel?: number): void {
     const entryWidth = 90;
     const entryHeight = 100;
     const gap = 16;
@@ -86,6 +87,9 @@ export class LevelSelectScene extends Phaser.Scene {
       const x = startX + i * (entryWidth + gap);
       const state = getLevelState(this.progress, i);
       this.drawLevelEntry(x, startY, entryWidth, entryHeight, i, state);
+      if (selectedLevel === i) {
+        this.drawSelectionHighlight(x, startY, entryWidth, entryHeight);
+      }
     }
 
     // Row 2: levels 6-9 (indices 5-8) + boss placeholder at slot 10
@@ -94,10 +98,21 @@ export class LevelSelectScene extends Phaser.Scene {
       const x = startX + (i - 5) * (entryWidth + gap);
       const state = getLevelState(this.progress, i);
       this.drawLevelEntry(x, row2Y, entryWidth, entryHeight, i, state);
+      if (selectedLevel === i) {
+        this.drawSelectionHighlight(x, row2Y, entryWidth, entryHeight);
+      }
     }
     // Slot 10: boss placeholder (always locked)
     const bossX = startX + 4 * (entryWidth + gap);
     this.drawBossPlaceholder(bossX, row2Y, entryWidth, entryHeight);
+  }
+
+  private drawSelectionHighlight(x: number, y: number, width: number, height: number): void {
+    const highlight = this.add.graphics();
+    highlight.lineStyle(3, 0xffffff, 0.9);
+    highlight.strokeRoundedRect(x - 3, y - 3, width + 6, height + 6, 10);
+    highlight.lineStyle(1, 0xffc107, 0.6);
+    highlight.strokeRoundedRect(x - 6, y - 6, width + 12, height + 12, 12);
   }
 
   private drawBossPlaceholder(x: number, y: number, width: number, height: number): void {

@@ -25,14 +25,14 @@ Replace TitleScene with a proper main menu (MainMenuScene) that serves as the ga
 - [x] `npm test` passes after TitleScene removal and MainMenuScene addition [US-52]
 
 #### US-53 — Play/Continue flow
-- [ ] `LevelProgress.ts` exports `nextUnbeatenLevel(data: ProgressData): number` [US-53]
-- [ ] `nextUnbeatenLevel` returns the index of the first level with state `'unlocked'`; returns `TOTAL_LEVELS - 1` if no level is `'unlocked'` (all completed) [US-53]
-- [ ] `LevelProgress.test.ts` covers `nextUnbeatenLevel` with: no completions → returns 0; levels 0–3 completed → returns 4; all 9 completed → returns 8 [US-53]
-- [ ] MainMenuScene calls `loadProgress()` on `create()` and renders button label `"Play"` when no levels have state `'completed'` [US-53]
-- [ ] MainMenuScene renders button label `"Continue"` when `loadProgress()` returns at least one level with state `'completed'` [US-53]
-- [ ] Clicking Play button calls `this.scene.start('LevelSelectScene')` with no init data [US-53]
-- [ ] Clicking Continue button calls `this.scene.start('LevelSelectScene', { selectedLevel: nextUnbeatenLevel(progress) })` [US-53]
-- [ ] `LevelSelectScene.create()` reads `(this.scene.settings.data as { selectedLevel?: number }).selectedLevel` and visually highlights that level's button when the value is provided [US-53]
+- [x] `LevelProgress.ts` exports `nextUnbeatenLevel(data: ProgressData): number` [US-53]
+- [x] `nextUnbeatenLevel` returns the index of the first level with state `'unlocked'`; returns `TOTAL_LEVELS - 1` if no level is `'unlocked'` (all completed) [US-53]
+- [x] `LevelProgress.test.ts` covers `nextUnbeatenLevel` with: no completions → returns 0; levels 0–3 completed → returns 4; all 9 completed → returns 8 [US-53]
+- [x] MainMenuScene calls `loadProgress()` on `create()` and renders button label `"Play"` when no levels have state `'completed'` [US-53]
+- [x] MainMenuScene renders button label `"Continue"` when `loadProgress()` returns at least one level with state `'completed'` [US-53]
+- [x] Clicking Play button calls `this.scene.start('LevelSelectScene')` with no init data [US-53]
+- [x] Clicking Continue button calls `this.scene.start('LevelSelectScene', { selectedLevel: nextUnbeatenLevel(progress) })` [US-53]
+- [x] `LevelSelectScene.create()` reads `(this.scene.settings.data as { selectedLevel?: number }).selectedLevel` and visually highlights that level's button when the value is provided [US-53]
 
 #### US-54 — Toys discovery sub-scene
 - [x] `src/scenes/ToysScene.ts` exists and extends `Phaser.Scene` with key `'ToysScene'` [US-54]
