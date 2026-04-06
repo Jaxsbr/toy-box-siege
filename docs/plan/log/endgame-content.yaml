@@ -126,3 +126,18 @@ entries:
       LevelProgress.test.ts has tests using 9-level arrays — need updating.
       Queued: add LEVEL_10 + update TOTAL_LEVELS + update tests.
     tokens: ~1k
+  - task: 11
+    story: US-58
+    description: "Add LEVEL_10 config, update TOTAL_LEVELS to 10, update LevelProgress tests, add 3 L10 tests, scope difficulty tests to L1-L9"
+    result: pass
+    notes: |
+      levels.ts: LEVEL_10 config — 5 waves, formation rush waves 1-4 (0.5-0.8s intervals),
+      wave 5 with single boss spawn. enemyBio for 'boss', setupDelay=20s.
+      ALL_LEVELS includes LEVEL_10 (length 10).
+      LevelProgress.ts: TOTAL_LEVELS=10. Migration pads old 5-level saves.
+      LevelProgress.test.ts: updated "all completed" to 10, added L9→L10 nextUnbeatenLevel test.
+      Levels.test.ts: ALL_LEVELS length 10, 3 new L10 tests (structure, intervals, boss spawn).
+      Difficulty-tuning tests scoped to L1-L9 (L10 intentionally breaks 2.0s floor).
+      FP tolerance fix for 0.8s interval check (+0.001).
+      176 tests pass (174 + 2 new). tsc --noEmit clean. ✓ US-58 complete — all 8 criteria met.
+    tokens: ~4k
