@@ -1371,9 +1371,11 @@ export class GameScene extends Phaser.Scene {
 
       updateShooterCooldown(shooter, dt);
 
-      const laneEnemies = this.enemies.filter(
-        (e) => e.lane === def.gridRow && !isDead(e),
-      );
+      const laneEnemies = this.enemies.filter((e) => {
+        if (isDead(e)) return false;
+        const reach = ((e.hitboxLanes ?? 1) - 1) / 2;
+        return Math.abs(e.lane - def.gridRow) <= reach;
+      });
       const proj = tryFire(shooter, laneEnemies);
 
       def.setData('fireCooldown', shooter.fireCooldown);

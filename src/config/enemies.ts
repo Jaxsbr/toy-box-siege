@@ -47,7 +47,7 @@ export const ENEMY_TYPES: Record<string, EnemyType> = {
   },
   boss: {
     name: 'Mega Mop',
-    health: 2000,
+    health: 7000,
     speed: 0.08,
     damage: 40,
     scale: 1.6,

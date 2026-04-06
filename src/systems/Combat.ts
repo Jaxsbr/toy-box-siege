@@ -2,6 +2,7 @@ export interface CombatEntity {
   health: number;
   lane: number;
   col: number; // grid column position
+  hitboxLanes?: number; // rows the entity occupies (1 = own lane only, 3 = ±1 adjacent); default 1
 }
 
 export interface ShooterEntity extends CombatEntity {
@@ -74,8 +75,10 @@ export function checkProjectileHit(
   projectile: ProjectileState,
   enemy: CombatEntity,
 ): boolean {
+  const laneDist = Math.abs(projectile.lane - enemy.lane);
+  const reach = ((enemy.hitboxLanes ?? 1) - 1) / 2; // 1→0, 3→1
   return (
-    projectile.lane === enemy.lane &&
+    laneDist <= reach &&
     Math.abs(projectile.x - enemy.col) < 0.5 &&
     enemy.health > 0
   );

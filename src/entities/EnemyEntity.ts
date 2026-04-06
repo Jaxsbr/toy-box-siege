@@ -207,6 +207,7 @@ export class EnemyEntity extends Phaser.GameObjects.Container {
   health: number;
   col: number;
   readonly damage: number; // EnemyCombatEntity interface
+  readonly hitboxLanes: number; // rows the entity occupies (1 normal, 3 boss)
   jumpsRemaining: number; // runtime jump state for jumper enemies
   private readonly maxHealth: number;
   private readonly healthBar: Phaser.GameObjects.Graphics;
@@ -232,6 +233,7 @@ export class EnemyEntity extends Phaser.GameObjects.Container {
     this.health = type.health;
     this.maxHealth = type.health;
     this.damage = type.damage;
+    this.hitboxLanes = type.bossType ? 3 : 1;
     this.jumpsRemaining = type.jumpsRemaining ?? 0;
 
     const scale = type.scale ?? 1.0;
