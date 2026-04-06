@@ -33,6 +33,7 @@ import {
   playSfxDeath,
   playSfxAnnounce,
   playSfxCollect,
+  playSfxReject,
   setSfxMuted,
   isSfxMuted,
 } from '../systems/SFX';
@@ -683,6 +684,7 @@ export class GameScene extends Phaser.Scene {
       const canAfford = this.economy.getBalance() >= type.cost;
       const rechargeRemaining = this.rechargeTimers.get(key) ?? 0;
       const onCooldown = rechargeRemaining > 0;
+      const isSelected = key === this.selectedDefenderKey;
 
       const cw = this.cardWidth;
       const ch = this.cardHeight;
@@ -694,7 +696,7 @@ export class GameScene extends Phaser.Scene {
         const progress = 1 - rechargeRemaining / rechargeTime;
         bg.fillStyle(0xffc107, 0.4);
         bg.fillRoundedRect(0, ch - 8, cw * progress, 8, 3);
-      } else if (key === this.selectedDefenderKey) {
+      } else if (isSelected) {
         bg.fillStyle(0x475569, 1);
         bg.fillRoundedRect(0, 0, cw, ch, 6);
         bg.lineStyle(3, 0xffc107, 1);
@@ -705,6 +707,18 @@ export class GameScene extends Phaser.Scene {
       } else {
         bg.fillStyle(0x334155, 1);
         bg.fillRoundedRect(0, 0, cw, ch, 6);
+      }
+
+      // Scale emphasis: selected card pops up, others shrink back
+      const targetScale = isSelected ? 1.12 : 1.0;
+      if (card.scaleX !== targetScale) {
+        this.tweens.add({
+          targets: card,
+          scaleX: targetScale,
+          scaleY: targetScale,
+          duration: 150,
+          ease: 'Back.easeOut',
+        });
       }
 
       const nameText = card.getData('nameText') as Phaser.GameObjects.Text;
@@ -745,7 +759,27 @@ export class GameScene extends Phaser.Scene {
 
     const result = this.placement.place({ row, col }, type);
 
-    if (result.ok) {
+    if (!result.ok) {
+      if (result.reason === 'insufficient_funds') {
+        playSfxReject();
+        // Shake the balance text red to show the problem
+        const origColor = this.balanceText.style.color;
+        this.balanceText.setColor('#ef4444');
+        this.tweens.add({
+          targets: this.balanceText,
+          x: this.balanceText.x + 4,
+          duration: 50,
+          yoyo: true,
+          repeat: 3,
+          onComplete: () => {
+            this.balanceText.setColor(origColor as string);
+          },
+        });
+      }
+      return;
+    }
+
+    {
       playSfxPlace();
       const entity = new DefenderEntity(this, row, col, key, type);
       this.defenders.push(entity);
@@ -974,6 +1008,36 @@ export class GameScene extends Phaser.Scene {
     const y = spark.y;
     spark.destroy();
     this.sparks = this.sparks.filter(s => s !== spark);
+
+    // "+50" fly-up text from spark to HUD
+    const flyText = this.add.text(x, y, `+${SPARK_VALUE}`, {
+      fontSize: '18px',
+      color: '#fbbf24',
+      fontFamily: 'monospace',
+      fontStyle: 'bold',
+      stroke: '#000000',
+      strokeThickness: 2,
+    }).setOrigin(0.5).setDepth(50);
+    this.tweens.add({
+      targets: flyText,
+      y: this.balanceText.y + 8,
+      x: this.balanceText.x + 40,
+      alpha: 0,
+      scale: 0.6,
+      duration: 600,
+      ease: 'Quad.easeIn',
+      onComplete: () => flyText.destroy(),
+    });
+
+    // Pulse the balance text to draw attention
+    this.tweens.add({
+      targets: this.balanceText,
+      scaleX: 1.3,
+      scaleY: 1.3,
+      duration: 100,
+      yoyo: true,
+      ease: 'Quad.easeOut',
+    });
 
     // Particle burst effect
     for (let i = 0; i < 6; i++) {
