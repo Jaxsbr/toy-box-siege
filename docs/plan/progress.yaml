@@ -23,23 +23,23 @@ config:
 
 state:
   # --- Lifecycle (owner: iterator) ---
-  phase: stage-one-completion
-  phase_complete: true
+  phase: difficulty-tuning
+  phase_complete: false
   status: running
 
   # --- Task orchestration (owner: iterator) ---
-  task_number: 13
+  task_number: 1
   next_task: null
   last_result: pass
   consecutive_fails: 0
 
   # --- Review (owner: iterator) ---
-  review_stage: review_posted
-  review_complete: true
-  pr_number: 12
+  review_stage: null
+  review_complete: false
+  pr_number: null
 
   # --- Retrospective (owner: retro) ---
-  retro_complete: true
+  retro_complete: false
 
   # --- Tracking (owner: iterator) ---
-  completed_stories: [US-45, US-46, US-47, US-48, US-49]
+  completed_stories: []
