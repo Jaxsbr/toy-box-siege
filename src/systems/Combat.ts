@@ -27,7 +27,7 @@ const PROJECTILE_SPEED = 4; // cells per second (Water Pistol)
 // Honey Bear projectile — slower than Water Pistol, area-denial focus
 export const HONEY_BEAR_PROJECTILE_SPEED = 2; // cells per second (must be < PROJECTILE_SPEED)
 export const HONEY_BEAR_FIRE_INTERVAL = 3; // seconds between shots
-export const HONEY_BEAR_AOE_DAMAGE = 5; // damage applied to each enemy in AOE
+export const HONEY_BEAR_AOE_DAMAGE = 25; // damage applied to each enemy in AOE
 
 export function updateShooterCooldown(shooter: ShooterEntity, deltaSeconds: number): void {
   if (shooter.fireCooldown > 0) {

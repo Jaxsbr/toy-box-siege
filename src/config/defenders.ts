@@ -53,9 +53,9 @@ export const DEFENDER_TYPES: Record<string, DefenderType> = {
   },
   trapper: {
     name: 'Honey Bear',
-    cost: 75,
+    cost: 200,
     health: 60,
-    damage: 5, // AOE damage per projectile hit (matches HONEY_BEAR_AOE_DAMAGE)
+    damage: 25, // AOE damage per projectile hit (matches HONEY_BEAR_AOE_DAMAGE)
     range: 9, // full lane — fires at nearest enemy like Water Pistol
     fireRate: 1 / 3, // 1 shot every 3 seconds (matches HONEY_BEAR_FIRE_INTERVAL)
     generatesIncome: 0,

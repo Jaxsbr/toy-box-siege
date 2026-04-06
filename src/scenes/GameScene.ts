@@ -1147,6 +1147,56 @@ export class GameScene extends Phaser.Scene {
     });
   }
 
+  /** Dramatic amber splash — expands across 3 lanes with droplet particles */
+  private spawnHoneySplash(x: number, y: number, lane: number): void {
+    // Central amber blast
+    const blast = this.add.graphics();
+    blast.fillStyle(0xe65100, 0.7);
+    blast.fillCircle(x, y, 8);
+    blast.setDepth(50);
+    this.tweens.add({
+      targets: blast,
+      scaleX: 5,
+      scaleY: 3,
+      alpha: 0,
+      duration: 400,
+      ease: 'Quad.easeOut',
+      onComplete: () => blast.destroy(),
+    });
+    // Amber ring expanding outward
+    const ring = this.add.graphics();
+    ring.lineStyle(3, 0xffb300, 0.8);
+    ring.strokeCircle(x, y, 10);
+    ring.setDepth(50);
+    this.tweens.add({
+      targets: ring,
+      scaleX: 4,
+      scaleY: 4,
+      alpha: 0,
+      duration: 500,
+      ease: 'Cubic.easeOut',
+      onComplete: () => ring.destroy(),
+    });
+    // Droplet particles splashing into adjacent lanes
+    const aoeRows = getAOETargetRows(lane, GRID_ROWS);
+    for (const row of aoeRows) {
+      const py = HUD_HEIGHT + row * CELL_SIZE + CELL_SIZE / 2;
+      const drop = this.add.circle(x, y, 4, 0xffb300, 0.9);
+      drop.setDepth(50);
+      this.tweens.add({
+        targets: drop,
+        x: x + (Math.random() - 0.5) * 20,
+        y: py,
+        scaleX: 0.5,
+        scaleY: 0.5,
+        alpha: 0,
+        duration: 350,
+        ease: 'Quad.easeOut',
+        onComplete: () => drop.destroy(),
+      });
+    }
+  }
+
   update(_time: number, delta: number): void {
     const dt = delta / 1000;
 
@@ -1228,8 +1278,15 @@ export class GameScene extends Phaser.Scene {
         const px = pot.col * CELL_SIZE + CELL_SIZE / 2;
         const py = HUD_HEIGHT + pot.row * CELL_SIZE + CELL_SIZE / 2;
         const g = this.add.graphics();
-        g.fillStyle(0xe65100, 0.35);
+        // Outer glow
+        g.fillStyle(0xffb300, 0.15);
+        g.fillCircle(px, py, CELL_SIZE * 0.45);
+        // Main pool
+        g.fillStyle(0xe65100, 0.4);
         g.fillCircle(px, py, CELL_SIZE * 0.35);
+        // Inner highlight
+        g.fillStyle(0xffd54f, 0.25);
+        g.fillCircle(px - 3, py - 3, CELL_SIZE * 0.15);
         g.setDepth(2);
         this.honeyPotGraphics.set(key, g);
       }
@@ -1375,7 +1432,11 @@ export class GameScene extends Phaser.Scene {
             enemy.playHitFlash();
           }
           playSfxHit();
-          this.spawnImpactBurst(proj.x, proj.y);
+          if (proj.isHoney) {
+            this.spawnHoneySplash(proj.x, proj.y, proj.lane);
+          } else {
+            this.spawnImpactBurst(proj.x, proj.y);
+          }
           proj.destroy();
           break;
         }
