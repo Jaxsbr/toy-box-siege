@@ -295,8 +295,8 @@ export class GameScene extends Phaser.Scene {
       if (card) {
         this.tutorialHighlight = this.tweens.add({
           targets: card,
-          scaleX: { from: 1.0, to: 1.12 },
-          scaleY: { from: 1.0, to: 1.12 },
+          scaleX: { from: 1.0, to: 1.08 },
+          scaleY: { from: 1.0, to: 1.08 },
           duration: 500,
           yoyo: true,
           repeat: -1,
@@ -587,9 +587,10 @@ export class GameScene extends Phaser.Scene {
     const panelStartX = 140;
     const muteButtonSpace = 50;
     const availableWidth = GRID_COLS * CELL_SIZE - panelStartX - muteButtonSpace;
+    const maxCards = 6;
     const cardGap = 6;
-    // Dynamic card width: shrink to fit when many cards
-    this.cardWidth = Math.min(130, Math.floor((availableWidth - (keys.length - 1) * cardGap) / keys.length));
+    // Fixed card width: sized to fit max 6 cards so layout is stable regardless of loadout size
+    this.cardWidth = Math.floor((availableWidth - (maxCards - 1) * cardGap) / maxCards);
     this.cardHeight = 60;
 
     for (let i = 0; i < keys.length; i++) {
@@ -673,7 +674,19 @@ export class GameScene extends Phaser.Scene {
     this.updatePanelHighlight();
   }
 
+  private selectionPulseTween: Phaser.Tweens.Tween | null = null;
+
   private updatePanelHighlight(): void {
+    // Stop any existing selection pulse
+    if (this.selectionPulseTween) {
+      const prevTargets = this.selectionPulseTween.targets;
+      if (prevTargets?.length) {
+        (prevTargets[0] as Phaser.GameObjects.Container).setScale(1.0);
+      }
+      this.selectionPulseTween.destroy();
+      this.selectionPulseTween = null;
+    }
+
     for (const [key, card] of this.panelCards) {
       const bg = card.getData('bg') as Phaser.GameObjects.Graphics;
       const type = DEFENDER_TYPES[key];
@@ -697,6 +710,11 @@ export class GameScene extends Phaser.Scene {
         bg.fillRoundedRect(0, 0, cw, ch, 6);
         bg.lineStyle(3, 0xffc107, 1);
         bg.strokeRoundedRect(0, 0, cw, ch, 6);
+        // Red diagonal strikethrough when selected but can't afford
+        if (!canAfford) {
+          bg.lineStyle(3, 0xef4444, 0.8);
+          bg.lineBetween(4, 4, cw - 4, ch - 4);
+        }
       } else if (!canAfford) {
         bg.fillStyle(0x1e293b, 0.6);
         bg.fillRoundedRect(0, 0, cw, ch, 6);
@@ -705,15 +723,19 @@ export class GameScene extends Phaser.Scene {
         bg.fillRoundedRect(0, 0, cw, ch, 6);
       }
 
-      // Scale emphasis: selected card pops up, others shrink back
-      const targetScale = isSelected ? 1.12 : 1.0;
-      if (card.scaleX !== targetScale) {
-        this.tweens.add({
+      // Reset scale for non-selected cards
+      card.setScale(1.0);
+
+      // Pulsing scale on selected card (same animation as tutorial highlight)
+      if (isSelected) {
+        this.selectionPulseTween = this.tweens.add({
           targets: card,
-          scaleX: targetScale,
-          scaleY: targetScale,
-          duration: 150,
-          ease: 'Back.easeOut',
+          scaleX: { from: 1.0, to: 1.08 },
+          scaleY: { from: 1.0, to: 1.08 },
+          duration: 500,
+          yoyo: true,
+          repeat: -1,
+          ease: 'Sine.easeInOut',
         });
       }
 
@@ -758,19 +780,22 @@ export class GameScene extends Phaser.Scene {
     if (!result.ok) {
       if (result.reason === 'insufficient_funds') {
         playSfxReject();
-        // Shake the balance text red to show the problem
+        // Screen shake + red flash on balance text
+        this.cameras.main.shake(200, 0.008);
         const origColor = this.balanceText.style.color;
         this.balanceText.setColor('#ef4444');
         this.tweens.add({
           targets: this.balanceText,
-          x: this.balanceText.x + 4,
-          duration: 50,
+          scaleX: 1.4,
+          scaleY: 1.4,
+          duration: 100,
           yoyo: true,
-          repeat: 3,
           onComplete: () => {
             this.balanceText.setColor(origColor as string);
           },
         });
+        // Refresh panel to show red diagonal on selected card
+        this.updatePanelHighlight();
       }
       return;
     }
