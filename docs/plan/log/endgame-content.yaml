@@ -42,3 +42,15 @@ entries:
       6 new tests: 3 for AOE row clamping, 2 for AOE damage application, 1 for speed constant.
       171 tests pass (165 + 6 new). No regressions.
     tokens: ~3k
+  - task: 4
+    story: US-56
+    description: "Branch B — queue GameScene rework for Honey Bear projectile integration"
+    result: pass
+    notes: |
+      Pure logic (Combat.ts) and config (defenders.ts) done. Next: rework GameScene.
+      Remove: trapperTimers, honeyProjectiles, HONEY_PROJECTILE_SPEED, random-target tossing.
+      Add: integrate trapper into shooter fire loop, amber ProjectileEntity variant,
+      AOE damage via applyAOEDamage on hit, honey pot creation via createHoneyPot per AOE row,
+      honey pool rendering at depth 2 with amber fill.
+      Queued: GameScene rework implementation.
+    tokens: ~1k
