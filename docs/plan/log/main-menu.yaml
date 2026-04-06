@@ -44,3 +44,11 @@ entries:
       main.ts: zomboReset updated to start MainMenuScene.
       165 tests pass (no regressions). ✓ US-52 complete. ✓ US-54 complete.
     tokens: ~4k
+  - task: 4
+    story: US-55
+    description: "Add bio field to ENEMY_TYPES.basic (Dust Bunny) in src/config/enemies.ts"
+    result: pass
+    notes: |
+      enemies.ts: basic.bio = 'The Dust Bunny rolls in from the right! It\'s the softest enemy, but there\'s a lot of them.'
+      All 4 ENEMY_TYPES now have non-empty bio strings. 165 tests pass (no change). ✓ US-55 complete.
+    tokens: ~0.5k

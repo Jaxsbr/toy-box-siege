@@ -28,8 +28,8 @@ state:
   status: running
 
   # --- Task orchestration (owner: iterator) ---
-  task_number: 4
-  next_task: "[US-55] Add bio field to ENEMY_TYPES.basic (Dust Bunny) in src/config/enemies.ts"
+  task_number: 5
+  next_task: "[US-53] Update LevelSelectScene.create() to read selectedLevel from scene init data and visually highlight that level button"
   last_result: pass
   consecutive_fails: 0
 
@@ -42,4 +42,4 @@ state:
   retro_complete: false
 
   # --- Tracking (owner: iterator) ---
-  completed_stories: [US-52, US-54]
+  completed_stories: [US-52, US-54, US-55]
