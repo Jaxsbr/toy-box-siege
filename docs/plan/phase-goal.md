@@ -9,15 +9,15 @@ Balance and pacing pass to make the game feel gentler and more forgiving for kid
 ### Done-when (observable)
 
 #### US-50 — Reduce enemy speeds for kid-friendly pacing
-- [ ] Dust Bunny (`ENEMY_TYPES.basic`) speed in range [0.2, 0.3] cells/s (reduced from 0.4) [US-50]
-- [ ] Armored Bunny (`ENEMY_TYPES.armored`) speed strictly less than Dust Bunny speed [US-50]
-- [ ] Cleaning Robot (`ENEMY_TYPES.tough`) speed in range [0.1, 0.18] cells/s (reduced from 0.25) — slowest enemy [US-50]
-- [ ] Sock Puppet (`ENEMY_TYPES.jumper`) speed in range [0.25, 0.35] cells/s (reduced from 0.455) — fastest enemy [US-50]
-- [ ] Speed hierarchy holds: `jumper.speed > basic.speed > armored.speed > tough.speed` [US-50]
-- [ ] `test/EnemyTypes.test.ts` speed/stat assertions updated to match new values [US-50]
-- [ ] `test/Enemies.test.ts` "basic.speed > tough.speed" assertion still holds (already true, but verify armored is also covered) [US-50]
-- [ ] New test in `test/EnemyTypes.test.ts` (or `test/Enemies.test.ts`) validates the full speed hierarchy: `jumper.speed > basic.speed > armored.speed > tough.speed` [US-50]
-- [ ] `npm test` passes [US-50]
+- [x] Dust Bunny (`ENEMY_TYPES.basic`) speed in range [0.2, 0.3] cells/s (reduced from 0.4) [US-50]
+- [x] Armored Bunny (`ENEMY_TYPES.armored`) speed strictly less than Dust Bunny speed [US-50]
+- [x] Cleaning Robot (`ENEMY_TYPES.tough`) speed in range [0.1, 0.18] cells/s (reduced from 0.25) — slowest enemy [US-50]
+- [x] Sock Puppet (`ENEMY_TYPES.jumper`) speed in range [0.25, 0.35] cells/s (reduced from 0.455) — fastest enemy [US-50]
+- [x] Speed hierarchy holds: `jumper.speed > basic.speed > armored.speed > tough.speed` [US-50]
+- [x] `test/EnemyTypes.test.ts` speed/stat assertions updated to match new values [US-50]
+- [x] `test/Enemies.test.ts` "basic.speed > tough.speed" assertion still holds (already true, but verify armored is also covered) [US-50]
+- [x] New test in `test/EnemyTypes.test.ts` (or `test/Enemies.test.ts`) validates the full speed hierarchy: `jumper.speed > basic.speed > armored.speed > tough.speed` [US-50]
+- [x] `npm test` passes [US-50]
 
 #### US-51 — Rebalance wave pacing L1-L9 for smooth difficulty curve
 - [ ] No wave in any level (L1-L9) has a minimum spawn interval below 2.0s [US-51]

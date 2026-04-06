@@ -2,6 +2,18 @@
 # Each entry: { task, story, description, result, notes, tokens }
 
 entries:
+  - task: 2
+    story: US-50
+    description: "Update enemy speeds in enemies.ts, fix speed assertions in EnemyTypes.test.ts, add full hierarchy test"
+    result: pass
+    notes: |
+      enemies.ts: basic 0.4→0.25, armored 0.45→0.20, tough 0.25→0.15, jumper 0.455→0.30.
+      Hierarchy: jumper(0.30)>basic(0.25)>armored(0.20)>tough(0.15) — tank archetype fixed.
+      EnemyTypes.test.ts: armored 'speed is 0.45'→'speed is 0.20', jumper 'speed=0.455'→'speed=0.30'.
+      New test: 'Enemy speed hierarchy' with 3 unconditional assertions (no-silent-pass compliant).
+      Enemies.test.ts: basic>tough holds (0.25>0.15); armored covered by new hierarchy test.
+      157 tests pass (156+1 new). ✓ US-50 complete
+    tokens: ~2k
   - task: 1
     story: US-50
     description: "Branch B investigation — read enemies.ts, levels.ts, all speed/interval values, current test assertions"
