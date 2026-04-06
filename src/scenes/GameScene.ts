@@ -43,7 +43,7 @@ const SPARK_SPAWN_INTERVAL = 12000; // ms between spark spawns
 const SPARK_VALUE = 25; // sparks balance added per collection
 const HONEY_PROJECTILE_SPEED = 120; // px/s — honey pot moves slowly through the air
 const SPARK_FALL_SPEED = 30; // pixels per second
-const GENERATOR_INCOME_INTERVAL = 8000; // ms between generator spark spawns
+const GENERATOR_INCOME_INTERVAL = 10000; // ms between generator spark spawns
 const GENERATOR_SPARK_EXPIRY = 5000; // ms before uncollected generator sparks despawn
 const FADE_DURATION = 600;
 
