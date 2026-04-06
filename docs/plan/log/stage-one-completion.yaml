@@ -32,3 +32,9 @@ entries:
     result: pass
     notes: "deploy.yml created: triggers on push to main, steps checkout/setup-node/npm-ci/npm-run-build/peaceiris-gh-pages@v4. vite.config.ts already has base:'./' — no changes needed. npm run build produces dist/index.html (TypeScript clean). 156 tests pass. ✓ US-49 complete"
     tokens: ~2k
+  - task: 6
+    story: phase
+    description: "Branch B investigation — check structural criteria"
+    result: pass
+    notes: "All 5 stories complete. Structural criteria unmet: stage-one.md only has L1-L5, needs L6-L9 rows. AGENTS.md needs update for ALL_LEVELS length 9, UNLOCK_MAP L6→trapper/L8→mine, progression L1-L9. Queued structural update task."
+    tokens: ~1k
