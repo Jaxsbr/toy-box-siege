@@ -77,3 +77,18 @@ entries:
       SingleUse.ts/test for mine-boss interaction, EnemiesScene for discovery rendering.
       Queued: investigate EnemyEntity.ts + SingleUse + GameScene patterns.
     tokens: ~1k
+  - task: 7
+    story: US-57
+    description: "Investigate EnemyEntity.ts, SingleUse, GameScene mine patterns for boss implementation"
+    result: pass
+    notes: |
+      EnemyEntity.ts: 4 draw functions (drawDustBunny, drawCleaningRobot, drawArmoredBunny, drawSockPuppet).
+      DRAW_ENEMY map with 4 keys. Need drawBoss (unique). startMovementAnimation has 4 cases — add 'boss'.
+      Hit flash: works per scale already. Health bar: scales with enemyType.scale already.
+      SingleUse.ts: mineTriggerCheck returns enemy. Kill logic in GameScene: applyDamage(target, 9999).
+      Need MINE_BOSS_DAMAGE constant + bossType check in GameScene.
+      Death colors in GameScene: basic=pink, tough=purple, armored=pink, jumper=orange. Need boss.
+      EnemiesScene: ALWAYS_DISCOVERED = ['basic']. Others use localStorage bio_shown_enemy_<key>.
+      Test file is SingleUseDefenders.test.ts (not SingleUse.test.ts).
+      Queued: add bossType + boss type + MINE_BOSS_DAMAGE + test + GameScene mine update.
+    tokens: ~4k
