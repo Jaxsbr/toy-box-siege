@@ -8,11 +8,11 @@ const ALWAYS_UNLOCKED = new Set(['generator', 'shooter']);
 
 const CARD_W = 260;
 const CARD_H = 280;
-const CARD_CX = GAME_WIDTH / 2;
-const CARD_X = CARD_CX - CARD_W / 2;
+const CARD_CX = 288;   // GAME_WIDTH / 2 — hardcoded to avoid circular-import TDZ
+const CARD_X = 158;    // CARD_CX - CARD_W / 2
 const CARD_Y = 60;
-const SPRITE_CY = CARD_Y + 80;
-const ARROW_CY = CARD_Y + CARD_H / 2;
+const SPRITE_CY = 140; // CARD_Y + 80
+const ARROW_CY = 200;  // CARD_Y + CARD_H / 2
 
 export class ToysScene extends Phaser.Scene {
   private keys: string[] = [];
