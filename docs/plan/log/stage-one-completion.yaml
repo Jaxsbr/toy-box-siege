@@ -1,4 +1,10 @@
 # Phase log — stage-one-completion
 # Each entry: { task, story, description, result, notes, tokens }
 
-entries: []
+entries:
+  - task: 1
+    story: US-45
+    description: "Branch B investigation — read enemies.ts, levels.ts, DefenderUnlocks.ts, test files, run verify"
+    result: pass
+    notes: "144 tests pass (16 files). tough/jumper have no bio fields. LEVEL_1-5 exist, ALL_LEVELS length 5. UNLOCK_MAP={3:'wall'}. LoadoutSelection.test.ts has 'trapper and mine are not in initial defenders or unlock map' looping 5 levels — must update. Queued investigate task for vite.config and .github/workflows before implementing."
+    tokens: ~3k

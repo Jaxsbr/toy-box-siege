@@ -28,8 +28,8 @@ state:
   status: running
 
   # --- Task orchestration (owner: iterator) ---
-  task_number: 1
-  next_task: null
+  task_number: 2
+  next_task: "[US-45] Investigate: vite.config.ts base setting, .github/workflows existence, enemies.ts import usage, and ALL_LEVELS export before implementing L6-L9 and unlock map changes"
   last_result: pass
   consecutive_fails: 0
 
