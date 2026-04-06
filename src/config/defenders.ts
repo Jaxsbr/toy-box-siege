@@ -29,9 +29,9 @@ export const DEFENDER_TYPES: Record<string, DefenderType> = {
   },
   shooter: {
     name: 'Water Pistol',
-    cost: 85,
+    cost: 75,
     health: 40,
-    damage: 15,
+    damage: 20,
     range: 9, // full lane
     fireRate: 1,
     generatesIncome: 0,
