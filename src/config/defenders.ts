@@ -55,13 +55,13 @@ export const DEFENDER_TYPES: Record<string, DefenderType> = {
     name: 'Honey Bear',
     cost: 75,
     health: 60,
-    damage: 0,
-    range: 5, // cells ahead for honey pot tossing
-    fireRate: 0,
+    damage: 5, // AOE damage per projectile hit (matches HONEY_BEAR_AOE_DAMAGE)
+    range: 9, // full lane — fires at nearest enemy like Water Pistol
+    fireRate: 1 / 3, // 1 shot every 3 seconds (matches HONEY_BEAR_FIRE_INTERVAL)
     generatesIncome: 0,
     behavior: 'trapper',
     singleUse: false,
-    bio: 'Throws sticky honey pots that slow enemies down. Great for buying time!',
+    bio: 'Shoots slow honey blobs that splash on hit! Damages nearby lanes and leaves sticky puddles.',
   },
   mine: {
     name: 'Marble Mine',
