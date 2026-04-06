@@ -21,10 +21,10 @@ describe('Level progression — guided intro', () => {
   it('L1: a single Water Pistol survives the wave (total enemy HP <= pistol DPS x reasonable time)', () => {
     const pistolDPS = 15; // 15 damage per second
     const totalEnemyHP = LEVEL_1.waves[0].spawns.reduce((sum, s) => sum + s.type.health, 0);
-    // At 15 DPS, total HP / 15 = seconds needed. Enemies traverse 9 cols at 0.25 cells/s = 36s.
+    // At 15 DPS, total HP / 15 = seconds needed. Enemies traverse 9 cols at 0.30 cells/s = 30s.
     // Total kill time must be less than traverse time for a single pistol to survive
     const killTime = totalEnemyHP / pistolDPS;
-    expect(killTime).toBeLessThan(36);
+    expect(killTime).toBeLessThan(30);
   });
 
   it('L2: activeLanes=[1,2,3], 2 waves, basic enemies only', () => {

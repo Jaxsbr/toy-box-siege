@@ -22,7 +22,7 @@ export interface ProjectileState {
   speed: number;
 }
 
-const PROJECTILE_SPEED = 8; // cells per second
+const PROJECTILE_SPEED = 4; // cells per second
 
 export function updateShooterCooldown(shooter: ShooterEntity, deltaSeconds: number): void {
   if (shooter.fireCooldown > 0) {
