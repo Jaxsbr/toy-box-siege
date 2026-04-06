@@ -482,63 +482,55 @@ export const LEVEL_10: LevelConfig = {
   announceDuration: 2.5,
   waves: [
     {
-      // Wave 1: 7 enemies, 0.8s intervals — coordinated rush
+      // Wave 1: 6 enemies, 1.0s intervals — opening formation
       spawns: [
         { type: ENEMY_TYPES.basic,   lane: 0, delay: 0 },
-        { type: ENEMY_TYPES.armored, lane: 4, delay: 0.8 },
-        { type: ENEMY_TYPES.basic,   lane: 2, delay: 1.6 },
-        { type: ENEMY_TYPES.tough,   lane: 1, delay: 2.4 },
-        { type: ENEMY_TYPES.basic,   lane: 3, delay: 3.2 },
-        { type: ENEMY_TYPES.armored, lane: 0, delay: 4.0 },
-        { type: ENEMY_TYPES.jumper,  lane: 4, delay: 4.8 },
+        { type: ENEMY_TYPES.armored, lane: 4, delay: 1.0 },
+        { type: ENEMY_TYPES.basic,   lane: 2, delay: 2.0 },
+        { type: ENEMY_TYPES.tough,   lane: 1, delay: 3.0 },
+        { type: ENEMY_TYPES.basic,   lane: 3, delay: 4.0 },
+        { type: ENEMY_TYPES.jumper,  lane: 4, delay: 5.0 },
       ],
     },
     {
-      // Wave 2: 9 enemies, 0.7s intervals — tighter rush
+      // Wave 2: 7 enemies, 0.9s intervals — tighter rush
       spawns: [
         { type: ENEMY_TYPES.tough,   lane: 2, delay: 0 },
-        { type: ENEMY_TYPES.jumper,  lane: 0, delay: 0.7 },
-        { type: ENEMY_TYPES.armored, lane: 4, delay: 1.4 },
-        { type: ENEMY_TYPES.basic,   lane: 1, delay: 2.1 },
-        { type: ENEMY_TYPES.tough,   lane: 3, delay: 2.8 },
-        { type: ENEMY_TYPES.jumper,  lane: 2, delay: 3.5 },
-        { type: ENEMY_TYPES.armored, lane: 0, delay: 4.2 },
-        { type: ENEMY_TYPES.basic,   lane: 4, delay: 4.9 },
-        { type: ENEMY_TYPES.tough,   lane: 1, delay: 5.6 },
+        { type: ENEMY_TYPES.jumper,  lane: 0, delay: 0.9 },
+        { type: ENEMY_TYPES.armored, lane: 4, delay: 1.8 },
+        { type: ENEMY_TYPES.basic,   lane: 1, delay: 2.7 },
+        { type: ENEMY_TYPES.tough,   lane: 3, delay: 3.6 },
+        { type: ENEMY_TYPES.armored, lane: 0, delay: 4.5 },
+        { type: ENEMY_TYPES.jumper,  lane: 2, delay: 5.4 },
       ],
     },
     {
-      // Wave 3: 11 enemies, 0.6s intervals — intense formation
+      // Wave 3: 9 enemies, 0.8s intervals — intense formation
       spawns: [
         { type: ENEMY_TYPES.armored, lane: 0, delay: 0 },
-        { type: ENEMY_TYPES.tough,   lane: 4, delay: 0.6 },
-        { type: ENEMY_TYPES.jumper,  lane: 2, delay: 1.2 },
-        { type: ENEMY_TYPES.armored, lane: 1, delay: 1.8 },
-        { type: ENEMY_TYPES.basic,   lane: 3, delay: 2.4 },
-        { type: ENEMY_TYPES.tough,   lane: 0, delay: 3.0 },
-        { type: ENEMY_TYPES.jumper,  lane: 4, delay: 3.6 },
-        { type: ENEMY_TYPES.armored, lane: 2, delay: 4.2 },
-        { type: ENEMY_TYPES.tough,   lane: 1, delay: 4.8 },
-        { type: ENEMY_TYPES.basic,   lane: 3, delay: 5.4 },
-        { type: ENEMY_TYPES.jumper,  lane: 0, delay: 6.0 },
+        { type: ENEMY_TYPES.tough,   lane: 4, delay: 0.8 },
+        { type: ENEMY_TYPES.jumper,  lane: 2, delay: 1.6 },
+        { type: ENEMY_TYPES.armored, lane: 1, delay: 2.4 },
+        { type: ENEMY_TYPES.basic,   lane: 3, delay: 3.2 },
+        { type: ENEMY_TYPES.tough,   lane: 0, delay: 4.0 },
+        { type: ENEMY_TYPES.jumper,  lane: 4, delay: 4.8 },
+        { type: ENEMY_TYPES.armored, lane: 2, delay: 5.6 },
+        { type: ENEMY_TYPES.tough,   lane: 1, delay: 6.4 },
       ],
     },
     {
-      // Wave 4: 13 enemies, 0.5s intervals — overwhelming rush before boss
+      // Wave 4: 10 enemies, 0.7s intervals — pre-boss rush
       spawns: [
         { type: ENEMY_TYPES.tough,   lane: 0, delay: 0 },
-        { type: ENEMY_TYPES.armored, lane: 4, delay: 0.5 },
-        { type: ENEMY_TYPES.jumper,  lane: 2, delay: 1.0 },
-        { type: ENEMY_TYPES.tough,   lane: 1, delay: 1.5 },
-        { type: ENEMY_TYPES.basic,   lane: 3, delay: 2.0 },
-        { type: ENEMY_TYPES.armored, lane: 0, delay: 2.5 },
-        { type: ENEMY_TYPES.jumper,  lane: 4, delay: 3.0 },
-        { type: ENEMY_TYPES.tough,   lane: 2, delay: 3.5 },
-        { type: ENEMY_TYPES.basic,   lane: 1, delay: 4.0 },
-        { type: ENEMY_TYPES.armored, lane: 3, delay: 4.5 },
-        { type: ENEMY_TYPES.tough,   lane: 0, delay: 5.0 },
-        { type: ENEMY_TYPES.jumper,  lane: 4, delay: 5.5 },
-        { type: ENEMY_TYPES.armored, lane: 2, delay: 6.0 },
+        { type: ENEMY_TYPES.armored, lane: 4, delay: 0.7 },
+        { type: ENEMY_TYPES.jumper,  lane: 2, delay: 1.4 },
+        { type: ENEMY_TYPES.tough,   lane: 1, delay: 2.1 },
+        { type: ENEMY_TYPES.basic,   lane: 3, delay: 2.8 },
+        { type: ENEMY_TYPES.armored, lane: 0, delay: 3.5 },
+        { type: ENEMY_TYPES.jumper,  lane: 4, delay: 4.2 },
+        { type: ENEMY_TYPES.tough,   lane: 2, delay: 4.9 },
+        { type: ENEMY_TYPES.basic,   lane: 1, delay: 5.6 },
+        { type: ENEMY_TYPES.armored, lane: 3, delay: 6.3 },
       ],
     },
     {

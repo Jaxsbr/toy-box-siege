@@ -180,12 +180,12 @@ describe('Level progression — stage-one-completion (L6-L9)', () => {
     expect(LEVEL_10.setupDelay).toBeGreaterThanOrEqual(20);
   });
 
-  it('L10: waves 1-4 have spawn intervals <= 0.8s', () => {
+  it('L10: waves 1-4 have spawn intervals <= 1.0s', () => {
     for (let w = 0; w < 4; w++) {
       const wave = LEVEL_10.waves[w];
       for (let i = 1; i < wave.spawns.length; i++) {
         const gap = wave.spawns[i].delay - wave.spawns[i - 1].delay;
-        expect(gap).toBeLessThanOrEqual(0.8 + 0.001); // fp tolerance
+        expect(gap).toBeLessThanOrEqual(1.0 + 0.001); // fp tolerance
       }
     }
   });
