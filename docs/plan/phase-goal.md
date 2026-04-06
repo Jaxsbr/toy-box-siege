@@ -38,14 +38,14 @@ Deliver endgame content: rework Honey Bear into a projectile-based area-denial d
 
 #### US-58 — Level 10: Formation Waves & Boss Fight
 
-- [ ] LEVEL_10 config object exists in src/config/levels.ts; ALL_LEVELS array has length 10 [US-58]
-- [ ] Level 10 config has >= 5 waves [US-58]
-- [ ] Waves 1-4 configure enemy spawn intervals <= 0.8 s between successive spawns within the wave [US-58]
-- [ ] Wave 5 (the final wave) includes exactly one spawn of enemy type 'boss' [US-58]
-- [ ] Level 10 entry is visible in LevelSelectScene; locked until Level 9 is completed; unlocked after completing Level 9 [US-58]
-- [ ] LEVEL_10 config has enemyBio configured for 'boss' type, triggering the enemy bio overlay before the level starts [US-58]
-- [ ] LEVEL_10 setupDelay >= 20000 (20 seconds) [US-58]
-- [ ] LevelProgress.ts nextUnbeatenLevel correctly handles 10 levels — returns L10 as the next unbeaten level after L9 is completed [US-58]
+- [x] LEVEL_10 config object exists in src/config/levels.ts; ALL_LEVELS array has length 10 [US-58]
+- [x] Level 10 config has >= 5 waves [US-58]
+- [x] Waves 1-4 configure enemy spawn intervals <= 0.8 s between successive spawns within the wave [US-58]
+- [x] Wave 5 (the final wave) includes exactly one spawn of enemy type 'boss' [US-58]
+- [x] Level 10 entry is visible in LevelSelectScene; locked until Level 9 is completed; unlocked after completing Level 9 [US-58]
+- [x] LEVEL_10 config has enemyBio configured for 'boss' type, triggering the enemy bio overlay before the level starts [US-58]
+- [x] LEVEL_10 setupDelay >= 20000 (20 seconds) [US-58]
+- [x] LevelProgress.ts nextUnbeatenLevel correctly handles 10 levels — returns L10 as the next unbeaten level after L9 is completed [US-58]
 
 #### Structural / phase criteria
 

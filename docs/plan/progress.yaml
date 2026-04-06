@@ -28,8 +28,8 @@ state:
   status: running
 
   # --- Task orchestration (owner: iterator) ---
-  task_number: 10
-  next_task: "[US-58] Add LEVEL_10 config to levels.ts, update TOTAL_LEVELS to 10, update LevelProgress tests for 10 levels"
+  task_number: 11
+  next_task: null
   last_result: pass
   consecutive_fails: 0
 
@@ -42,4 +42,4 @@ state:
   retro_complete: false
 
   # --- Tracking (owner: iterator) ---
-  completed_stories: [US-56, US-57]
+  completed_stories: [US-56, US-57, US-58]
