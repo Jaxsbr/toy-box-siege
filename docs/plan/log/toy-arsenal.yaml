@@ -82,3 +82,15 @@ entries:
       Blue splash ring glow + white highlight. Constructor adds isCannon param (backward compatible default false).
       183 tests pass. tsc clean.
     tokens: ~3k
+  - task: 8
+    story: US-59
+    description: "Branch B — queue GameScene cannon integration (fire loop + knockback on hit)"
+    result: pass
+    notes: |
+      US-59 remaining: GameScene integration (cannon in fire loop, knockback on hit),
+      GameOverScene multi-unlock card, ToysScene cannon card.
+      Cannon uses 'shooter' behavior so it should already fire via the shooter loop.
+      Need: identify cannon in fire loop (for projectile speed + isCannon flag),
+      add knockback on cannon projectile hit, update hit logic.
+      Queued: investigate + implement GameScene cannon integration.
+    tokens: ~1k
