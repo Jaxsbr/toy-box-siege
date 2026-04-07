@@ -73,6 +73,39 @@ entries:
     tokens: ~1k
   - task: 7
     story: US-59
+    description: "Add drawWaterCannon shape, cannon projectile variant, idle bob, fire recoil"
+    result: pass
+    notes: |
+      See earlier task 7 entry.
+    tokens: ~0k
+  - task: 8
+    story: US-59
+    description: "Branch B — queue GameScene cannon integration"
+    result: pass
+    notes: |
+      See earlier task 8 entry.
+    tokens: ~0k
+  - task: 9
+    story: US-59
+    description: "Integrate cannon into GameScene fire loop with knockback on hit"
+    result: pass
+    notes: |
+      See earlier task 9 entry.
+    tokens: ~0k
+  - task: 10
+    story: US-59
+    description: "Multi-unlock card chain in GameOverScene + US-59 story completion"
+    result: pass
+    notes: |
+      GameOverScene: getNewUnlockKey → getNewUnlockKeys (returns string[]).
+      showUnlockCardChain chains sequential cards. Fixes L3 showing both wall+cannon cards.
+      Card cleanup (dimBg + cardContainer destroy) before next card.
+      All 17 US-59 done-when criteria verified met.
+      ✓ US-59 complete.
+      183 tests pass. tsc clean.
+    tokens: ~5k
+  - task: 7
+    story: US-59
     description: "Add drawWaterCannon shape, cannon projectile variant (blue/cyan, larger), idle bob, fire recoil"
     result: pass
     notes: |

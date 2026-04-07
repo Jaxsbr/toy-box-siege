@@ -28,7 +28,7 @@ state:
   status: running
 
   # --- Task orchestration (owner: iterator) ---
-  task_number: 10
+  task_number: 11
   next_task: null
   last_result: pass
   consecutive_fails: 0
@@ -42,4 +42,4 @@ state:
   retro_complete: false
 
   # --- Tracking (owner: iterator) ---
-  completed_stories: []
+  completed_stories: [US-59]

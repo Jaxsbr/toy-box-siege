@@ -11,23 +11,23 @@ Expand the toy arsenal with two new defenders — Water Cannon (powerful knockba
 
 #### US-59 — Water Cannon Defender
 
-- [ ] defenders.ts registers 'cannon' with behavior 'shooter', damage >= 24, cost >= 125, range 9, singleUse false, non-empty bio string [US-59]
-- [ ] DefenderType interface extended with optional `knockback?: number` field (or equivalent mechanism); 'cannon' entry sets knockback > 0; TypeScript strict-mode compilation passes (npx tsc --noEmit) [US-59]
-- [ ] DefenderEntity.ts has a dedicated drawing path for key 'cannon' — distinct if/case branch, does NOT reuse the 'shooter' (Water Pistol) shape [US-59]
-- [ ] Water Cannon reads as a big toy water blaster — chunky barrel/nozzle shape, playful proportions, not military hardware (visually distinct silhouette from Water Pistol's simple pistol shape) [US-59] (aspirational — visual verification required)
-- [ ] ProjectileEntity.ts renders Water Cannon projectile with blue/cyan fill color (distinct from Water Pistol yellow and Honey Bear amber) and visually larger radius than Water Pistol projectile [US-59]
-- [ ] On Water Cannon projectile hit, non-boss enemy col position increases by ~1 cell (knockback toward right edge); enemy col does not exceed grid col bound (8) [US-59]
-- [ ] On Water Cannon projectile hit against a bossType=true enemy, no knockback is applied (col position unchanged) [US-59]
-- [ ] Knockback function resides in src/systems/ (pure TypeScript, no Phaser import) [US-59]
-- [ ] test/Combat.test.ts or dedicated knockback test: non-boss enemy knocked back ~1 cell on Water Cannon hit; boss-type enemy NOT knocked back; knockback clamped to col 8 [US-59]
-- [ ] Water Cannon unlocks after completing L3: updateUnlocksAfterLevel with completedLevelIndex=2 returns an unlock set containing both 'wall' AND 'cannon' [US-59]
-- [ ] test/DefenderUnlocks.test.ts: completing level index 2 unlocks both 'wall' and 'cannon' [US-59]
-- [ ] Toy unlock card overlay displays for Water Cannon on first unlock — follows existing pattern (DRAW_DEFENDER at 2x, name, cost, bio, cream background, warm brown border, slide-in, "Collect!" button, localStorage tracking via bio_shown_defender_cannon) [US-59]
-- [ ] ToysScene renders Water Cannon card — silhouette before unlock, full card (name + visual + bio) after unlock [US-59]
-- [ ] Water Cannon has fire animation reaction (recoil or forward-lunge tween) on each projectile launch [US-59]
-- [ ] Water Cannon preview in ToysScene and loadout screen shows idle bob animation (same tween pattern as existing defender previews) [US-59]
-- [ ] ToysScene and unlock card overlay render Water Cannon using the container + DRAW_DEFENDER['cannon'] Record lookup pattern (not a function call) — same pattern as existing defenders [US-59]
-- [ ] GameScene knockback application calls the knockback function from src/systems/ — no inline re-implementation of knockback logic in scene code [US-59]
+- [x] defenders.ts registers 'cannon' with behavior 'shooter', damage >= 24, cost >= 125, range 9, singleUse false, non-empty bio string [US-59]
+- [x] DefenderType interface extended with optional `knockback?: number` field (or equivalent mechanism); 'cannon' entry sets knockback > 0; TypeScript strict-mode compilation passes (npx tsc --noEmit) [US-59]
+- [x] DefenderEntity.ts has a dedicated drawing path for key 'cannon' — distinct if/case branch, does NOT reuse the 'shooter' (Water Pistol) shape [US-59]
+- [x] Water Cannon reads as a big toy water blaster — chunky barrel/nozzle shape, playful proportions, not military hardware (visually distinct silhouette from Water Pistol's simple pistol shape) [US-59] (aspirational — visual verification required)
+- [x] ProjectileEntity.ts renders Water Cannon projectile with blue/cyan fill color (distinct from Water Pistol yellow and Honey Bear amber) and visually larger radius than Water Pistol projectile [US-59]
+- [x] On Water Cannon projectile hit, non-boss enemy col position increases by ~1 cell (knockback toward right edge); enemy col does not exceed grid col bound (8) [US-59]
+- [x] On Water Cannon projectile hit against a bossType=true enemy, no knockback is applied (col position unchanged) [US-59]
+- [x] Knockback function resides in src/systems/ (pure TypeScript, no Phaser import) [US-59]
+- [x] test/Combat.test.ts or dedicated knockback test: non-boss enemy knocked back ~1 cell on Water Cannon hit; boss-type enemy NOT knocked back; knockback clamped to col 8 [US-59]
+- [x] Water Cannon unlocks after completing L3: updateUnlocksAfterLevel with completedLevelIndex=2 returns an unlock set containing both 'wall' AND 'cannon' [US-59]
+- [x] test/DefenderUnlocks.test.ts: completing level index 2 unlocks both 'wall' and 'cannon' [US-59]
+- [x] Toy unlock card overlay displays for Water Cannon on first unlock — follows existing pattern (DRAW_DEFENDER at 2x, name, cost, bio, cream background, warm brown border, slide-in, "Collect!" button, localStorage tracking via bio_shown_defender_cannon) [US-59]
+- [x] ToysScene renders Water Cannon card — silhouette before unlock, full card (name + visual + bio) after unlock [US-59]
+- [x] Water Cannon has fire animation reaction (recoil or forward-lunge tween) on each projectile launch [US-59]
+- [x] Water Cannon preview in ToysScene and loadout screen shows idle bob animation (same tween pattern as existing defender previews) [US-59]
+- [x] ToysScene and unlock card overlay render Water Cannon using the container + DRAW_DEFENDER['cannon'] Record lookup pattern (not a function call) — same pattern as existing defenders [US-59]
+- [x] GameScene knockback application calls the knockback function from src/systems/ — no inline re-implementation of knockback logic in scene code [US-59]
 
 #### US-60 — Glitter Bomb Defender
 
