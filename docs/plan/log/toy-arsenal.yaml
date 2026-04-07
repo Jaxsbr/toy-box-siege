@@ -60,3 +60,14 @@ entries:
       New test: completing L5 unlocks bomb (183 tests). GameOverScene.getNewUnlockKey needs separate fix for multi-card display.
       183 tests pass (182 + 1 new). tsc clean.
     tokens: ~4k
+  - task: 6
+    story: US-59
+    description: "Branch B — queue Water Cannon visual shape + projectile variant + animations"
+    result: pass
+    notes: |
+      US-59 remaining: visual shape, projectile variant, idle anim, fire reaction,
+      GameScene integration (knockback on hit, cannon in shooter loop),
+      ToysScene + unlock card rendering.
+      Next: DefenderEntity.ts drawWaterCannon + DRAW_DEFENDER['cannon'],
+      ProjectileEntity.ts cannon variant (blue/cyan, larger), idle + fire anim.
+    tokens: ~1k
