@@ -1,4 +1,4 @@
-export type DefenderBehavior = 'shooter' | 'wall' | 'generator' | 'trapper' | 'mine';
+export type DefenderBehavior = 'shooter' | 'wall' | 'generator' | 'trapper' | 'mine' | 'bomb';
 
 export interface DefenderType {
   name: string;
@@ -76,6 +76,19 @@ export const DEFENDER_TYPES: Record<string, DefenderType> = {
     singleUse: false,
     knockback: 1, // pushes non-boss enemies back ~1 cell on hit
     bio: 'KA-SPLASH! A massive water blaster that blows enemies backwards! Way stronger than the pistol.',
+  },
+  bomb: {
+    name: 'Glitter Bomb',
+    cost: 100,
+    health: 1,
+    damage: 9999, // lethal to non-boss enemies in AOE
+    range: 0,
+    fireRate: 0,
+    generatesIncome: 0,
+    behavior: 'bomb',
+    singleUse: true,
+    rechargeTime: 15000, // 15s cooldown between placements
+    bio: 'SPARKLE BOOM! Place it and — pop! — glitter explodes everywhere! Clears out a whole crowd of baddies.',
   },
   mine: {
     name: 'Marble Mine',

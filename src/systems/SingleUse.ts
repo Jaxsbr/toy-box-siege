@@ -1,6 +1,7 @@
 import { CombatEntity, isDead } from './Combat';
 
 export const MINE_BOSS_DAMAGE = 400; // chunk damage to boss enemies instead of instant kill
+export const BOMB_BOSS_DAMAGE = 400; // chunk damage to boss enemies from Glitter Bomb
 
 /**
  * Mine — check if any enemy is on the mine's cell.
@@ -18,6 +19,40 @@ export function mineTriggerCheck(
     }
   }
   return null;
+}
+
+/**
+ * Bomb detonation — affects all enemies in a 3×3 grid area centered on (bombRow, bombCol).
+ * Non-boss enemies are instant-killed. Boss enemies take BOMB_BOSS_DAMAGE.
+ * Grid bounds are clamped to [0, maxRow] and [0, maxCol].
+ * Returns the list of enemies that were affected.
+ */
+export function bombDetonate(
+  bombRow: number,
+  bombCol: number,
+  enemies: (CombatEntity & { bossType?: boolean })[],
+  maxRow: number = 4,
+  maxCol: number = 8,
+): CombatEntity[] {
+  const minRow = Math.max(0, bombRow - 1);
+  const maxR = Math.min(maxRow, bombRow + 1);
+  const minCol = Math.max(0, bombCol - 1);
+  const maxC = Math.min(maxCol, bombCol + 1);
+
+  const affected: CombatEntity[] = [];
+  for (const enemy of enemies) {
+    if (isDead(enemy)) continue;
+    if (enemy.lane >= minRow && enemy.lane <= maxR &&
+        enemy.col >= minCol - 0.5 && enemy.col <= maxC + 0.5) {
+      if ((enemy as { bossType?: boolean }).bossType) {
+        enemy.health -= BOMB_BOSS_DAMAGE;
+      } else {
+        enemy.health = 0; // instant kill
+      }
+      affected.push(enemy);
+    }
+  }
+  return affected;
 }
 
 /**
