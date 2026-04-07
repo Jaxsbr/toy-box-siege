@@ -31,8 +31,8 @@ describe('DefenderUnlocks', () => {
     expect(needsLoadoutSelection(unlocked)).toBe(false);
   });
 
-  it('selection cap at 4 — MAX_LOADOUT is 4', () => {
-    expect(MAX_LOADOUT).toBe(4);
+  it('selection cap at 5 — MAX_LOADOUT is 5', () => {
+    expect(MAX_LOADOUT).toBe(5);
   });
 
   it('completing L3 (index 2) unlocks Block Tower and Water Cannon', () => {
@@ -42,7 +42,7 @@ describe('DefenderUnlocks', () => {
     expect(unlocked).toContain('wall');
     expect(unlocked).toContain('cannon');
     expect(unlocked).toHaveLength(4);
-    // 4 defenders = 4 → no loadout selection needed (not > 4)
+    // 4 defenders ≤ 5 → no loadout selection needed
     expect(needsLoadoutSelection(unlocked)).toBe(false);
   });
 
@@ -61,8 +61,8 @@ describe('DefenderUnlocks', () => {
     }
     expect(unlocked).toContain('bomb');
     expect(unlocked).toHaveLength(5); // generator, shooter, wall, cannon, bomb
-    // 5 > 4 → loadout selection needed
-    expect(needsLoadoutSelection(unlocked)).toBe(true);
+    // 5 ≤ 5 → no loadout selection needed yet
+    expect(needsLoadoutSelection(unlocked)).toBe(false);
   });
 
   it('completing only L1-L4 (indices 0-3) does not yield trapper, mine, or bomb', () => {
@@ -97,16 +97,17 @@ describe('DefenderUnlocks', () => {
     expect(unlocked).toContain('mine');
   });
 
-  it('needsLoadoutSelection returns true when 5+ defenders unlocked (after L5)', () => {
+  it('needsLoadoutSelection returns false for 5 unlocked, true for 6', () => {
     let unlocked = loadUnlocks(storage);
-    // After L3: generator, shooter, wall, cannon = 4 → not yet
-    for (let i = 0; i <= 2; i++) {
+    // After L5: generator, shooter, wall, cannon, bomb = 5 → not yet (5 ≤ 5)
+    for (let i = 0; i <= 4; i++) {
       unlocked = updateUnlocksAfterLevel(unlocked, i);
     }
+    expect(unlocked).toHaveLength(5);
     expect(needsLoadoutSelection(unlocked)).toBe(false);
-    // After L5: + bomb = 5 → needs selection (5 > 4)
-    unlocked = updateUnlocksAfterLevel(unlocked, 3);
-    unlocked = updateUnlocksAfterLevel(unlocked, 4);
+    // After L6: + trapper = 6 → needs selection (6 > 5)
+    unlocked = updateUnlocksAfterLevel(unlocked, 5);
+    expect(unlocked).toHaveLength(6);
     expect(needsLoadoutSelection(unlocked)).toBe(true);
   });
 

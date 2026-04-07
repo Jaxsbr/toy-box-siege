@@ -53,7 +53,7 @@ export function updateUnlocksAfterLevel(
 
 /** Whether the loadout selection screen should be shown. */
 export function needsLoadoutSelection(unlocked: string[]): boolean {
-  return unlocked.length > 4;
+  return unlocked.length > 5;
 }
 
-export const MAX_LOADOUT = 4;
+export const MAX_LOADOUT = 5;
