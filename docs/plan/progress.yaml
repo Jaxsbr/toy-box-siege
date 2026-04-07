@@ -28,8 +28,8 @@ state:
   status: running
 
   # --- Task orchestration (owner: iterator) ---
-  task_number: 18
-  next_task: "[US-61] Change MAX_LOADOUT to 5, needsLoadoutSelection > 5, update loadout selection to 2-row grid for 6+ defenders, update tests"
+  task_number: 19
+  next_task: "[phase] Update stage-one.md and AGENTS.md structural docs for new toys and loadout changes"
   last_result: pass
   consecutive_fails: 0
 
