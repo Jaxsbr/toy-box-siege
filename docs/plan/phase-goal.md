@@ -53,19 +53,19 @@ Expand the toy arsenal with two new defenders — Water Cannon (powerful knockba
 
 #### US-61 — Expanded Loadout & Toy Selection Redesign
 
-- [ ] MAX_LOADOUT constant = 5 in DefenderUnlocks.ts [US-61]
-- [ ] needsLoadoutSelection returns true when unlocked.length > 5 (not > 4) [US-61]
-- [ ] test/DefenderUnlocks.test.ts: needsLoadoutSelection returns false for 5 unlocked, true for 6 unlocked [US-61]
-- [ ] Loadout selection screen subtitle text contains "5" (e.g., "Choose up to 5 defenders") [US-61]
-- [ ] When 6+ defenders shown on loadout screen, cards render in 2-row grid layout (top row has ceil(n/2) cards, bottom row has remaining, bottom row horizontally centered) [US-61]
-- [ ] When 5 or fewer defenders shown, cards render in a single row (backward compatible with existing layout) [US-61]
-- [ ] All cards are within the 576×400 logical canvas bounds with no overlap or clipping [US-61]
-- [ ] Staggered card entry animation fires for all cards in both rows (120ms delay between consecutive cards) [US-61]
-- [ ] Selection bounce animation (120ms scale tween) works on each card regardless of row [US-61]
-- [ ] Go button is positioned below both rows and fully visible [US-61]
-- [ ] Player can select exactly 5 defenders (loadout size capped at 5, not 4) [US-61]
-- [ ] In-game defender panel (HUD) renders 5 selected defenders without overlap or clipping [US-61]
-- [ ] Card dimensions in 2-row layout use proportional sizing (derived from GAME_WIDTH/GAME_HEIGHT, no hardcoded pixel values) with name text remaining legible [US-61]
+- [x] MAX_LOADOUT constant = 5 in DefenderUnlocks.ts [US-61]
+- [x] needsLoadoutSelection returns true when unlocked.length > 5 (not > 4) [US-61]
+- [x] test/DefenderUnlocks.test.ts: needsLoadoutSelection returns false for 5 unlocked, true for 6 unlocked [US-61]
+- [x] Loadout selection screen subtitle text contains "5" (e.g., "Choose up to 5 defenders") [US-61]
+- [x] When 6+ defenders shown on loadout screen, cards render in 2-row grid layout (top row has ceil(n/2) cards, bottom row has remaining, bottom row horizontally centered) [US-61]
+- [x] When 5 or fewer defenders shown, cards render in a single row (backward compatible with existing layout) [US-61]
+- [x] All cards are within the 576×400 logical canvas bounds with no overlap or clipping [US-61]
+- [x] Staggered card entry animation fires for all cards in both rows (120ms delay between consecutive cards) [US-61]
+- [x] Selection bounce animation (120ms scale tween) works on each card regardless of row [US-61]
+- [x] Go button is positioned below both rows and fully visible [US-61]
+- [x] Player can select exactly 5 defenders (loadout size capped at 5, not 4) [US-61]
+- [x] In-game defender panel (HUD) renders 5 selected defenders without overlap or clipping [US-61]
+- [x] Card dimensions in 2-row layout use proportional sizing (derived from GAME_WIDTH/GAME_HEIGHT, no hardcoded pixel values) with name text remaining legible [US-61]
 
 #### Structural / phase criteria
 

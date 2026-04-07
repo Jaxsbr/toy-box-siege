@@ -228,3 +228,17 @@ entries:
         4. Tests: update MAX_LOADOUT=5, needsLoadoutSelection thresholds.
       Queued: implement MAX_LOADOUT + needsLoadoutSelection + loadout 2-row layout + tests.
     tokens: ~5k
+  - task: 18
+    story: US-61
+    description: "Change MAX_LOADOUT to 5, needsLoadoutSelection > 5, 2-row grid for 6+ defenders, update tests"
+    result: pass
+    notes: |
+      DefenderUnlocks.ts: MAX_LOADOUT=5, needsLoadoutSelection > 5.
+      LevelSelectScene.ts: 2-row grid when unlocked.length > 5. Top row ceil(n/2), bottom row centered.
+      cardHeight 0.28*GH (vs 0.45 single-row), rowGap 0.03*GH. Preview scale capped by both width and height.
+      Backward compatible: ≤5 defenders use single row as before.
+      Verified bounds: 7 cards (max) → top row 4, bottom row 3, all within 576×400, 20px gap to Go button.
+      Tests: MAX_LOADOUT=5, needsLoadoutSelection false for 5, true for 6. L5 no longer triggers selection.
+      All 13 US-61 criteria met. 190 tests pass. tsc clean.
+      ✓ US-61 complete.
+    tokens: ~4k
