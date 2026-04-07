@@ -374,6 +374,18 @@ export class DefenderEntity extends Phaser.GameObjects.Container {
           repeat: -1,
         });
         break;
+      case 'bomb':
+        // Glitter Bomb — gentle sparkle pulse (scale throb)
+        scene.tweens.add({
+          targets: this,
+          scaleX: 1.08,
+          scaleY: 1.08,
+          duration: 1000,
+          ease: 'Sine.easeInOut',
+          yoyo: true,
+          repeat: -1,
+        });
+        break;
     }
   }
 
