@@ -184,6 +184,41 @@ function drawWaterCannon(g: Phaser.GameObjects.Graphics): void {
   g.fillCircle(2, -19, 3);
 }
 
+function drawGlitterBomb(g: Phaser.GameObjects.Graphics): void {
+  // Sparkly party favor — round pink/gold shape, not military
+  // Main body — large pink sphere
+  g.fillStyle(0xf06292, 1);
+  g.fillCircle(0, 0, 14);
+  g.lineStyle(OUTLINE, 0x000000, 1);
+  g.strokeCircle(0, 0, 14);
+  // Gold ribbon/wrap around middle
+  g.fillStyle(0xffd54f, 1);
+  g.fillRect(-14, -3, 28, 6);
+  g.lineStyle(1, 0xf9a825, 1);
+  g.strokeRect(-14, -3, 28, 6);
+  // Bow on top — gold loops
+  g.fillStyle(0xffd54f, 1);
+  g.fillCircle(-5, -12, 5);
+  g.fillCircle(5, -12, 5);
+  g.lineStyle(1, 0xf9a825, 1);
+  g.strokeCircle(-5, -12, 5);
+  g.strokeCircle(5, -12, 5);
+  // Bow center knot
+  g.fillStyle(0xf9a825, 1);
+  g.fillCircle(0, -12, 3);
+  // Sparkle dots — scattered glitter
+  g.fillStyle(0xffffff, 0.8);
+  g.fillCircle(-8, -5, 2);
+  g.fillCircle(7, 5, 1.5);
+  g.fillCircle(-3, 8, 1.5);
+  g.fillCircle(10, -2, 2);
+  g.fillCircle(-6, 10, 1);
+  // Star sparkle accent
+  g.fillStyle(0xffd54f, 0.9);
+  g.fillCircle(9, -8, 2.5);
+  g.fillCircle(-10, 3, 2);
+}
+
 function drawMarbleMine(g: Phaser.GameObjects.Graphics): void {
   // Cluster of coloured marbles
   const marbles = [
@@ -210,6 +245,7 @@ export const DRAW_DEFENDER: Record<string, (g: Phaser.GameObjects.Graphics) => v
   wall: drawBlockTower,
   trapper: drawHoneyBear,
   cannon: drawWaterCannon,
+  bomb: drawGlitterBomb,
   mine: drawMarbleMine,
 };
 
