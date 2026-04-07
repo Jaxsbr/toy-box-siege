@@ -206,3 +206,25 @@ entries:
       applyKnockback called from Combat.ts (not inlined in scene code).
       183 tests pass. tsc clean.
     tokens: ~3k
+  - task: 17
+    story: US-61
+    description: "Investigate: review LevelSelectScene loadout overlay, HUD defender panel, and layout patterns for 5-slot + 2-row redesign"
+    result: pass
+    notes: |
+      LevelSelectScene.ts (548 lines):
+        Single-row layout: cardWidth = (availableWidth - (n-1)*gap) / n. padding=0.05*GW, gap=0.02*GW, cardHeight=0.45*GH.
+        startY = 0.24*GH. Staggered entry: 120ms delay, Back.easeOut. Selection bounce: 1.08x scale.
+        Subtitle: "Choose up to ${MAX_LOADOUT} defenders". Go button at GH - 0.12*GH.
+        Preview scale: Math.max(1.5, (cardWidth/110)*2). Idle bob on each preview.
+      GameScene HUD panel (createDefenderPanel at line 588):
+        panelStartX=140, muteButtonSpace=50, maxCards=6, cardGap=6.
+        cardWidth = floor((availableWidth - 5*6) / 6). Fixed sizing for 6 slots — already fits 5.
+        Cards at y=10. Each card: name, preview (0.5 scale), cost. Zone interactive.
+      DefenderUnlocks.ts: MAX_LOADOUT=4, needsLoadoutSelection > 4.
+      Changes needed:
+        1. MAX_LOADOUT → 5, needsLoadoutSelection > 5
+        2. LevelSelectScene: 2-row grid when unlocked.length > 5 (6+ cards). Top row ceil(n/2), bottom row remainder, centered. Single row for ≤5.
+        3. HUD panel: already handles 6 cards — no change needed for 5.
+        4. Tests: update MAX_LOADOUT=5, needsLoadoutSelection thresholds.
+      Queued: implement MAX_LOADOUT + needsLoadoutSelection + loadout 2-row layout + tests.
+    tokens: ~5k

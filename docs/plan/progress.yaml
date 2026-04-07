@@ -28,8 +28,8 @@ state:
   status: running
 
   # --- Task orchestration (owner: iterator) ---
-  task_number: 17
-  next_task: "[US-61] Investigate: review LevelSelectScene loadout overlay, HUD defender panel, and layout patterns for 5-slot + 2-row redesign"
+  task_number: 18
+  next_task: "[US-61] Change MAX_LOADOUT to 5, needsLoadoutSelection > 5, update loadout selection to 2-row grid for 6+ defenders, update tests"
   last_result: pass
   consecutive_fails: 0
 
