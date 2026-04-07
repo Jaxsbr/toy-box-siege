@@ -1,4 +1,4 @@
-const STORAGE_KEY = 'zombo_progress';
+const STORAGE_KEY = 'toybox_progress';
 const TOTAL_LEVELS = 10;
 
 export type LevelState = 'locked' | 'unlocked' | 'completed';

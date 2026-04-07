@@ -3,14 +3,14 @@ import { gameConfig } from './config/game';
 
 const game = new Phaser.Game(gameConfig);
 
-// QA helper — call zomboReset() in browser console to wipe all save data and restart
-(window as unknown as Record<string, unknown>).zomboReset = () => {
+// QA helper — call toyboxReset() in browser console to wipe all save data and restart
+(window as unknown as Record<string, unknown>).toyboxReset = () => {
   const keys = Object.keys(localStorage).filter(
-    k => k === 'zombo_progress' || k === 'zombo_unlocks' || k === 'tutorial_complete'
+    k => k === 'toybox_progress' || k === 'toybox_unlocks' || k === 'tutorial_complete'
       || k.startsWith('bio_shown_defender_') || k.startsWith('bio_shown_enemy_'),
   );
   keys.forEach(k => localStorage.removeItem(k));
-  console.log(`zomboReset: cleared ${keys.length} keys — ${keys.join(', ')}`);
+  console.log(`toyboxReset: cleared ${keys.length} keys — ${keys.join(', ')}`);
   game.scene.start('MainMenuScene');
 };
 

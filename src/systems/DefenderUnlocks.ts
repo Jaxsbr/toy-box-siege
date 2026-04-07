@@ -1,4 +1,4 @@
-const STORAGE_KEY = 'zombo_unlocks';
+const STORAGE_KEY = 'toybox_unlocks';
 
 // Unlock map: which defenders are available at start and which unlock on level completion
 const INITIAL_DEFENDERS = ['generator', 'shooter'];

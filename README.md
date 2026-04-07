@@ -1,6 +1,6 @@
-# Zombo
+# Toy Box Siege
 
-A Plants vs Zombies clone with alternative mechanics.
+A bedroom-themed tower defense game inspired by Plants vs Zombies, built as a gift for Jaco's kids.
 
 <!-- build-loop -->
 ---
