@@ -128,6 +128,17 @@ entries:
       L5 unlock already configured. ToysScene/GameOverScene work via DEFENDER_TYPES.
       Queued: add bomb config + detonation function + tests.
     tokens: ~4k
+  - task: 13
+    story: US-60
+    description: "Add 'bomb' to DefenderBehavior, register bomb, add bombDetonate, BOMB_BOSS_DAMAGE, 7 tests"
+    result: pass
+    notes: |
+      defenders.ts: 'bomb' added to DefenderBehavior. Bomb registered (cost 100, singleUse, rechargeTime 15s).
+      SingleUse.ts: BOMB_BOSS_DAMAGE=400. bombDetonate(row, col, enemies, maxRow=4, maxCol=8) — 3×3 area,
+      instant-kill non-boss, BOMB_BOSS_DAMAGE for boss, grid clamped.
+      7 new tests: kills in 3×3, boss chunk damage, outside unaffected, edge clamping, constants, config.
+      190 tests pass (183 + 7 new). tsc clean.
+    tokens: ~4k
   - task: 7
     story: US-59
     description: "Add drawWaterCannon shape, cannon projectile variant (blue/cyan, larger), idle bob, fire recoil"
