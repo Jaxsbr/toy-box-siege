@@ -71,3 +71,14 @@ entries:
       Next: DefenderEntity.ts drawWaterCannon + DRAW_DEFENDER['cannon'],
       ProjectileEntity.ts cannon variant (blue/cyan, larger), idle + fire anim.
     tokens: ~1k
+  - task: 7
+    story: US-59
+    description: "Add drawWaterCannon shape, cannon projectile variant (blue/cyan, larger), idle bob, fire recoil"
+    result: pass
+    notes: |
+      DefenderEntity.ts: drawWaterCannon — chunky toy blaster (cyan tank, flared nozzle, pressure gauge, pump handle).
+      DRAW_DEFENDER['cannon'] registered. Idle: slow bob (1800ms). Fire: heavy forward-lunge (6px, 120ms).
+      ProjectileEntity.ts: isCannon flag. CANNON_PROJECTILE_COLOR=0x00bcd4 (cyan), radius=8 (larger than pistol 5).
+      Blue splash ring glow + white highlight. Constructor adds isCannon param (backward compatible default false).
+      183 tests pass. tsc clean.
+    tokens: ~3k

@@ -28,8 +28,8 @@ state:
   status: running
 
   # --- Task orchestration (owner: iterator) ---
-  task_number: 7
-  next_task: "[US-59] Add drawWaterCannon to DefenderEntity.ts, cannon projectile variant to ProjectileEntity.ts, idle animation + fire reaction for cannon"
+  task_number: 8
+  next_task: null
   last_result: pass
   consecutive_fails: 0
 
