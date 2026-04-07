@@ -27,3 +27,13 @@ entries:
       Phase type: cross-cutting — investigate-first mandate confirmed.
       Queued: add knockback field, cannon config, applyKnockback function, tests.
     tokens: ~8k
+  - task: 3
+    story: US-59
+    description: "Add knockback field to DefenderType, register 'cannon' in defenders.ts, add applyKnockback to Combat.ts, 4 knockback tests"
+    result: pass
+    notes: |
+      defenders.ts: added knockback?: number to DefenderType. Registered 'cannon' (damage 24, cost 150, range 9, knockback 1, behavior 'shooter').
+      Combat.ts: applyKnockback(enemy, amount, maxCol=8) — pushes non-boss enemies rightward, boss immune, clamped to grid edge.
+      4 new tests: non-boss knocked back, clamped at edge, clamped when near edge, boss immune.
+      182 tests pass (178 + 4 new). tsc --noEmit clean.
+    tokens: ~3k
