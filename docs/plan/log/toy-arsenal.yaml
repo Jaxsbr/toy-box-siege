@@ -116,6 +116,18 @@ entries:
       L5 unlock already in UNLOCK_MAP. Unlock card + ToysScene already work via DEFENDER_TYPES.
       Queued: investigate SingleUse.ts + GameScene placement + bomb requirements.
     tokens: ~1k
+  - task: 12
+    story: US-60
+    description: "Investigate SingleUse.ts mine behavior, GameScene placement handler, bomb requirements"
+    result: pass
+    notes: |
+      SingleUse.ts: mine uses MineState (arm delay). Bomb needs immediate detonation — different behavior.
+      GameScene placement: handleGridClick creates entity, mine branch sets mineArmed=false + MineState.
+      Bomb needs new branch: detonate immediately, 3×3 AOE (±1 row ±1 col), remove entity.
+      Need: 'bomb' in DefenderBehavior, bombDetonate function (pure TS), BOMB_BOSS_DAMAGE constant.
+      L5 unlock already configured. ToysScene/GameOverScene work via DEFENDER_TYPES.
+      Queued: add bomb config + detonation function + tests.
+    tokens: ~4k
   - task: 7
     story: US-59
     description: "Add drawWaterCannon shape, cannon projectile variant (blue/cyan, larger), idle bob, fire recoil"
