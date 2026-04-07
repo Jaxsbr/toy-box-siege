@@ -94,3 +94,14 @@ entries:
       add knockback on cannon projectile hit, update hit logic.
       Queued: investigate + implement GameScene cannon integration.
     tokens: ~1k
+  - task: 9
+    story: US-59
+    description: "Integrate cannon into GameScene fire loop with knockback on hit"
+    result: pass
+    notes: |
+      GameScene: added isCannon flag to fire loop. Cannon uses default PROJECTILE_SPEED (same as shooter).
+      ProjectileEntity created with isCannon=true for cannon defenders.
+      Hit logic: after single-target damage, if proj.isCannon → applyKnockback(enemy, 1, GRID_COLS-1) + updatePosition.
+      applyKnockback called from Combat.ts (not inlined in scene code).
+      183 tests pass. tsc clean.
+    tokens: ~3k
