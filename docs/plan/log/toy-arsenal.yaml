@@ -48,3 +48,15 @@ entries:
       Cross-cutting: UNLOCK_MAP structure change affects all unlock logic.
       Queued: investigate UNLOCK_MAP usage, then update for multi-unlock + L5 bomb + tests.
     tokens: ~1k
+  - task: 5
+    story: US-59
+    description: "Update UNLOCK_MAP to support multi-unlock at L3 (wall+cannon), add L5 bomb slot, update tests"
+    result: pass
+    notes: |
+      DefenderUnlocks.ts: UNLOCK_MAP changed from Record<number, string> to Record<number, string[]>.
+      L3: ['wall', 'cannon'], L5: ['bomb'], L6: ['trapper'], L8: ['mine'].
+      updateUnlocksAfterLevel and getUnlockedDefenders updated for array values.
+      Tests updated: L3 now expects 4 unlocks (wall+cannon), L5 expects bomb, persist test updated.
+      New test: completing L5 unlocks bomb (183 tests). GameOverScene.getNewUnlockKey needs separate fix for multi-card display.
+      183 tests pass (182 + 1 new). tsc clean.
+    tokens: ~4k
