@@ -28,8 +28,8 @@ state:
   status: running
 
   # --- Task orchestration (owner: iterator) ---
-  task_number: 4
-  next_task: null
+  task_number: 5
+  next_task: "[US-59] Investigate: review UNLOCK_MAP usage across codebase, then update to support multi-unlock at L3 (wall + cannon), add L5 bomb unlock slot, update tests"
   last_result: pass
   consecutive_fails: 0
 

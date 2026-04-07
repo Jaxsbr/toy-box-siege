@@ -37,3 +37,14 @@ entries:
       4 new tests: non-boss knocked back, clamped at edge, clamped when near edge, boss immune.
       182 tests pass (178 + 4 new). tsc --noEmit clean.
     tokens: ~3k
+  - task: 4
+    story: US-59
+    description: "Branch B investigation — identify next task for US-59 unlock map changes"
+    result: pass
+    notes: |
+      US-59 remaining: UNLOCK_MAP (L3 → wall+cannon), visuals (DefenderEntity, ProjectileEntity),
+      GameScene integration, idle/fire animation, ToysScene, unlock card, unlock tests.
+      Also need US-60 bomb unlock at L5 and US-61 MAX_LOADOUT changes.
+      Cross-cutting: UNLOCK_MAP structure change affects all unlock logic.
+      Queued: investigate UNLOCK_MAP usage, then update for multi-unlock + L5 bomb + tests.
+    tokens: ~1k
