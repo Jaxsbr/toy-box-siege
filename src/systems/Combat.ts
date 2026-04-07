@@ -136,7 +136,7 @@ export function applyKnockback(
   amount: number,
   maxCol: number = 8,
 ): number {
-  if ((enemy as { bossType?: boolean }).bossType) return enemy.col;
+  if (enemy.bossType) return enemy.col;
   enemy.col = Math.min(enemy.col + amount, maxCol);
   return enemy.col;
 }

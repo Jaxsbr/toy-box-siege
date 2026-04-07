@@ -42,9 +42,11 @@ export function bombDetonate(
   const affected: CombatEntity[] = [];
   for (const enemy of enemies) {
     if (isDead(enemy)) continue;
+    // Col uses ±0.5 tolerance because enemies have fractional col during movement;
+    // lane is always an integer so exact bounds suffice for rows.
     if (enemy.lane >= minRow && enemy.lane <= maxR &&
         enemy.col >= minCol - 0.5 && enemy.col <= maxC + 0.5) {
-      if ((enemy as { bossType?: boolean }).bossType) {
+      if (enemy.bossType) {
         enemy.health -= BOMB_BOSS_DAMAGE;
       } else {
         enemy.health = 0; // instant kill
